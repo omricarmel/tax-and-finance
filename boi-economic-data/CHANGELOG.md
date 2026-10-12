@@ -1,5 +1,58 @@
 # Changelog
 
+## 1.5.0 - 2026-10-12
+
+Fixed a silent CPI error in the script. The CBS index API publishes each month on the base that
+was current at the time (January 2019 is 100.1 on the 2018 base, August 2026 is 105.8 on the 2024
+base), and the script printed one "Base" header over the whole range, inviting a division across
+a rebase. `--cpi` now requests the CBS chaining coefficients (`coef=true`), shows each row's
+published base, and adds a column restating every month on the oldest row's base, with a warning
+when a range spans several bases. On the 2018 base August 2026 is 120.69.
+
+The CBS API pages its answer at 100 months. The script read only the first page, so
+`--cpi-last` above 100 silently dropped the oldest months, usually the base month a contract
+names. It now reads every page. New `--cpi-from MM-YYYY` / `--cpi-to MM-YYYY` fetch an exact
+range (closes the historical-CPI item carried from 1.4.0).
+
+Corrected the claim that the representative rate is "the official rate for tax calculations".
+The Bank of Israel states the rates have no official or legal standing of their own; they bind
+contracting parties when stipulated, and statutes can adopt them directly (the Income Tax
+(Inflationary Adjustments) Law defines the exchange rate for a date as that day's representative
+dollar rate, or the last one published before it). The skill now tells the agent to apply the
+governing rule's date and fallback.
+
+Corrected a false history carried since 1.3.0: the representative rate did not move to
+Monday-Friday in January 2026. The BOI series shows Friday rates and no Sunday rates in 2015,
+2023 and 2025, so the "agents trained on pre-2026 data fall back to Thursday" gotcha was wrong
+and would have pushed historical weekend lookups to Thursday instead of Friday. The 1.3.0 entry
+below is left as written, as history; this entry supersedes it. Publication time is now quoted as the BOI states it (soon after 15:15,
+12:15 on Fridays and holiday eves, not fixed) instead of ~15:30 / ~12:30, and Christmas Day, New
+Year's Day and Easter are documented as non-publication days. The Reference Links row now points
+at the BOI explanatory notes, which render in a browser, instead of a bot-blocked page.
+
+New `--date YYYY-MM-DD` returns the rate published on a date or the last one before it (the
+fallback most rules use; 26 December 2025 resolves to 24 December), `--from`/`--to` fetch and
+print a whole range, and `--average` prints its simple mean (246 published USD rates in 2025,
+mean 3.4529). Documented the CBS linkage calculator, its date convention (month X is known from
+the 16th of X+1) and its HTTP 500 for a future date. The Monetary Committee has 8 scheduled
+decisions in 2026, not "about 6", each announced at 16:00 and effective a few days later; the
+BR change points are effective dates. `--cpi --json` now returns an object carrying the bases,
+whether the requested end month is unpublished, and whether every page arrived, instead of a
+bare list. `--cpi-to` alone now means the `--cpi-last` months ending there, instead of every
+month since 1951. Added LBP. Fixed two dead BOI statistical-information links and a TASE host
+that no longer resolves, and dropped "tax brackets are updated annually by CPI" (unsourced).
+The EXR dataflow carries non-rate series with the `RER_` prefix, so the filter is now the exact
+series name plus `DATA_TYPE=OF00`.
+
+Stated the prime spread: Bank Hapoalim and Mizrahi-Tefahot both publish prime as the policy rate
+plus 1.5% (closes the item carried from 1.4.0), framed as a bank convention.
+
+The script now reports a TLS certificate-verification failure as a local CA-bundle problem
+instead of retrying it and blaming CBS connection resets, and uses certifi's CA bundle when
+installed (verification stays on). Negative `--days` and other out-of-range arguments are
+rejected up front. Refreshed the BR sibling-series table (policy rate 3.25 since 2026-09-03).
+Removed a stray `version` key from both SKILL frontmatters.
+
 ## 1.4.0 - 2026-08-27
 
 Corrected the interest-rate endpoint. Every previous version documented the `BIR` dataflow as

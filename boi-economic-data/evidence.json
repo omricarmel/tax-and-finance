@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
   "skill": "boi-economic-data",
-  "generated_at": "2026-08-27T01:45:47.190910+00:00",
+  "generated_at": "2026-10-12T19:00:00Z",
   "claims": [
     {
       "claim_id": "boi-sdmx-data-paths",
@@ -80,7 +80,7 @@
     },
     {
       "claim_id": "exr-series",
-      "claim": "Representative exchange rates (sha'ar yatzig) are per-currency series named RER_<CUR>_ILS inside the EXR dataflow, and DATA_TYPE OF00 marks the official representative rate.",
+      "claim": "Representative exchange rates (sha'ar yatzig) are per-currency series named RER_<CUR>_ILS inside the EXR dataflow, and DATA_TYPE OF00 marks the representative rate.",
       "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS?startPeriod=2026-08-26",
       "raw_snippet": "<Series SERIES_CODE=\"RER_USD_ILS\" FREQ=\"D\" BASE_CURRENCY=\"USD\" COUNTER_CURRENCY=\"ILS\" UNIT_MEASURE=\"ILS\" DATA_TYPE=\"OF00\" TIME_COLLECT=\"V\" DATA_SOURCE=\"BOI_MRKT\"",
       "fetched_at": "2026-08-27T01:34:45.993654+00:00",
@@ -137,11 +137,11 @@
     },
     {
       "claim_id": "publication-days-mon-fri",
-      "claim": "The BOI representative exchange rate is published Monday to Friday and not on Saturday or Sunday, the Israeli financial week having moved to Monday-Friday in January 2026. Verified directly from the series: Friday 2026-08-21 carries an observation and no Saturday or Sunday does.",
-      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS?startPeriod=2026-08-20&endPeriod=2026-08-24",
-      "raw_snippet": "<Obs TIME_PERIOD=\"2026-08-21\" OBS_VALUE=\"2.991\" RELEASE_STATUS=\"YP\"></Obs><Obs TIME_PERIOD=\"2026-08-24\"",
+      "claim": "The representative rate is published Monday-Friday (Friday observations, no Sunday observations), the same pattern in 2015, 2023 and 2025; weekday counts of RER_USD_ILS for 2023: Mon 47, Tue 51, Wed 48, Thu 50, Fri 49, Sun 0",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS?startPeriod=2023-01-05&endPeriod=2023-01-09",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2023-01-05\" OBS_VALUE=\"3.529\" RELEASE_STATUS=\"YP\"></Obs><Obs TIME_PERIOD=\"2023-01-06\" OBS_VALUE=\"3.556\" RELEASE_STATUS=\"YP\"></Obs><Obs TIME_PERIOD=\"2023-01-09\" OBS_VALUE=\"3.496\" RELEASE_STATUS=\"YP\"></Obs>",
       "fetched_at": "2026-08-27T01:35:38.245480+00:00",
-      "verified_at": "2026-08-27T01:40:26.492677+00:00",
+      "verified_at": "2026-10-12T21:30:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -152,26 +152,12 @@
       "verified_via": "api-raw-http"
     },
     {
-      "claim_id": "publication-times",
-      "claim": "The representative rate is published Monday-Thursday at approximately 15:30 and Friday at approximately 12:30 Israel time. Carried forward from the v1.3.0 cycle. The BOI methodology page that states these times is behind Radware bot protection and returns a challenge page to any automated fetch, so this cycle could not re-read it verbatim; the publication DAYS are independently API-verified under publication-days-mon-fri.",
-      "source_url": "https://www.boi.org.il/roles/markets/reprate/",
-      "raw_snippet": "Radware Page Verifying your browser before proceeding",
-      "fetched_at": "2026-08-27T01:35:38.245480+00:00",
-      "verified_via": "unreachable-bot-protected",
-      "verified_at": "2026-08-27T01:35:38.245480+00:00",
-      "appears_in": [
-        "SKILL.md",
-        "SKILL_HE.md",
-        "references/boi-api.md"
-      ]
-    },
-    {
       "claim_id": "reference-urls",
-      "claim": "Reference and data-source URLs cited in the skill. The boi.org.il pages return HTTP 200 to a browser but serve a Radware challenge to automated fetches, so they are cited as human-facing references rather than as machine-readable sources. Covers: https://www.boi.org.il/en/economic-roles/statistical-information/ https://www.boi.org.il/en/communication-and-publications/press-releases/ https://www.boi.org.il/en/economic-roles/monetary-policy/ https://www.boi.org.il/he/economic-roles/statistical-information/ https://www.boi.org.il/he/communication-and-publications/press-releases/ https://www.cbs.gov.il/en/subjects/Pages/Consumer-Price-Index.aspx https://www.cbs.gov.il/he/subjects/Pages/מדד-המחירים-לצרכן.aspx https://www.cbs.gov.il/he/pages/default.aspx https://info.tase.co.il/ https://data.gov.il/ Also covers the API base paths and the CPI query URL as written in the skill: https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/ https://api.cbs.gov.il/index/data/price https://api.cbs.gov.il/index/data/price?id=120010&format=json&last=6 The two BOI base paths return HTTP 404 on their own by design: a dataflow and a series segment must be appended. The CBS query URL was fetched live and returned the headline index.",
+      "claim": "The data URLs cited in the skill resolve: edge.boi.gov.il ws/public and sdmx/v2 data paths serve observations. Human-facing links were re-checked in a browser on 2026-10-12: en/economic-roles/statistics (Data and Statistics), the 2026 interest-rate announcement dates page, and the representative-rate explanatory notes render; the former statistical-information URLs (BOI 404 page) and info.tase.co.il (no DNS) were replaced. Covers: https://api.cbs.gov.il/index/data/price https://api.cbs.gov.il/index/data/price?id=120010&format=json&last=6 https://data.gov.il/ https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/ https://www.boi.org.il/en/communication-and-publications/press-releases/ https://www.boi.org.il/he/communication-and-publications/press-releases/ https://www.cbs.gov.il/en/subjects/Pages/Consumer-Price-Index.aspx https://www.cbs.gov.il/he/pages/default.aspx https://www.cbs.gov.il/he/subjects/Pages/מדד-המחירים-לצרכן.aspx https://www.boi.org.il/en/economic-roles/statistics/ https://market.tase.co.il/",
       "source_url": "https://edge.boi.gov.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/EXR/1.0/RER_USD_ILS?startPeriod=2026-08-26",
       "raw_snippet": "<Obs TIME_PERIOD=\"2026-08-26\" OBS_VALUE=\"2.972\" RELEASE_STATUS=\"YP\"></Obs>",
       "fetched_at": "2026-08-27T01:35:38.245480+00:00",
-      "verified_at": "2026-08-27T01:40:26.492677+00:00",
+      "verified_at": "2026-10-12T22:30:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -207,18 +193,464 @@
     },
     {
       "claim_id": "dataflow-query-returns-full-history",
-      "claim": "A BOI dataflow queried with no date filter returns every series it holds with full history (EXR is about 20 MB, 35 series, 268,629 observations, earliest TIME_PERIOD 1948-05-15), not an empty result. A date-bounded dataflow query returns that dataflow's series for the window: EXR for 2026-08-26 returns 16 series, of which 14 are per-currency RER_<CUR>_ILS rates and 2 are the trade-weighted basket series NER_ILS_BSK_PCT and NER_ILS_BSK_IDX.",
-      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/?startPeriod=2026-08-26",
-      "raw_snippet": "<Series SERIES_CODE=\"RER_DKK_ILS\" FREQ=\"D\" BASE_CURRENCY=\"DKK\" COUNTER_CURRENCY=\"ILS\" UNIT_MEASURE=\"ILS\" DATA_TYPE=\"OF00\" TIME_COLLECT=\"V\" DATA_SOURCE=\"BOI_MRKT\" UNIT_MULT=\"0\" CONF_STATUS=\"F\" PUB_WEBSITE=\"Y\">",
+      "claim": "A BOI dataflow queried with no date filter returns every series it holds with full history (EXR/ on 2026-10-12: 20,423,886 bytes, 35 <Series> elements, earliest TIME_PERIOD 1948-05-15)",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/",
+      "raw_snippet": "<Obs TIME_PERIOD=\"1948-05-15\" OBS_VALUE=\"0.000025\" RELEASE_STATUS=\"YP\"></Obs>",
       "fetched_at": "2026-08-27T01:45:47.190910+00:00",
       "verified_via": "api-raw-http",
-      "verified_at": "2026-08-27T01:57:27.870791+00:00",
+      "verified_at": "2026-10-12T22:30:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/boi-api.md",
         "references/domain-checklist.md",
         "scripts/fetch_boi_rates.py"
+      ]
+    },
+    {
+      "claim_id": "publication-times",
+      "claim": "Representative rate published soon after 15:15 (soon after 12:15 on Fridays, holiday eves and some other Jewish holidays); sampling window 13:15-15:15 (10:15-12:15); the time is not fixed",
+      "source_url": "https://www.boi.org.il/en/economic-roles/financial-markets/explanatory-notes-to-the-representative-exchange-rates/",
+      "raw_snippet": "The representative exchange rate is currently published soon after 15:15 (or soon after 12:15 on Fridays, holiday eves and some other Jewish holidays).",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "time-not-fixed",
+      "claim": "The BOI says the publication time is not fixed",
+      "source_url": "https://www.boi.org.il/en/economic-roles/financial-markets/explanatory-notes-to-the-representative-exchange-rates/",
+      "raw_snippet": "The time is not fixed, however, and the rates may be calculated and made available to the public at other times.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "no-rate-christmas-newyear-easter",
+      "claim": "No representative rate on Saturdays, Sundays, Israeli holidays, Christmas Day, New Year's Day and Easter",
+      "source_url": "https://www.boi.org.il/en/economic-roles/financial-markets/explanatory-notes-to-the-representative-exchange-rates/",
+      "raw_snippet": "There are no representative rates on Saturdays, Sundays, Israeli holidays, Christmas Day, New Year’s Day and Easter, when foreign-exchange markets are closed in most countries.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "no-rate-observed-2025-12-25-2026-01-01",
+      "claim": "USD/ILS has no observation for 2025-12-25, 2025-12-26 (a Friday) or 2026-01-01",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS?startPeriod=2025-12-24&endPeriod=2025-12-29",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2025-12-24\" OBS_VALUE=\"3.186\" RELEASE_STATUS=\"YP\"></Obs><Obs TIME_PERIOD=\"2025-12-29\" OBS_VALUE=\"3.203\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "no-legal-standing",
+      "claim": "Representative rates have no official or legal standing, are used mainly for valuations and in contracts, and bind a transaction only if stipulated in advance",
+      "source_url": "https://www.boi.org.il/en/economic-roles/financial-markets/explanatory-notes-to-the-representative-exchange-rates/",
+      "raw_snippet": "The rates have no official or legal standing, and are not published in the Official Gazette. They are used mainly for valuations and in contracts. Parties to a foreign-currency-indexed business transaction may carry out the transaction at any exchange rate agreed between them. The representative rate is binding for such a transaction only if explicitly stipulated in advance by the parties.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "contract-names-which-rate",
+      "claim": "Parties should stipulate which date's rate applies",
+      "source_url": "https://www.boi.org.il/en/economic-roles/financial-markets/explanatory-notes-to-the-representative-exchange-rates/",
+      "raw_snippet": "It is therefore advisable for the parties to a transaction linked to the representative rate to stipulate in advance what the relevant rate is to be: for example, the one published on the date of the transaction, the latest published rate before the date on which transaction is carried out, or the rate published on a certain date before or after the date of the transaction.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "prime-spread-hapoalim",
+      "claim": "Bank Hapoalim states prime = Bank of Israel rate + 1.5% (4.75% with BOI rate 3.25% from 3.9.2026)",
+      "source_url": "https://www.bankhapoalim.co.il/he/interest-update",
+      "raw_snippet": "בהתאם, ריבית הפריים תעמוד על 4.75% (ריבית בנק ישראל בתוספת 1.5%).",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "prime-spread-mizrahi",
+      "claim": "Mizrahi-Tefahot states prime is computed as BOI rate + 1.5%",
+      "source_url": "https://www.mizrahi-tefahot.co.il/brokerage/index-table/",
+      "raw_snippet": "ריבית הפריים מחושבת לפי תוספת של 1.5% לריבית בנק ישראל, לפיכך היא משתנה בהתאם להחלטות הריבית של בנק ישראל.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-period-params",
+      "claim": "CBS index API startPeriod/endPeriod in mm-yyyy; coef true/false adds a coefficient",
+      "source_url": "https://www.cbs.gov.il/he/Pages/מדדי-מחירים-באמצעות-API.aspx",
+      "raw_snippet": "startPeriod\tmm-yyyy\tמתאריך\t01-1900\tX / endPeriod\tmm-yyyy\tעד תאריך\t01-2100\tX / coef\ttrue/false\tהוספת מקדם\tfalse\tX",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md",
+        "scripts/fetch_boi_rates.py"
+      ]
+    },
+    {
+      "claim_id": "policy-rate-cut-325",
+      "claim": "Policy rate 3.5 on 2026-09-02 and 3.25 from 2026-09-03",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/BR/MNT_RIB_BOI_D?startPeriod=2026-09-02&endPeriod=2026-09-03",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2026-09-02\" OBS_VALUE=\"3.5\" RELEASE_STATUS=\"YP\"></Obs><Obs TIME_PERIOD=\"2026-09-03\" OBS_VALUE=\"3.25\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/boi-api.md",
+        "CHANGELOG.md"
+      ]
+    },
+    {
+      "claim_id": "br-policy-2026-10-12",
+      "claim": "MNT_RIB_BOI_D 2026-10-12 = 3.25",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/BR/MNT_RIB_BOI_D?lastNObservations=1",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2026-10-12\" OBS_VALUE=\"3.25\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "br-effective-2026-10-11",
+      "claim": "MNT_RIB_EFYB_D 2026-10-11 = 3.30323985186489",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/BR/MNT_RIB_EFYB_D?lastNObservations=1",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2026-10-11\" OBS_VALUE=\"3.30323985186489\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "br-window-lending-2026-10-12",
+      "claim": "MNT_WIN_LN_D 2026-10-12 = 3.75",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/BR/MNT_WIN_LN_D?lastNObservations=1",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2026-10-12\" OBS_VALUE=\"3.75\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "br-window-deposit-2026-10-12",
+      "claim": "MNT_WIN_DEP_D 2026-10-12 = 2.75",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/BR/MNT_WIN_DEP_D?lastNObservations=1",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2026-10-12\" OBS_VALUE=\"2.75\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "br-shir-2026-10-12",
+      "claim": "MNT_SHIR_D 2026-10-12 = 3.25",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/BR/MNT_SHIR_D?lastNObservations=1",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2026-10-12\" OBS_VALUE=\"3.25\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-aug-2026-on-2018-base",
+      "claim": "Aug 2026 CPI = 105.8 on base 2024 average, and 120.6943227684 on base 2018 average via prevBase",
+      "source_url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=08-2026&endPeriod=08-2026&coef=true",
+      "raw_snippet": "{\"coeff\":1.003,\"baseDesc\":\"2018 ממוצע\",\"value\":120.6943227684}",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-aug-2026-current-base",
+      "claim": "Aug 2026 CPI = 105.8 on base 2024 average",
+      "source_url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&startPeriod=08-2026&endPeriod=08-2026&coef=true",
+      "raw_snippet": "\"currBase\":{\"baseDesc\":\"2024 ממוצע\",\"value\":105.8}",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-jan-2019-on-2018-base",
+      "claim": "Jan 2019 CPI = 100.1 on base 2018 average",
+      "source_url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&startPeriod=01-2019&endPeriod=03-2019&coef=true",
+      "raw_snippet": "\"currBase\":{\"baseDesc\":\"2018 ממוצע\",\"value\":100.1}",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-paging-100",
+      "claim": "CBS index API pages at 100 months: last=120 returns page 1 (newest 100, ending May 2018) with last_page 2",
+      "source_url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&last=120",
+      "raw_snippet": "{\"year\":2018,\"percent\":0.5,\"percentYear\":0.5,\"currBase\":{\"baseDesc\":\"2016 ממוצע\",\"value\":101.2},\"prevBase\":null,\"month\":5,\"monthDesc\":\"מאי\"}]}],\"quarter\":null,\"paging\":{\"total_items\":120,\"page_size\":100,\"current_page\":1,\"last_page\":2,",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md",
+        "scripts/fetch_boi_rates.py"
+      ]
+    },
+    {
+      "claim_id": "on-or-before-lookup",
+      "claim": "endPeriod=<date>&lastNObservations=1 returns the last rate published on or before the date; 2025-12-26 resolves to 2025-12-24 at 3.186",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS?endPeriod=2025-12-26&lastNObservations=1",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2025-12-24\" OBS_VALUE=\"3.186\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "references/boi-api.md",
+        "scripts/fetch_boi_rates.py"
+      ]
+    },
+    {
+      "claim_id": "year-end-2025-usd",
+      "claim": "Last USD/ILS rate on or before 2025-12-31 is 3.19 on 2025-12-31",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS?endPeriod=2025-12-31&lastNObservations=1",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2025-12-31\" OBS_VALUE=\"3.19\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "usd-2025-mean",
+      "claim": "2025 has 246 published USD/ILS rates (2025-01-02 to 2025-12-31) with simple mean 3.4529 (computed by scripts/fetch_boi_rates.py --from 2025-01-01 --to 2025-12-31 --average; first obs 3.65 on 2025-01-02)",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS?startPeriod=2025-01-01&endPeriod=2025-01-03",
+      "raw_snippet": "<Obs TIME_PERIOD=\"2025-01-02\" OBS_VALUE=\"3.65\" RELEASE_STATUS=\"YP\"></Obs>",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "lbp-unit-mult",
+      "claim": "RER_LBP_ILS is an OF00 representative rate quoted per 10 (UNIT_MULT 1)",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_LBP_ILS?lastNObservations=1",
+      "raw_snippet": "<Series SERIES_CODE=\"RER_LBP_ILS\" FREQ=\"D\" BASE_CURRENCY=\"LBP\" COUNTER_CURRENCY=\"ILS\" UNIT_MEASURE=\"ILS\" DATA_TYPE=\"OF00\" TIME_COLLECT=\"V\" DATA_SOURCE=\"BOI_MRKT\" UNIT_MULT=\"1\" CONF_STATUS=\"F\" PUB_WEBSITE=\"Y\">",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "references/boi-api.md",
+        "scripts/fetch_boi_rates.py"
+      ]
+    },
+    {
+      "claim_id": "glblimp-not-a-rate",
+      "claim": "RER_USD_ILS_GLBLIMP shares the RER_ prefix but has UNIT_MEASURE NBRE and DATA_TYPE GLBLIMP",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/ws/public/sdmxapi/rest/data/EXR/RER_USD_ILS_GLBLIMP?lastNObservations=1",
+      "raw_snippet": "<Series SERIES_CODE=\"RER_USD_ILS_GLBLIMP\" FREQ=\"D\" BASE_CURRENCY=\"USD\" COUNTER_CURRENCY=\"ILS\" UNIT_MEASURE=\"NBRE\" DATA_TYPE=\"GLBLIMP\" TIME_COLLECT=\"V\" DATA_SOURCE=\"BOI_IS\" UNIT_MULT=\"0\" CONF_STATUS=\"F\" PUB_WEBSITE=\"Y\">",
+      "verified_via": "api-raw-http",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "inflationary-law-exchange-rate-definition",
+      "claim": "Income Tax (Inflationary Adjustments) Law s.1(15) defines the exchange rate for a date as the BOI representative USD rate published that day, or the last one published before it; the law applied mainly to tax years 1985-2007 (\"תחולתו של חוק זה לגבי שנות המס 1985 עד 2007\"), so the skill presents it as an illustration",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94_(%D7%AA%D7%99%D7%90%D7%95%D7%9E%D7%99%D7%9D_%D7%91%D7%A9%D7%9C_%D7%90%D7%99%D7%A0%D7%A4%D7%9C%D7%A6%D7%99%D7%94)",
+      "raw_snippet": "”שער החליפין“ למועד פלוני – השער היציג של הדולר של ארצות הברית של אמריקה שפרסם בנק ישראל באותו מועד, ואם לא פרסם באותו מועד – השער היציג שפרסם לאחרונה לפני אותו מועד.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "decisions-published-16-00",
+      "claim": "2026 interest-rate announcements are published at 16:00",
+      "source_url": "https://www.boi.org.il/en/economic-roles/monetary-policy/interest-rate-announcement-dates-2026/",
+      "raw_snippet": "These announcements will be published  at 16:00 in the respective dates hereby attached.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "eight-decisions-2026",
+      "claim": "The 2026 schedule table lists 8 publication dates: 05/01, 23/02, 30/03, 25/05, 06/07, 01/09, 21/10, 23/11; the 01/09/2026 decision has start date 03/09/2026 (dates read from the rendered table directly below the quoted sentences; the cells are separate table elements so no single contiguous quote spans them)",
+      "source_url": "https://www.boi.org.il/en/economic-roles/monetary-policy/interest-rate-announcement-dates-2026/",
+      "raw_snippet": "These announcements will be published  at 16:00 in the respective dates hereby attached.\nChanges in these dates are possible and will be  announced.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-calculator-endpoint",
+      "claim": "CBS linkage calculator endpoint index/data/calculator/{id} with value, date, toDate (mm-dd-yyyy or yyyy-mm-dd)",
+      "source_url": "https://www.cbs.gov.il/he/Pages/מדדי-מחירים-באמצעות-API.aspx",
+      "raw_snippet": "date\tmm-dd-yyyy/yyyy-mm-dd\tמתאריך\t---\tV",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-calculator-15th",
+      "claim": "Calculator: date 15 March 2019 resolves to the January 2019 index (100.1); to 2026-10-12 gives August 2026 (105.8), 1000 -> 1205.74, +20.6%",
+      "source_url": "https://api.cbs.gov.il/index/data/calculator/120010?value=1000&format=json&download=false&date=03-15-2019&toDate=10-12-2026",
+      "raw_snippet": "\"from_index_date\":\"2019-1\",\"from_index_value\":100.1,\"to_index_date\":\"2026-8\",\"to_index_value\":105.8,\"chaining_coefficient\":1.141,\"mult_min\":33973054.61,\"mult_max\":40962585.6,\"Koeff\":1,\"change_percent\":20.6 (to_value 1205.74, base_year \"2018 ממוצע\")",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-calculator-16th",
+      "claim": "Calculator: date 16 March 2019 resolves to the February 2019 index (100.2)",
+      "source_url": "https://api.cbs.gov.il/index/data/calculator/120010?value=1000&format=json&download=false&date=03-16-2019&toDate=10-12-2026",
+      "raw_snippet": "\"from_index_date\":\"2019-2\",\"from_index_value\":100.2 (base_year \"2018 ממוצע\")",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-calculator-future-500",
+      "claim": "Calculator answers HTTP 500 for a future toDate",
+      "source_url": "https://api.cbs.gov.il/index/data/calculator/120010?value=1000&format=json&download=false&date=03-10-2019&toDate=12-01-2026",
+      "raw_snippet": "HTTP 500 <Error> <Message>Error: Calculator Data</Message> </Error>",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "cbs-pagesize-doc",
+      "claim": "CBS API documents page (default 1) and pagesize (default 100, maximum 1000)",
+      "source_url": "https://www.cbs.gov.il/he/Pages/מדדי-מחירים-באמצעות-API.aspx",
+      "raw_snippet": "כמות האובייקטים שיופיעו בדף (page_size), מקסימום - 1000\t100",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "scripts/fetch_boi_rates.py"
+      ]
+    },
+    {
+      "claim_id": "cbs-calculator-example-url",
+      "claim": "Worked calculator call used in the skill (format=json)",
+      "source_url": "https://api.cbs.gov.il/index/data/calculator/120010?value=1000&date=03-15-2019&toDate=10-12-2026&format=json",
+      "raw_snippet": "\"from_index_date\":\"2019-1\",\"from_index_value\":100.1,\"to_index_date\":\"2026-8\",\"to_index_value\":105.8",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "tase-market-host",
+      "claim": "market.tase.co.il resolves and serves the TASE market site (info.tase.co.il no longer resolves in DNS)",
+      "source_url": "https://market.tase.co.il/",
+      "raw_snippet": "HTTP 200 (curl -A Mozilla/5.0, 2026-10-12); info.tase.co.il: curl (6) Could not resolve host",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "references/boi-api.md"
+      ]
+    },
+    {
+      "claim_id": "boi-data-and-statistics",
+      "claim": "BOI Data and Statistics portal (replaces the en/he statistical-information URLs, which now render the BOI 404 page)",
+      "source_url": "https://www.boi.org.il/en/economic-roles/statistics/",
+      "raw_snippet": "Data and Statistics\nQuick glance",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "inflationary-law-period",
+      "claim": "The Income Tax (Inflationary Adjustments) Law applied to tax years 1985-2007",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94_(%D7%AA%D7%99%D7%90%D7%95%D7%9E%D7%99%D7%9D_%D7%91%D7%A9%D7%9C_%D7%90%D7%99%D7%A0%D7%A4%D7%9C%D7%A6%D7%99%D7%94)",
+      "raw_snippet": "תחולתו של חוק זה לגבי שנות המס 1985 עד 2007.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T22:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/boi-api.md"
       ]
     }
   ]

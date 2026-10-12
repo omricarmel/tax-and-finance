@@ -36,6 +36,21 @@
         "api.cbs.gov.il intermittently resets connections (curl exit 56, no HTTP status) after repeated automated requests, then recovers. Two independent reviewers reported it as unreachable while it was serving fine minutes earlier. Retry with backoff before concluding an endpoint is dead.",
         "Deferred over the discretionary cap: name the ITA's own year-average and year-end exchange-rate tables for annual tax reporting; add a gloss for the ZCM inflation-expectation and MAG monetary-aggregate series if usage shows demand."
       ]
+    },
+    {
+      "version": "1.5.0",
+      "date": "2026-10-12",
+      "lessons": [
+        "The 1.3.0 'representative rate moved to Mon-Fri in January 2026' finding was false: the BOI series has Friday rates and no Sunday rates in 2015, 2023 and 2025. 1.3.0 verified it by looking only at July 2026, which cannot distinguish 'changed in 2026' from 'always so'. Lesson: a claim about WHEN something changed needs data from before the claimed change, not after it.",
+        "Correcting an overstatement can overcorrect: 'official rate for tax' became 'no legal standing, follow the contract', which was wrong for statutes that adopt the rate. The BOI's disclaimer is about its own publication, not about what other law does with it.",
+        "The CBS index API publishes each month on the base current at that time and pages at 100 months; the script silently divided across rebases (via a single Base header) and dropped months past 100. Both were invisible in a 6-month default run. Test long ranges that cross a rebase.",
+        "api.cbs.gov.il and www.cbs.gov.il reset curl/python connections from an IP for 30+ minutes after a burst (research subagents hammered it). A headless Playwright browser still got through. Space CBS calls and give subagents the Playwright route up front.",
+        "This macOS python.org Python has no CA bundle; the script previously retried a TLS verification failure and blamed CBS resets. It now reports it as a local trust-store problem and uses certifi when present.",
+        "edge.boi.gov.il once returned a non-XML HTTP 200 for a BR query (transient; three reruns succeeded). The script dies with a clear message rather than retrying a parse failure. Consider one parse retry next cycle if users report it.",
+        "CARRY resolved: prime spread (1.5% convention, Hapoalim + Mizrahi-Tefahot), historical CPI by month (--cpi-from/--cpi-to, CBS calculator), annual average (--from/--to --average). ITA year-average table: none found, logged out of scope.",
+        "Deferred: customs rate for imports (representative + 0.5% per the Tax Authority's currency query page) in Step 6 import pricing; --cpi-from before 09-1951 is not flagged as short at the old end; the 16th-of-X+1 known-index rule is the CBS calculator's convention and may shift when the 15th falls on Shabbat (contract governs).",
+        "Value-add cases for this skill were written outside the monorepo (batch rule) at ~/dev/.batch-2026-10-12/boi-economic-data/vag-cases/; copy into .claude/skills/value-add-gate/cases/boi-economic-data/."
+      ]
     }
   ]
 }
