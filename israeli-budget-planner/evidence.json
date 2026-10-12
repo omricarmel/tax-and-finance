@@ -1,36 +1,38 @@
 {
   "schemaVersion": "1.0",
   "skill": "israeli-budget-planner",
-  "generated_at": "2026-08-27T01:40:02.667788+00:00",
+  "generated_at": "2026-10-12T20:30:00+00:00",
   "claims": [
     {
       "claim_id": "boi-rate",
-      "claim": "ריבית בנק ישראל עומדת על 3.5%. הנתון נלקח מסדרת ריבית בנק ישראל בממשק ה-SDMX של הבנק, שמחזיר CSV; עמודי ההודעות של הבנק חסומים לקריאה אוטומטית. העמוד https://www.gov.il/he/pages/dec1270-2024 מכוסה גם הוא בערך זה.",
-      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/BR/1.0?lastNPeriods=2&format=csv",
-      "raw_snippet": "SERIES_CODE,FREQ,IR_FV_TYPE,DATA_SOURCE,TIME_COLLECT,CONF_STATUS,PUB_WEBSITE,UNIT_MEASURE,UNIT_MULT,TIME_PERIOD,OBS_VALUE,RELEASE_STATUS | MNT_SHIR_D,D,RIB_SHIR,BOI,V,F,Y,PT,0,2026-08-19,3.5,YP",
-      "fetched_at": "2026-08-19",
-      "appears_in": [
-        "SKILL.md",
-        "SKILL_HE.md",
-        "references/israeli-financial-rates.md"
-      ],
-      "verified_via": "Bank of Israel SDMX BR (BOI interest rate) dataflow, CSV output",
-      "verified_at": "2026-08-19"
-    },
-    {
-      "claim_id": "prime-rate",
-      "claim": "Prime rate = Bank of Israel rate + 1.50%, so with BOI at 3.50% the prime is 5.00% (as of 6 July 2026).",
-      "source_url": "https://he.wikipedia.org/wiki/ריבית_פריים",
-      "raw_snippet": "כל בנק מסחרי רשאי לקבוע מרווח שונה מבנקים אחרים ובכך לקבוע ריבית פריים שונה, נכון לשנת 2024 בישראל, המרווח אצל כל הבנקים זהה ושווה ל-1.5% מעל ריבית בנק ישראל. ב-6 ביולי 2026 הוריד בנק ישראל את הריבית ל-3.5%. בהתאם, ריבית הפריים עומדת על 5%. [ 2 ] פרסום הריבית ושינוי ריבית הפריים בישראל [ עריכת קוד מקור | עריכה ] בהיעדר אירועים כלכליים הדורשים התערבות מיידית, פרסום הריבית של בנק ישראל מתבצע מידי כחודש וחצי [ 3 ] . על סמך ריבית זו נקבעת ריבית הפריים שנכנסת לתוקפה אחרי שלושה ימי עסקים .",
-      "fetched_at": "2026-08-18",
+      "claim": "ריבית בנק ישראל עומדת על 3.25%, בתוקף מ-3 בספטמבר 2026 (החלטת 1 בספטמבר 2026). הנתון נלקח מסדרת ריבית בנק ישראל בממשק ה-SDMX של הבנק, שמחזיר CSV; עמודי ההודעות של הבנק חסומים לקריאה אוטומטית. אתר הבנק: https://www.boi.org.il",
+      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/BR/1.0?startperiod=2026-09-01&format=csv",
+      "raw_snippet": "SERIES_CODE,FREQ,IR_FV_TYPE,DATA_SOURCE,TIME_COLLECT,CONF_STATUS,PUB_WEBSITE,UNIT_MEASURE,UNIT_MULT,TIME_PERIOD,OBS_VALUE,RELEASE_STATUS | MNT_RIB_BOI_D,D,RIB_BOI,BOI,V,F,Y,PT,0,2026-09-03,3.25,YP",
+      "fetched_at": "2026-10-12T19:00:00+00:00",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/israeli-financial-rates.md",
         "scripts/budget_calculator.py"
       ],
-      "verified_via": "cited page fetched and confirmed to contain \"1.5%\"; snippet replaced with the page's own wording around it",
-      "verified_at": "2026-08-18"
+      "verified_via": "Bank of Israel SDMX BR dataflow, CSV output (curl)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "prime-rate",
+      "claim": "Prime rate = Bank of Israel rate + 1.50%, so with BOI at 3.25% (from 3 Sep 2026) the prime is 4.75%.",
+      "source_url": "https://he.wikipedia.org/wiki/ריבית_פריים",
+      "raw_snippet": "המרווח אצל כל הבנקים זהה ושווה ל-1.5% מעל ריבית בנק ישראל",
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md",
+        "scripts/budget_calculator.py",
+        "references/domain-checklist.md"
+      ],
+      "verified_via": "Wikipedia page text (curl, action=raw); the +1.5% spread only. The 3.25% base is evidenced by boi-rate and boi-next-decision",
+      "verified_at": "2026-10-12T19:00:00+00:00"
     },
     {
       "claim_id": "min-wage",
@@ -47,7 +49,7 @@
     },
     {
       "claim_id": "avg-wage",
-      "claim": "Average wage in Israel from January 2026: 13,566 NIS/month under section 1 (basis for benefits and minimum wage) and 13,769 NIS/month under section 2 (basis for insurance-contribution ceilings).",
+      "claim": "Average wage in Israel from 1 Jan 2026: 13,566 NIS/month under section 1 and 13,769 NIS/month under section 2 of the National Insurance Law; Bituach Leumi (https://www.btl.gov.il) lists each figure for both benefits and contributions.",
       "source_url": "https://www.btl.gov.il/Mediniyut/GeneralData/Pages/%D7%A9%D7%9B%D7%A8%20%D7%9E%D7%9E%D7%95%D7%A6%D7%A2.aspx",
       "raw_snippet": "השכר הממוצע החל מ- 01.01.2026: לפי סעיף 1 בחוק - קצבאות: 13,566 ש\"ח לפי סעיף 1 בחוק - דמי ביטוח: 13,566 ש\"ח לפי סעיף 2 בחוק - קצבאות: 13,769 ש\"ח לפי סעיף 2 בחוק - דמי ביטוח: 13,769 ש\"ח",
       "fetched_at": "2026-08-27T01:41:46.735272+00:00",
@@ -116,7 +118,7 @@
     },
     {
       "claim_id": "vat",
-      "claim": "מע\"מ בישראל עומד על 18% מ-1.1.2025, לאחר שעמד על 17% מ-1.10.2015. לוח היסטוריית שיעורי המע\"מ של רשות המסים הוא המקור.",
+      "claim": "מע\"מ בישראל עומד על 18% מ-1.1.2025, לאחר שעמד על 17% מ-1.10.2015. לוח היסטוריית שיעורי המע\"מ של רשות המסים הוא המקור. רשות המסים: https://www.gov.il/taxes , https://www.gov.il/he/departments/israel_tax_authority",
       "source_url": "https://www.gov.il/he/pages/vat-history",
       "raw_snippet": "1.1.25 עלה המע\"מ ל-18% 01.10.15 ירד המע\"מ ל- 17% 02.06.13 עלה המע\"מ ל18%",
       "fetched_at": "2026-08-19",
@@ -202,16 +204,15 @@
     },
     {
       "claim_id": "cpi-annual",
-      "claim": "Annual CPI in Israel was 1.5% over the 12 months to July 2026, per the Central Bureau of Statistics consumer price index series (id 120010).",
-      "source_url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&last=13",
-      "raw_snippet": "{\"name\":\"מדד המחירים לצרכן - כללי\",\"percent\":0.3,\"percentYear\":1.5,\"currBase\":{\"baseDesc\":\"2024 ממוצע\",\"value\":105.1},\"month\":7}",
-      "fetched_at": "2026-08-27T01:40:02.667788+00:00",
+      "claim": "Annual CPI in Israel was 1.5% over the 12 months to August 2026, per the Central Bureau of Statistics consumer price index series (id 120010). Publisher: https://www.cbs.gov.il",
+      "source_url": "https://api.cbs.gov.il/index/data/price?id=120010&format=json&download=false&last=2&lang=he",
+      "raw_snippet": "\"year\":2026,\"percent\":0.7,\"percentYear\":1.5,\"currBase\":{\"baseDesc\":\"2024 ממוצע\",\"value\":105.8},\"prevBase\":null,\"month\":8",
+      "fetched_at": "2026-10-12T19:00:00+00:00",
       "appears_in": [
         "references/israeli-financial-rates.md"
       ],
-      "verified_via": "browser-playwright",
-      "verified_at": "2026-08-11T00:00:00Z",
-      "source_fetched_at": "2026-08-11T00:00:00Z"
+      "verified_via": "curl, CBS JSON API",
+      "verified_at": "2026-10-12T19:00:00+00:00"
     },
     {
       "claim_id": "budget-benchmarks",
@@ -229,23 +230,23 @@
     },
     {
       "claim_id": "income-tax-brackets",
-      "claim": "2026 Israeli income-tax brackets (annual NIS, marginal): 10% to 84,120; 14% to 120,720; 20% to 228,000; 31% to 301,200; 35% to 560,280; 47% to 721,560; 50% above. Widened retroactively from 1 Jan 2026 (the 20% step rose from 193,800 to 228,000 and the 31% step from 269,280 to 301,200).",
+      "claim": "2026 Israeli income-tax brackets (annual NIS, marginal, personal-exertion income): 10% to 84,120; 14% to 120,720; 20% to 228,000; 31% to 301,200; 35% to 560,280; 47% to 721,560; 50% above. Some brackets were widened in 2026. Kol Zchut (https://www.kolzchut.org.il) publishes the table.",
       "source_url": "https://www.kolzchut.org.il/he/מדרגות_מס_הכנסה",
-      "raw_snippet": "מדרגות המס מופעלות על בסיס הכנסה שנתית ולא חודשית",
-      "fetched_at": "2026-06-04T00:00:00Z",
+      "raw_snippet": "עד 84,120 ₪ עד 7,010 ₪ 10% 84,121- 120,720 ₪ 7,011- 10,060 ₪ 14% 120,721- 228,000 ₪ 10,061- 19,000 ₪ 20% 228,001- 301,200 ₪ 19,001- 25,100 ₪ 31% 301,201- 560,280 ₪ 25,101- 46,690 ₪ 35% 560,281- 721,560 ₪ 46,691- 60,130 ₪ 47% 721,561 ₪ ומעלה 60,131 ₪ ומעלה 50% *",
+      "fetched_at": "2026-10-12T20:30:00+00:00",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "scripts/budget_calculator.py"
       ],
-      "verified_via": "kolzchut page text read through the site MediaWiki API in a browser; snippet replaced with verbatim page text (the previous value was a generated summary)",
-      "verified_at": "2026-08-15"
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
     },
     {
       "claim_id": "arnona-illustrative",
-      "claim": "Arnona is an annual tax paid to the local authority by whoever holds the property, and the Interior Ministry publishes minimum and maximum arnona rates each year, so the amount is municipality-set and changes annually. The Tel Aviv monthly range quoted in the skill is explicitly illustrative and is not a published figure. The skill states an illustrative Tel Aviv residential range of 500-1,500 NIS per month, and an illustrative arnona plus vaad bayit load of 500-2,000 NIS per month on top of quoted rent. Both are planning heuristics of this skill (500 ₪, 1500 ₪, 2000 ₪), not published figures, and the skill instructs the reader to fetch the municipality tzav arnona for a real number.",
+      "claim": "Arnona is an annual tax paid to the local authority by whoever holds the property, so the amount is municipality-set (the Interior Ministry's annual minimum and maximum rates are evidenced in arnona-min-max). The Tel Aviv monthly range quoted in the skill is explicitly illustrative and is not a published figure. The skill states an illustrative Tel Aviv residential range of 500-1,500 NIS per month, and an illustrative arnona plus vaad bayit load of 500-2,000 NIS per month on top of quoted rent. Both are planning heuristics of this skill (500 ₪, 1500 ₪, 2000 ₪), not published figures, and the skill instructs the reader to fetch the municipality tzav arnona for a real number. Example municipality site for a tzav arnona: https://www.tel-aviv.gov.il",
       "source_url": "https://www.kolzchut.org.il/he/ארנונה",
-      "raw_snippet": "ארנונה היא מס שנתי שתושבים המחזיקים בנכס משלמים לרשות המקומית. משרד הפנים מפרסם מדי שנה את תעריפי המינימום והמקסימום לשיעורי הארנונה",
+      "raw_snippet": "ארנונה היא מס שנתי שתושבים המחזיקים בנכס משלמים לרשות המקומית.",
       "fetched_at": "2026-08-27T01:41:46.735272+00:00",
       "appears_in": [
         "SKILL.md",
@@ -254,21 +255,6 @@
       ],
       "verified_via": "browser",
       "verified_at": "2026-08-27T01:41:46.735272+00:00"
-    },
-    {
-      "claim_id": "ref-domains",
-      "claim": "Authoritative Israeli reference domains for budget figures. Covers these references: https://www.boi.org.il https://www.cbs.gov.il https://www.kolzchut.org.il https://www.gov.il/taxes https://www.btl.gov.il https://www.gov.il/he/departments/israel_tax_authority https://www.tel-aviv.gov.il https://tradingeconomics.com/israel/interest-rate https://jobcalc.co.il/national-insurance/bituach-leumi/ https://www.btl.gov.il/Insurance/Rates/Pages/לעובדים https://www.btl.gov.il/Insurance/Health_Insurance/Pages/שיעורי https://www.btl.gov.il/Mediniyut/GeneralData/Pages/שכר. The Bank of Israel web pages block automated fetching, so this is sourced to the Bank's own public exchange-rate API instead.",
-      "source_url": "https://edge.boi.gov.il/FusionEdgeServer/sdmx/v2/data/dataflow/BOI.STATISTICS/EXR/1.0/RER_USD_ILS?lastNPeriods=3&format=csv",
-      "raw_snippet": "SERIES_CODE,FREQ,BASE_CURRENCY,COUNTER_CURRENCY,UNIT_MEASURE,DATA_TYPE,DATA_SOURCE,TIME_COLLECT,CONF_STATUS,PUB_WEBSITE,UNIT_MULT,COMMENTS,TIME_PERIOD,OBS_VALUE,RELEASE_STATUS | RER_USD_ILS,D,USD,ILS,ILS,OF00,BOI_MRKT,V,F,Y,0,,1948-05-15,0.000025,YP",
-      "fetched_at": "2026-08-18",
-      "appears_in": [
-        "SKILL.md",
-        "SKILL_HE.md",
-        "references/israeli-financial-rates.md",
-        "references/domain-checklist.md"
-      ],
-      "verified_via": "Bank of Israel SDMX statistics endpoint (edge.boi.gov.il), CSV output; the Bank's web pages block automated fetching",
-      "verified_at": "2026-08-18"
     },
     {
       "claim_id": "pension-contribution-employee",
@@ -330,32 +316,477 @@
     },
     {
       "claim_id": "surtax-top-rate",
-      "claim": "The top income-tax row of 50% applies above 721,560 NIS/year (60,130 NIS/month) and is the 47% bracket plus a 3% surtax (mas yesef); the Tax Authority bracket table itself stops at 47%. Since 2025 an additional 2% applies to high income that is not from employment or a business, taking the top rate on that income to 52%.",
+      "claim": "The top income-tax row of 50% applies above 721,560 NIS/year (60,130 NIS/month) and is the 47% bracket plus a 3% surtax under section 121B (the section 121 brackets stop at 47%). Since 2025 an additional 2% applies to high income that is not from employment or a business, taking the top rate on that income to 52%.",
       "source_url": "https://www.kolzchut.org.il/he/מדרגות_מס_הכנסה",
-      "raw_snippet": "החל משנת 2025 נוסף מס בשיעור 2% על הכנסות גבוהות שלא מעבודה או מעסק",
-      "fetched_at": "2026-08-27T01:40:02.667788+00:00",
+      "raw_snippet": "* לפי סעיף 121ב לפקודה אדם שהכנסתו השנתית גבוהה מ-721,560 ₪ (60,130 ₪ לחודש) חייב גם במס של 3%, בנוסף למדרגת המס הרגילה (47%). לכן שיעור המס במדרגה הנוספת יהיה 50%.",
+      "fetched_at": "2026-10-12T20:30:00+00:00",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/israeli-financial-rates.md",
         "references/domain-checklist.md"
       ],
-      "verified_via": "browser",
-      "verified_at": "2026-08-27T01:40:02.667788+00:00"
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
     },
     {
       "claim_id": "boi-next-decision",
-      "claim": "The Bank of Israel lowered its rate to 3.5% on 6 July 2026; the next interest-rate decision is 1 September 2026.",
+      "claim": "The Bank of Israel's last published rate decision (1 Sep 2026) set the rate at 3.25%; the next scheduled decision is 21 Oct 2026. The skill does not state the next date, it tells the agent to re-verify.",
       "source_url": "https://www.boi.org.il/PublicApi/GetInterest?lang=he",
-      "raw_snippet": "{ \"currentInterest\": 3.5, \"nextInterestDate\": \"2026-09-01T00:00:00Z\", \"lastPublishedDate\": \"2026-07-12\" }",
-      "fetched_at": "2026-08-27T01:40:02.667788+00:00",
+      "raw_snippet": "{ \"currentInterest\": 3.25, \"nextInterestDate\": \"2026-10-21T00:00:00Z\", \"lastPublishedDate\": \"2026-09-01T16:00:04.647Z\" }",
+      "fetched_at": "2026-10-12T19:00:00+00:00",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/israeli-financial-rates.md"
       ],
       "verified_via": "api",
-      "verified_at": "2026-08-27T01:40:02.667788+00:00"
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "pti-aggregation-329",
+      "claim": "Under BOI directive 329 (version 06/26), the monthly repayment counted for PTI includes earlier loans to the borrower secured on the same property, whether from the same bank or another lender, if more than 18 months remain to maturity.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "\"החזר חודשי\" הוא סך התשלומים החודשיים המשמשים לפירעון של הלוואה לדיור המבוקשת ע\"י לקוח, כולל הלוואות שהועמדו ללווה בעבר, המובטחות בשעבוד אותו הנכס, (בין אם באותו התאגיד הבנקאי, ובין אם ע\"י תאגיד בנקאי אחר או גופים אחרים) ובלבד שמועד פירעונן של ההלוואות כאמור עולה על 18 חודשים.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md",
+        "references/domain-checklist.md",
+        "scripts/budget_calculator.py"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "pti-40-risk-weight",
+      "claim": "Under BOI directive 329, where PTI exceeds 40% the bank must assign the housing loan a 100% risk weight. The skill uses 40% as its own planning line, not as a legal limit.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "במקרה בו שיעור ההחזר מההכנסה עולה על 40% יש להקצות להלוואה משקל סיכון של 100%.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md",
+        "references/domain-checklist.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "variable-share-cap",
+      "claim": "BOI directive 329: the variable-rate share of a housing loan may not exceed 66.66% of the total (so up to 2/3 can float with prime).",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "תאגיד בנקאי יאשר ויבצע הלוואה לדיור, רק בתנאי שהיחס בין חלק ההלוואה לדיור בריבית משתנה, לבין סך ההלוואה, אינו עולה על 66.66%.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "child-credit-points-table",
+      "claim": "Child credit points (parents living together), from Kol Zchut's consolidated table: year of birth 2.5 per parent; years the child turns 1 and 2: 4.5 per parent; turns 3: 3.5; turns 4-5: 2.5; turns 6-17: mother 2, father 1; turns 18: mother 0.5, father 0. Mother column = parent receiving the child allowance.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "השנים שבהן ימלאו לילד 12-6 2 החל מ-2022 (1 בשנים קודמות) 1 החל מ-2022 (0 בשנים קודמות) השנים שבהן ימלאו לילד 17-13 2 החל מ-2024 (1 בשנים קודמות) 1 החל מ-2024 (0 בשנים קודמות) השנה שבה ימלאו לילד 18 1/2 -",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md",
+        "references/domain-checklist.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "child-credit-points-toddler",
+      "claim": "From 2024: 2.5 points in the year of birth, 4.5 in the years the child turns 1 and 2, 3.5 in the year the child turns 3, 2.5 in the years the child turns 4 and 5.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "בשנת המס שבה נולד הילד יינתנו 2.5 נקודות זיכוי. בשנת המס שבה תמלא לילד שנה אחת ובשנת המס שבה יימלאו לילד שנתיים, יינתנו 4.5 נקודות זיכוי בכל שנה. בשנת המס שבה יימלאו לילד שלוש שנים, יינתנו 3.5 נקודות זיכוי. בשנת המס שבה יימלאו לילד ארבע שנים ובשנת המס שבה יימלאו לילד חמש שנים, יינתנו 2.5 נקודות זיכוי בכל שנה.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "child-credit-points-example",
+      "claim": "Kol Zchut worked example: two children turning 2 and 8 in 2026 give the mother 9.25 points and the father 7.75 points.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "מספר נקודות הזיכוי של האם יהיה 9.25 לפי החישוב הבא:",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "child-credit-points-example-father",
+      "claim": "Kol Zchut worked example: the father's total is 7.75 points.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "מספר נקודות הזיכוי של האב יהיה 7.75 לפי החישוב הבא:",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "credit-points-zero-floor",
+      "claim": "Credit points reduce income tax to zero at most; a person whose tax is below the value of their points can use only part of them.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "נקודות זיכוי מקטינות את גובה מס ההכנסה שצריכים לשלם, ולכל היותר עד למצב שבו גובה המס הנדרש הוא אפס.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "separated-parent-extra-point",
+      "claim": "A divorced or separated parent raising the children receives one additional credit point (regardless of the number of children), among other different allocation rules.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "בנוסף יקבל אותו הורה נקודת זיכוי אחת נוספת בשל היותו גרוש או פרוד המגדל את ילדיו (בלי קשר למספר הילדים).",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "child-allowance-2026",
+      "claim": "Child allowance from 1 Jan 2026: first child 173 NIS, second, third and fourth 219 NIS each, fifth onward 173 NIS.",
+      "source_url": "https://www.btl.gov.il/benefits/children/Pages/%D7%A9%D7%99%D7%A2%D7%95%D7%A8%D7%99%20%D7%94%D7%A7%D7%A6%D7%91%D7%94.aspx",
+      "raw_snippet": "סכום הקצבה עבור ילדים לפי מיקומם במשפחה (החל מ- 01.01.2026) מיקום הילד במשפחה סכום הקצבה המשולם עבור הילד ראשון 173 ש\"ח שני 219 ש\"ח שלישי 219 ש\"ח רביעי 219 ש\"ח חמישי ואילך 173 ש\"ח",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "curl with browser User-Agent, page text after tag strip",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "child-allowance-subsistence-addition",
+      "claim": "A parent receiving a subsistence benefit (income support, mezonot, old-age or survivors' pension with income supplement) gets an extra 113 NIS for the third and fourth child.",
+      "source_url": "https://www.btl.gov.il/benefits/children/Pages/%D7%A9%D7%99%D7%A2%D7%95%D7%A8%D7%99%20%D7%94%D7%A7%D7%A6%D7%91%D7%94.aspx",
+      "raw_snippet": "התוספת משולמת עבור הילד השלישי והרביעי במשפחה בסך 113 ש\"ח לכל ילד.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "curl with browser User-Agent, page text after tag strip",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "hisachon-layeled",
+      "claim": "Bituach Leumi deposits 58 NIS/month into each child's savings plan from 1 Jan 2026; the parent may add 58 NIS from the allowance, for 116 NIS total.",
+      "source_url": "https://www.btl.gov.il/benefits/children/HisahoLayeled/Pages/default.aspx",
+      "raw_snippet": "הביטוח הלאומי מפקיד בתכנית החיסכון של כל ילד 58 ש\"ח (החל ב- 01.01.2026) מדי חודש. אתם ההורים, יכולים להוסיף לחיסכון של כל ילד עוד 58 ש\"ח (החל ב- 01.01.2026) בחודש מקצבת הילדים, כך שסכום החיסכון יוכפל, ויעמוד על 116 ש\"ח (החל ב- 01.01.2026) בחודש.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "curl with browser User-Agent, page text after tag strip",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "purchase-tax-2026",
+      "claim": "2026 purchase tax: only apartment 0% to 1,978,745 NIS, 3.5% to 2,347,040, 5% to 6,055,070, then 8% to 20,183,565 and 10% above; an additional apartment pays 8% to 6,055,070 and 10% above from the first shekel; brackets frozen until 15 Jan 2028; replacement-apartment sale window 24 months. Secondary source (Bizportal); the skill tells the user to confirm in the Tax Authority simulator.",
+      "source_url": "https://www.bizportal.co.il/realestates/news/article/20038028",
+      "raw_snippet": "2026 - מדרגות מס הרכישה קפואות במסגרת חוק ההסדרים ואינן מתעדכנות לפי מדד עד 15 בינואר 2028. הפטור לדירה יחידה עומד על 1,978,745 שקל, אחריו 3.5% עד 2,347,040 שקל ו-5% עד 6,055,070 שקל. בדירה נוספת נותרו שני שיעורים, 8% ו-10%, עם רף מעבר של 6,055,070 שקל. חלון המכירה למשפרי דיור עומד על 24 חודשים",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md",
+        "references/domain-checklist.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own Playwright render, location.href asserted)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "purchase-tax-top",
+      "claim": "Only-apartment purchase tax upper brackets: 8% from 6,055,070 to 20,183,565 NIS, 10% above.",
+      "source_url": "https://www.bizportal.co.il/realestates/news/article/20038028",
+      "raw_snippet": "מ-6,055,070 עד 20,183,565 שקל: 8%.מעל 20,183,565 שקל: 10%.",
+      "appears_in": [
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T19:00:00+00:00",
+      "verified_via": "browser (own Playwright render, location.href asserted)",
+      "verified_at": "2026-10-12T19:00:00+00:00"
+    },
+    {
+      "claim_id": "surtax-2pct-non-work",
+      "claim": "Since 2025 a further 2% applies to high income not from work or a business, so the top rate on that income is 52%.",
+      "source_url": "https://www.kolzchut.org.il/he/מדרגות_מס_הכנסה",
+      "raw_snippet": "החל משנת 2025 נוסף מס בשיעור 2% על הכנסות גבוהות שלא מעבודה או מעסק",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md",
+        "references/domain-checklist.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "child-points-mother-definition",
+      "claim": "For parents living together, the under-5 points go to the woman only; in same-sex couples to the parent receiving the child allowance.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "אם ההורים חיים יחד (נשואים או מגדלים יחד את הילד כידועים בציבור), ההטבה תינתן לאישה בלבד.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "child-points-same-sex",
+      "claim": "Same-sex parents: the benefit goes to the partner who receives the child allowance.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "הורים בני אותו מין - ההטבה תינתן לבן/בת הזוג שמקבל/ת את קצבת הילדים.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "child-points-deferral",
+      "claim": "The mother may defer one birth-year point to the next year: 1.5 in the birth year, then 5.5 in the year the child turns 1.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "1.5 אם האימא בוחרת לדחות נקודה לשנה הבאה",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "child-points-deferral-next",
+      "claim": "After deferral, 5.5 points in the year the child turns 1.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_להורה_לילד_עד_גיל_5",
+      "raw_snippet": "5.5 אם האימא דחתה את קבלת הנקודה מהשנה שעברה",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "olim-credit-duration",
+      "claim": "New immigrants' extra credit points run 42 months for those who arrived before 2022 and 54 months for those who arrived in 2022 or later.",
+      "source_url": "https://www.kolzchut.org.il/he/נקודות_זיכוי_ממס_הכנסה_לעולה_חדש",
+      "raw_snippet": "מי שעלו לארץ לפני 2022 זכאים להטבה במשך 42 החודשים הראשונים ממועד עלייתם. מי שעלו לארץ בשנת 2022 או מאוחר יותר זכאים להטבה במשך 54 החודשים הראשונים ממועד עלייתם.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/budget_calculator.py",
+        "references/domain-checklist.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "pension-start-age",
+      "claim": "Mandatory pension contributions start at 21 for a male employee and 20 for a female employee.",
+      "source_url": "https://www.kolzchut.org.il/he/חובת_ביטוח_פנסיוני_לעובדים",
+      "raw_snippet": "כל עובד שמלאו לו 21 ועובדת שמלאו לה 20 זכאים להפרשות לביטוח פנסיוני (קרן פנסיה, קופת גמל או ביטוח מנהלים)",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/budget_calculator.py"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "pension-waiting-period",
+      "claim": "An employee without an existing pension fund becomes entitled to contributions only after 6 months at the workplace.",
+      "source_url": "https://www.kolzchut.org.il/he/חובת_ביטוח_פנסיוני_לעובדים",
+      "raw_snippet": "במקרה שהעובד לא היה מבוטח בביטוח פנסיוני לפני תחילת עבודתו, הוא יהיה זכאי לביטוח הפנסיוני רק לאחר שחלפו 6 חודשים מהיום שהתחיל את עבודתו באותו מקום עבודה",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own headful Playwright, location.href asserted; kolzchut serves a challenge page to curl)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "reduced-price-own-funds-lead",
+      "claim": "Directive 329 requires the reduced-price buyer to pay at least the following amounts from own sources.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "מובהר כי על הרוכש לשלם ממקורותיו העצמיים לפחות את הסכומים הבאים:",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "reduced-price-own-funds",
+      "claim": "Directive 329: a reduced-price apartment buyer must pay at least 60,000 NIS from own funds where a mechir lamishtaken grant is given.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "60,000 ש\"ח לרכישת דירה בגינה ניתן מענק בהתאם לנספח א' לחוזר החשב הכללי",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "reduced-price-own-funds-other",
+      "claim": "Directive 329: for any other reduced-price apartment, at least 100,000 NIS from own funds.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "100,000 ש\"ח לרכישת דירה אחרת.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "reduced-price-definition",
+      "claim": "Directive 329 defines a reduced-price apartment as one bought at a reduced price in a project with a land discount, such as mechir matara and mechir lamishtaken.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "דירה הנרכשת במחיר מופחת בפרויקט במסגרתו ניתנת הנחה בקרקע, דוגמת \"מחיר מטרה\" ו\"מחיר למשתכן\".",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "disposable-income-329",
+      "claim": "Directive 329: disposable income is net income minus fixed expenses; a fixed expense is an obligation with more than 18 months left, including alimony and loan repayments not counted in the housing repayment; rent is also deducted for a borrower who will not live in the purchased apartment.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "\"הוצאה קבועה\" היא הוצאה שמקורה בהתחייבות של הלווה שיתרת תקופתה עולה על 18 חודשים. בכלל זה, יש לקחת בחשבון דמי מזונות והחזרים חודשיים בגין כל הלוואה שיתרת תקופתה עולה על 18 חודשים ולא נלקחה במסגרת חישוב ההחזר החודשי. נוסף על האמור לעיל, יש לנכות מההכנסה החודשית גם הוצאות שכר דירה של לווה שאינו עתיד להתגורר בדירה הנרכשת",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "replacement-window-secondhand",
+      "claim": "Replacement apartment bought second-hand: the old apartment must be sold within 24 months of buying the new one (permanent rule from 1 Jun 2025).",
+      "source_url": "https://www.bizportal.co.il/realestates/news/article/20038028",
+      "raw_snippet": "ברכישה מיד שנייה: יש למכור את הדירה הקודמת בתוך 24 חודשים ממועד רכישת הדירה החלופית.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own Playwright render, location.href asserted)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "replacement-window-contractor",
+      "claim": "Replacement apartment bought from a contractor: the old apartment must be sold within 12 months of the contractual delivery date.",
+      "source_url": "https://www.bizportal.co.il/realestates/news/article/20038028",
+      "raw_snippet": "ברכישה מקבלן: הספירה לפי מועד המסירה החוזי, ויש למכור בתוך 12 חודשים מהמועד שבו החזקה הייתה אמורה להימסר לפי ההסכם.",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "fetched_at": "2026-10-12T20:30:00+00:00",
+      "verified_via": "browser (own Playwright render, location.href asserted)",
+      "verified_at": "2026-10-12T20:30:00+00:00"
+    },
+    {
+      "claim_id": "arnona-min-max",
+      "claim": "The Interior Ministry publishes minimum and maximum arnona rates each year.",
+      "source_url": "https://www.kolzchut.org.il/he/ארנונה",
+      "raw_snippet": "משרד הפנים מפרסם מדי שנה את תעריפי המינימום והמקסימום לשיעורי הארנונה",
+      "fetched_at": "2026-10-12T21:30:00+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T21:30:00+00:00"
+    },
+    {
+      "claim_id": "reduced-price-appraisal",
+      "claim": "Directive 329 s.4a: for a reduced-price apartment the bank may base the property value on an appraisal; if the appraisal exceeds 2.1M NIS, the value is based on 2.1M NIS or the purchase price, whichever is higher.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "במקרה בו הערכת השמאי עולה על 2.1 מיליון ש\"ח, יש לבסס את שווי הנכס על 2.1 מיליון ש\"ח או על מחיר הרכישה, הגבוה מבניהם.",
+      "fetched_at": "2026-10-12T21:30:00+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-financial-rates.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T21:30:00+00:00"
+    },
+    {
+      "claim_id": "reduced-price-appraisal-basis",
+      "claim": "Directive 329 s.4a(1): the bank may base the property value on an appraisal at loan approval.",
+      "source_url": "https://boi.org.il/media/ez4npagt/329.pdf",
+      "raw_snippet": "תאגיד בנקאי רשאי לבסס את שווי הנכס על הערכת שמאי במועד אישור ההלוואה.",
+      "fetched_at": "2026-10-12T21:30:00+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-12T21:30:00+00:00"
     }
   ]
 }

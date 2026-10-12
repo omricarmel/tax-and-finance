@@ -33,6 +33,19 @@
         "Deferred MINOR: shovi shimush (company car) as a payslip-mismatch cause in Troubleshooting; note that credit points are non-transferable between spouses.",
         "Watch next cycle: BOI's next rate decision was 1 Sep 2026, so 3.50%/prime 5.00% and the script default --rate 0.05 are likely already stale by the next run. Re-check https://www.boi.org.il/PublicApi/GetInterest?lang=he first."
       ]
+    },
+    {
+      "version": "1.6.0",
+      "date": "2026-10-12",
+      "lessons": [
+        "STALE fixed (CRITICAL): BOI cut to 3.25% at the 1 Sep 2026 decision (in effect 3 Sep), prime 4.75%. Script default 0.05 -> 0.0475. The 'next decision' date is no longer written into prose (it guaranteed staleness); next decision was 21 Oct 2026, re-check https://www.boi.org.il/PublicApi/GetInterest?lang=he and the SDMX MNT_RIB_BOI_D series first.",
+        "CRITICAL coverage resolved: child credit-point table by child's age (mother/father, deferral, zero-tax floor), 2026 child allowance 173/219/173 (+113) and savings-for-every-child 58/116, purchase-tax 2026 brackets with replacement windows (second-hand 24m, contractor 12m), directive 329 PTI aggregation, disposable-income definition, 40% risk-weight planning line, reduced-price own-funds minimum and appraisal-based LTV value, and a --max-loan inverse-annuity mode. Deferred items --income/--pti and --blend folded into --max-loan with a principal-weighted blended rate (error ~0.04%).",
+        "Script fixes: --rate as a percentage (4.75) was silently accepted as 475%; NaN/inf inputs; --mortgage without --amount printed help with exit 0; salary+mortgage silently dropped the mortgage; pension 6% was deducted from under-18s (now 0, plus --pension-rate). Re-ran all probes after every parsing change.",
+        "Pre-existing evidence defects found by the judge: income-tax-brackets snippet supported none of the figures and the 'retroactive' wording and old 193,800/269,280 values were unsourced; avg-wage s.1/s.2 role attribution unsupported (removed); surtax 'ITA table stops at 47%' unsourced (reworded to s.121 vs s.121B); ref-domains was a stub citing a 1948 exchange-rate row and listing commercial sites as authoritative (deleted); olim credit points '3.5 years' stale (42/54 months).",
+        "Purchase-tax brackets are evidenced from Bizportal (secondary); kolzchut purchase-tax pages 404 and the ITA page is a challenge wall. Next cycle: trace 1,978,745 / 2,347,040 / 6,055,070 to an ITA page or the simulator.",
+        "Deferred MAJOR/MINOR: pension-contribution tax credit (s.45a) magnitude and keren hishtalmut 2.5% employee share still unquantified (conservative direction); family-unit test for only-apartment status (spouse + minor children count as one buyer); early-repayment fee; arnona discounts; oved zar rows; a warning for --rate between 0.15 and 0.3; stress test ignores CPI on a CPI-linked fixed third; the 3 BTL late-resident-over-62 age sub-rows and the soldier/organ-donor/treaty-resident row (BL only, 1.04/7) are not in the category table.",
+        "Enriched DB: FAQ[0] carried BOI 3.50%/prime 5.00% (fixed this cycle); prompt title 'Savings Vehicle Optimization' retitled per legal gate (low)."
+      ]
     }
   ]
 }
