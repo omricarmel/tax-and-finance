@@ -102,8 +102,10 @@ Income recognition at receipt of each reward:
 ```
 Staking rewards received:   5 MATIC
 Value at receipt:           5 x 4 = 20 NIS income
-Tax rate:                   25% (passive income) = 5 NIS
-                            OR marginal rate (up to 50%) if classified as ordinary income
+Tax rate:                   marginal under s.121; at the 31% bottom rate for an
+                            individual under 60: 20 x 0.31 = 6.20 NIS
+                            (lower brackets from age 60; s.125C only if the
+                            reward is characterised as interest)
 ```
 
 **Cost basis for future sales:**
@@ -116,7 +118,7 @@ Tax rate:                   25% (passive income) = 5 NIS
 Capital gain: 30 - 20 = 10 NIS
 Tax (25%): 10 x 0.25 = 2.5 NIS
 ```
-Total tax on these 5 MATIC: 5 NIS (income) + 2.5 NIS (capital gain) = 7.5 NIS
+Total tax on these 5 MATIC at the 31% rate: 6.20 NIS (income) + 2.50 NIS (capital gain) = 8.70 NIS
 
 ## Scenario 5: NFT Sale (Collector)
 
@@ -162,7 +164,7 @@ Less: depreciation:  -5,000 NIS
 Net business loss:   -5,480 NIS
 ```
 
-The loss offsets other business income (not capital gains, absent special circumstances). Business income also carries National Insurance and health tax on top of marginal income tax, and for VAT the miner registers as an **עוסק** under section 3.2.3.2.4 of the circular, which is a different regime from the **מוסד כספי** registration that applies to a business-level trader.
+In the same year the business loss offsets the taxpayer's total taxable income from other sources, capital gains included (s.28(a)), unless he asks that it not be set against capital gains taxed at no more than 25% (s.28(c)). Carried forward, it offsets only business income, or s.2(2) income on the s.28(b) conditions. Business income also carries National Insurance and health tax on top of marginal income tax, and for VAT the miner registers as an **עוסק** under section 3.2.3.2.4 of the circular, which is a different regime from the **מוסד כספי** registration that applies to a business-level trader.
 
 ## Scenario 7: Airdrop Tokens
 
@@ -212,7 +214,7 @@ Tax (25%):                         2,000 x 0.25 = 500 NIS
 **Facts:**
 - March 2024: Deposited 1 ETH (10,000 NIS) + 10,000 USDC (37,000 NIS) into a liquidity pool
 - Received LP tokens representing the position
-- Throughout 2024: Earned 500 USDC in trading fees (approximately 1,850 NIS)
+- Throughout 2024: Earned 500 USDC in trading fees (approximately 1,850 NIS), claimed out of the pool as they accrued, so they are NOT inside the December withdrawal
 - December 2024: Withdrew from pool: received 0.8 ETH (12,000 NIS) + 12,000 USDC (44,400 NIS)
 
 **Fee income:**
@@ -241,7 +243,7 @@ Earlier versions of this scenario said the deposit was not a taxable event and t
 
 Whichever you pick, the gain may then split between ETH price appreciation (capital gain at 25%) and pool rebalancing. The conservative course is to treat the whole amount as capital gain.
 
-**Total tax:** 647.50 + 2,350 = 2,997.50 NIS
+**Total tax:** depends on the treatment. Under Treatment A it is 647.50 on the fees, plus the tax on whatever March gain or loss the deposit realised, plus 9,400 x 25% = 2,350 on the December gain. Under Treatment B it is 647.50 plus 25% of (56,400 minus the original FIFO cost of the deposited ETH and USDC). Neither total can be stated without the original cost.
 
 **Note:** Impermanent loss is embedded in the withdrawal amounts. It reduces the gain but is not separately deductible.
 
@@ -270,7 +272,7 @@ If the situation were reversed (net crypto loss after offsetting crypto gains), 
 ```
 Example: 30,000 loss - 15,000 gain = 15,000 net crypto loss
 This 15,000 loss can offset the 10,000 stock gain
-Remaining loss: 5,000 NIS (carried forward indefinitely to offset future capital gains under Section 92)
+Remaining loss: 5,000 NIS (carried forward with no time limit against future capital gains under Section 92(b), provided a return is filed for 2024)
 ```
 
 ## Scenario 11: USD-Denominated Trades Converted to NIS
@@ -290,12 +292,12 @@ Tax (25%):                  76,000 x 0.25 = 19,000 NIS
 **Note:** The NIS gain includes both the crypto appreciation AND the USD/NIS exchange rate change. Both are taxable as part of the capital gain. The Bank of Israel representative rate (shaar yatzig) is a defensible, documentable choice of conversion rate; Circular 05/2018 does not mandate it, and its own rule is fair value in shekels with a stated-price override.
 
 
-## Scenario 10: Staking Rewards Classification (moved from SKILL.md in v1.6.0)
+## Scenario 12: Staking Rewards Classification (moved from SKILL.md in v1.6.0)
 
 **Facts:** 10 ETH staked through 2024; 0.5 ETH received in rewards; ETH at 8,000 NIS when the rewards were received.
 
 **Treatment:**
 - The 10 staked ETH have not been disposed of, so there is no capital gain event on them.
 - The 0.5 ETH reward is income at receipt on the conservative view: 0.5 x 8,000 = **4,000 NIS**, taxable in the year received whether or not it was sold.
-- The rate turns on classification. At the 25% passive rate the tax is 1,000 NIS; if the receipt is ordinary income the marginal rate applies instead. The Tax Authority has issued no definitive guidance on staking, so recommend a tax adviser rather than asserting one.
+- The rate turns on classification and on the user's age and other income. As ordinary income under s.121 it starts at 31% for an individual under 60 (1,240 NIS at that bottom rate) and rises with the bracket; s.125C applies only if the reward is characterised as interest. The Tax Authority has issued no definitive guidance on staking, so recommend a tax adviser rather than asserting one.
 - The 0.5 ETH then carries a cost basis of 4,000 NIS for its eventual disposal.

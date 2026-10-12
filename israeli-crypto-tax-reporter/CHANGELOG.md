@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.7.0 - 2026-10-12
+
+Correctness and currency cycle. The surtax correction changes figures the skill, its calculator and its published checker all printed.
+
+### Corrected
+- **Surtax 2% limb**: s.121B(a1) charges 2% only on the part of capital-source income that ITSELF exceeds 721,560, per the ITA's execution instruction (הוראת ביצוע) 05/2025 and its worked examples. The skill, the calculator and the capital-gains checker applied 5% to capital income stacked above a salary, which overstated the surtax for every salaried user (salary 400,000 plus a 700,000 gain: 18,922 printed, 11,353 correct). Business income is not capital-source and bears only the 3%.
+- **Pre-2025 surtax**: the 3% limb already reached capital gains before 2025. The calculator used to print no surtax at all for those years; it now applies 3% with the Ordinance's per-year thresholds (2019-2027).
+- **Staking and airdrop income**: there is no general 25% "passive" rate. Unless characterised as interest (s.125C), the income is taxed under s.121, from 31% for an individual under 60. The calculator no longer prints a "25% floor" income-tax figure.
+- **Advance payments**: s.91(d)(1) requires a 1399י notice on every sale, a loss sale included, and the 1399י loss line counts the current year's losses. The schedule now lists loss sales and nets same-year losses before computing each advance (one disposal per notice, not one row per FIFO lot).
+- **Loss offset**: a same-year business loss offsets capital gains (s.28(a)), the opposite of what Scenario 6 said; foreign-asset losses go first against foreign gains (s.92(a)(3)); the unsourced spousal-offset line was removed.
+- **Retracted leftovers removed**: the crashing `--currency ILS` command and the "convert to NIS using Bank of Israel rates" step (the calculator converts nothing); the Hebrew examples still routing to 1325/1322; `--form-1325` as the primary command; s.97(a)(5) as a basis rule in Troubleshooting and the checklist; FIFO attributed to Circular 05/2018; "collection from 2026" for CARF, which no Israeli legislation supports.
+- **TY2025 paper deadline**: 31 May 2026 after the ITA's extension, not 29 May. Filing guidance now points at the TY2026 return (filed in 2027).
+
+### Updated
+- **Voluntary Disclosure**: closed on 31 August 2026 with no extension or successor announced; the open-window branch was retired to the reference file.
+- **Form 909**: extended to 31.12.2027, and tax paid under it is not refunded even where losses or credits would have produced a refund.
+- **CARF**: OECD list of 14 September 2026 still places Israel in the 2028 group; no domestic implementing legislation.
+
+### Added
+- Withholding at source by an Israeli platform (Bits of Gold's 2022 ITA arrangement, current status unverified), so a user does not pay a second advance on a withheld sale.
+- The 1399י monthly-aggregation route for many trades, and the 1301 fields 054 and 056.
+- Derivatives named as uncovered; the pending digital-asset bill and the Kopel docket in the reference file.
+
+### Calculator
+- New surtax engine with both limbs and `--other-capital-income`; `--tax-rate` (which was parsed and silently ignored) removed; JSON gains `advance_notices` and the two surtax limbs; `income_tax_estimate_nis` replaced by `income_events_tax_included: false`.
+
 ## 1.6.0 - 2026-08-27
 
 Correctness cycle. Several entries below are retractions of statements earlier versions published as settled.
