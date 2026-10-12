@@ -1,15 +1,17 @@
 {
   "schemaVersion": "1.0",
   "skill": "israeli-bank-connector",
-  "generated_at": "2026-08-27T16:15:28.358776+00:00",
+  "generated_at": "2026-10-12T18:52:26.685652+00:00",
   "claims": [
     {
       "claim_id": "library-version-2026-06",
-      "claim": "The current published release of israeli-bank-scrapers is 6.9.0 (2026-07-22). The npm package declares only a main entry point (lib/index.js) and no bin, so it is library-only with no CLI to invoke.",
-      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.9.0",
-      "raw_snippet": "# [6.9.0](https://github.com/eshaham/israeli-bank-scrapers/compare/v6.8.0...v6.9.0) (2026-07-22)",
-      "fetched_at": "2026-07-27T00:00:00Z",
+      "claim": "The current published release of israeli-bank-scrapers is 6.12.2 (2026-09-29). The npm package declares no bin, so it is library-only with no CLI to invoke.",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.12.2",
+      "raw_snippet": "## [6.12.2](https://github.com/eshaham/israeli-bank-scrapers/compare/v6.12.1...v6.12.2) (2026-09-29)",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
       "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
         "references/supported-banks.md"
       ]
     },
@@ -130,10 +132,10 @@
     },
     {
       "claim_id": "scrapers-node-engine-22",
-      "claim": "israeli-bank-scrapers declares engines.node >= 22.22.2, so Node 22 or newer is required. The same registry document was read on 27 August 2026 and still shows 6.9.0 (2026-07-22) as the latest release, so the version pin in this skill did not move this cycle.",
+      "claim": "israeli-bank-scrapers declares engines.node >= 22.22.2 (re-read 12 October 2026 against the 6.12.2 registry document), so Node 22.0 to 22.22.1 is below the floor.",
       "source_url": "https://registry.npmjs.org/israeli-bank-scrapers",
       "raw_snippet": "\"node\": \">= 22.22.2\"",
-      "fetched_at": "2026-08-27T16:15:28.358776+00:00",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -154,7 +156,7 @@
     },
     {
       "claim_id": "il-bank-mcp-scraper-range",
-      "claim": "il-bank-mcp's packages/scraper declares israeli-bank-scrapers ^6.1.4, a caret range rather than a hard pin.",
+      "claim": "il-bank-mcp's packages/scraper declares israeli-bank-scrapers ^6.1.4 (the committed yarn.lock then pins 6.1.4).",
       "source_url": "https://raw.githubusercontent.com/glekner/il-bank-mcp/master/packages/scraper/package.json",
       "raw_snippet": "\"israeli-bank-scrapers\": \"^6.1.4\"",
       "fetched_at": "2026-08-27T16:15:28.358776+00:00",
@@ -227,6 +229,767 @@
       "source_url": "https://raw.githubusercontent.com/glekner/il-bank-mcp/master/README.md",
       "raw_snippet": "docker compose -f /path/to/il-bank-mcp/docker-compose.yml run --rm -i mcp-server",
       "fetched_at": "2026-08-27T16:15:28.358776+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "scrapers-6-12-2-mizrahi",
+      "claim": "6.12.2 fixed Mizrahi detection of the bank's updated change-password page.",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.12.2",
+      "raw_snippet": "**mizrahi:** detect updated change-password URL",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "scrapers-6-10-0-isracard-balances",
+      "claim": "6.10.0 (2026-09-06) added Isracard credit card balances.",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.10.0",
+      "raw_snippet": "**isracard:** add credit card balances",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "scrapers-6-12-0-leumi-fx",
+      "claim": "6.12.0 (2026-09-10) added Leumi foreign currency accounts.",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.12.0",
+      "raw_snippet": "**leumi:** add foreign currency accounts",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "scrapers-6-12-1-visacal",
+      "claim": "6.12.1 fixed more Visa Cal credit card balance issues.",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.12.1",
+      "raw_snippet": "**visa-cal:** more credit card balance issues",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "readme-history-one-year",
+      "claim": "Most scrapers fetch transactions up to one year back.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/README.md",
+      "raw_snippet": "This scraper supports fetching transaction from up to one year.",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "readme-history-discount-mercantile",
+      "claim": "Discount and Mercantile fetch up to one year minus one day.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/README.md",
+      "raw_snippet": "This scraper supports fetching transaction from up to one year (minus 1 day).",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "readme-history-yahav-six-months",
+      "claim": "Yahav fetches up to six months back.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/README.md",
+      "raw_snippet": "This scraper supports fetching transaction from up to six months.",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "readme-yahav-national-id",
+      "claim": "Yahav login needs username, password and national ID.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/README.md",
+      "raw_snippet": "nationalID: <user national ID>",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "readme-2fa-some-companies",
+      "claim": "Some providers require two-factor authentication; the caller supplies an OTP callback or a long-term token (OneZero).",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/README.md",
+      "raw_snippet": "Some companies require two-factor authentication, and as such the scraper cannot be fully automated.",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "readme-onezero-long-term-token",
+      "claim": "OneZero supports a long-term two-factor token.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/README.md",
+      "raw_snippet": "Option 2 - Retrieve a long term otp token (OneZero)",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "hapoalim-start-date-clamp",
+      "claim": "The Hapoalim scraper silently raises an older startDate to about one year back.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/hapoalim.ts",
+      "raw_snippet": "const startMoment = moment.max(defaultStartMoment, moment(startDate));",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "txn-fields-charged-original",
+      "claim": "A library transaction has chargedAmount and originalAmount and no amount field.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/transactions.ts",
+      "raw_snippet": "chargedAmount: number;",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "txn-fields-original-currency",
+      "claim": "A library transaction carries originalCurrency and an optional chargedCurrency.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/transactions.ts",
+      "raw_snippet": "originalCurrency: string;",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "txn-fields-processed-date",
+      "claim": "A library transaction carries both date and processedDate.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/transactions.ts",
+      "raw_snippet": "processedDate: string;",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "txn-type-installments",
+      "claim": "Transaction type can be installments.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/transactions.ts",
+      "raw_snippet": "Installments = 'installments',",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "txn-status-pending",
+      "claim": "Transaction status can be completed or pending.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/transactions.ts",
+      "raw_snippet": "Pending = 'pending',",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "account-currency-field",
+      "claim": "A scraped account can carry its own currency.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/transactions.ts",
+      "raw_snippet": "currency?: string;",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "max-charged-is-actual-payment",
+      "claim": "For Max, chargedAmount is the actual payment for the period (the instalment), while originalAmount is the deal amount.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/max.ts",
+      "raw_snippet": "chargedAmount: -rawTransaction.actualPaymentAmount,",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "visacal-pending-unconverted",
+      "claim": "Visa Cal leaves chargedCurrency undefined on pending lines, so a pending foreign charge can arrive unconverted.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/visa-cal.ts",
+      "raw_snippet": "chargedCurrency: !isPending(transaction) ? transaction.debCrdCurrencySymbol : undefined,",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "shekel-currency-constants",
+      "claim": "The library spells shekels as ILS, NIS, the shekel sign, or the Hebrew abbreviation.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/constants.ts",
+      "raw_snippet": "export const ALT_SHEKEL_CURRENCY = 'NIS';",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "mcp-fetch-returns-raw-scrape",
+      "claim": "israeli-bank-mcp fetch-transactions returns the library scrape result serialized as-is.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "text: JSON.stringify(scrapeResult)",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-readme-plaintext-env",
+      "claim": "The israeli-bank-mcp README example places the bank password in plain text in the MCP client config env block.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/README.md",
+      "raw_snippet": "\"LEUMI_PASSWORD\": \"your-password\"",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "il-mcp-readme-cli-password",
+      "claim": "The il-bank-mcp README passes bank passwords on the docker compose command line.",
+      "source_url": "https://raw.githubusercontent.com/glekner/il-bank-mcp/master/README.md",
+      "raw_snippet": "LEUMI_USERNAME=my_user LEUMI_PASSWORD=my_pass ...",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "il-mcp-better-sqlite3",
+      "claim": "il-bank-mcp stores data with better-sqlite3 (plain SQLite; no encryption package declared).",
+      "source_url": "https://raw.githubusercontent.com/glekner/il-bank-mcp/master/packages/scraper/package.json",
+      "raw_snippet": "\"better-sqlite3\": \"^11.10.0\"",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "boi-368-nextgenpsd2",
+      "claim": "Directive 368's technical standard is based on the NextGenPSD2 framework adopted in Europe, adapted to Israel.",
+      "source_url": "https://www.boi.org.il/media/k1dl4le3/2778.pdf",
+      "raw_snippet": "התקן הטכנולוגי של ההוראה מבוסס על מסגרת העבודה שאומצה באירופה על ידי גופים רבים",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "boi-368-berlin-group",
+      "claim": "BOI states the open-banking regulation is based on the Berlin Group standard.",
+      "source_url": "https://www.boi.org.il/media/k1dl4le3/2778.pdf",
+      "raw_snippet": "מאחר שהאסדרה מבוססת על הסטנדרט של קבוצת ברלין אשר מהווה סטנדרט",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-commencement",
+      "claim": "The Financial Information Service Law took effect on 14 June 2022.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "(14 ביוני 2022) (להלן – יום התחילה)",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-isa-licence",
+      "claim": "A financial information service may be provided only under a licence from the Authority.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "אלא אם כן בידו רישיון לכך שניתן מאת הרשות לפי הוראות",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-authority-is-isa",
+      "claim": "In this law, the Authority is the Israel Securities Authority.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "”הרשות“ – רשות ניירות ערך;",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-approval-regulator",
+      "claim": "Regulated information sources need an approval from their own regulator instead of a licence.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "אלא אם כן בידם אישור לכך שניתן מאת מאסדר מקור המידע",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-s60",
+      "claim": "Section 60 prohibits accessing a customer's financial data in the course of business, online, with the customer's login credentials, to provide them a service.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "איסור גישה באמצעות פרטי הגישה של הלקוח",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-penalty",
+      "claim": "The law's penalty provision (s.57(b) in the consolidated Wikisource text) makes a section 60 breach an offence punishable by up to a year in prison.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "דינו – מאסר שנה או קנס כאמור",
+      "fetched_at": "2026-10-12T18:27:33.362734+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-s60-text",
+      "claim": "Section 60 text: access in the course of business, online, using the customer's login credentials.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "אם הגישה כאמור נעשית דרך עיסוק, באמצעות מערכת מקוונת ותוך שימוש בפרטי הגישה של הלקוח אל חשבונו",
+      "fetched_at": "2026-10-12T18:28:07.584972+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-s60-label-he",
+      "claim": "The penalty provision refers to a breach of section 60 (סעיף 60).",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%99%D7%A8%D7%95%D7%AA_%D7%9E%D7%99%D7%93%D7%A2_%D7%A4%D7%99%D7%A0%D7%A0%D7%A1%D7%99",
+      "raw_snippet": "בניגוד להוראות סעיף 60",
+      "fetched_at": "2026-10-12T18:28:07.584972+00:00",
+      "appears_in": [
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fis-law-official-gazette",
+      "claim": "The Financial Information Service Law was enacted as a chapter of the law published in the official gazette (Knesset PDF).",
+      "source_url": "https://fs.knesset.gov.il/24/law/24_lsr_611801.pdf",
+      "raw_snippet": "ואלה סעיפי חוק שירות מידע פיננסי",
+      "fetched_at": "2026-10-12T18:28:07.584972+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "isa-register-page",
+      "claim": "The Israel Securities Authority publishes the list of licensed financial information service providers.",
+      "source_url": "https://www.new.isa.gov.il/nav-index/supervised-api/supervised-by-isa",
+      "raw_snippet": "להלן רשימה של נותני שירותי מידע פיננסי אשר קיבלו רישיון מטעם רשות ניירות ערך.",
+      "fetched_at": "2026-10-12T18:28:26.158629+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-12T18:28:26.158629+00:00"
+    },
+    {
+      "claim_id": "il-mcp-yarn-lock-6-1-4",
+      "claim": "il-bank-mcp's committed yarn.lock resolves israeli-bank-scrapers to 6.1.4.",
+      "source_url": "https://raw.githubusercontent.com/glekner/il-bank-mcp/master/yarn.lock",
+      "raw_snippet": "resolution: \"israeli-bank-scrapers@npm:6.1.4\"",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "il-mcp-docker-immutable",
+      "claim": "il-bank-mcp's Dockerfile installs with yarn install --immutable.",
+      "source_url": "https://raw.githubusercontent.com/glekner/il-bank-mcp/master/Dockerfile",
+      "raw_snippet": "yarn install --immutable",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "il-mcp-docker-node",
+      "claim": "il-bank-mcp's Docker image brings its own Node.",
+      "source_url": "https://raw.githubusercontent.com/glekner/il-bank-mcp/master/Dockerfile",
+      "raw_snippet": "ARG NODE_VERSION=24-alpine",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "scrapers-6-7-9-max-login",
+      "claim": "6.7.9 fixed a Max scrape failure on the login page.",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.7.9",
+      "raw_snippet": "**max:** scrape fails on login page",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "scrapers-6-7-10-isracard-bot",
+      "claim": "6.7.10 added an Isracard bot-detection workaround.",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/releases/tags/v6.7.10",
+      "raw_snippet": "**isracard:** workaround for bot detection",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-startdate-defaults-today",
+      "claim": "fetch-transactions defaults startDate to today when omitted.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "startDate: startDate ? new Date(startDate) : new Date(),",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-combine-installments-default-false",
+      "claim": "fetch-transactions defaults combineInstallments to false.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "combineInstallments: combineInstallments ?? false",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "combine-installments-keeps-first",
+      "claim": "With combineInstallments on, the library keeps only normal lines and the first instalment.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/helpers/transactions.ts",
+      "raw_snippet": "combineInstallments && (isNormalTransaction(txn) || isInitialInstallmentTransaction(txn));",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-error-shape",
+      "claim": "israeli-bank-mcp reports a failed scrape with the library errorType and a fixed message; other failures default to BANK_SCRAPER_ERROR.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "function createGenericToolError(errorType = \"BANK_SCRAPER_ERROR\") {",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-error-passes-errortype",
+      "claim": "A failed scrape's errorType is passed to the client.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "return createGenericToolError(scrapeResult.errorType);",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-envvar-camel-to-snake",
+      "claim": "Env var names convert camelCase to UPPER_SNAKE, so userCode becomes USER_CODE.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "field.replace(/[A-Z]/g, m => `_${m}`).toUpperCase()",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "hapoalim-usercode-field",
+      "claim": "Hapoalim's login field is userCode.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/definitions.ts",
+      "raw_snippet": "loginFields: ['userCode', PASSWORD_FIELD],",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-get-token-in-result",
+      "claim": "two-factor-auth get-token returns the long-term token in the tool result.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "const result = await scraper.getLongTermTwoFactorToken(otpCode);",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "scraper-error-types",
+      "claim": "The library's error types include INVALID_PASSWORD, CHANGE_PASSWORD, ACCOUNT_BLOCKED, TIMEOUT and TWO_FACTOR_RETRIEVER_MISSING.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/errors.ts",
+      "raw_snippet": "AccountBlocked = 'ACCOUNT_BLOCKED',",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "scraper-error-invalid-password",
+      "claim": "INVALID_PASSWORD error type.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/errors.ts",
+      "raw_snippet": "InvalidPassword = 'INVALID_PASSWORD',",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "scraper-error-change-password",
+      "claim": "CHANGE_PASSWORD error type.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/errors.ts",
+      "raw_snippet": "ChangePassword = 'CHANGE_PASSWORD',",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "scraper-error-2fa-missing",
+      "claim": "TWO_FACTOR_RETRIEVER_MISSING error type.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/errors.ts",
+      "raw_snippet": "TwoFactorRetrieverMissing = 'TWO_FACTOR_RETRIEVER_MISSING',",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "visacal-pending-full-amount",
+      "claim": "Visa Cal sets chargedAmount to the full transaction amount for pending lines.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/visa-cal.ts",
+      "raw_snippet": "const chargedAmount = (isPending(transaction) ? transaction.trnAmt : transaction.amtBeforeConvAndIndex) * -1;",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "visacal-instalment-date-shift",
+      "claim": "Visa Cal moves an instalment's date forward by (number - 1) months.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/visa-cal.ts",
+      "raw_snippet": "date: installments ? date.add(installments.number - 1, 'month').toISOString() : date.toISOString(),",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "visacal-pending-credit-sign",
+      "claim": "For pending lines Visa Cal's originalAmount carries the credit sign while chargedAmount is always negated.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/visa-cal.ts",
+      "raw_snippet": "const originalAmount = transaction.trnAmt * (transaction.trnTypeCode === TrnTypeCode.credit ? 1 : -1);",
+      "fetched_at": "2026-10-12T18:52:26.685652+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "mcp-error-message",
+      "claim": "The fixed error message israeli-bank-mcp returns is 'Bank scraper error occurred'.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "const BANK_SCRAPER_ERROR_MESSAGE = \"Bank scraper error occurred\";",
+      "fetched_at": "2026-10-12T18:53:21.389800+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "onezero-phone-plus",
+      "claim": "OneZero triggerTwoFactorAuth requires a phone number starting with +.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/one-zero.ts",
+      "raw_snippet": "if (!phoneNumber.startsWith('+')) {",
+      "fetched_at": "2026-10-12T19:00:34.079589+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "onezero-token-preferred",
+      "claim": "With otpLongTermToken present, OneZero uses it.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/one-zero.ts",
+      "raw_snippet": "if ('otpLongTermToken' in credentials) {",
+      "fetched_at": "2026-10-12T19:00:34.079589+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "onezero-login-fields",
+      "claim": "OneZero login fields: email, password, otpCodeRetriever, phoneNumber, otpLongTermToken.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/definitions.ts",
+      "raw_snippet": "loginFields: ['email', PASSWORD_FIELD, 'otpCodeRetriever', 'phoneNumber', 'otpLongTermToken'],",
+      "fetched_at": "2026-10-12T19:00:34.079589+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-requires-every-field",
+      "claim": "israeli-bank-mcp requires an env var for every login field and throws when any is missing.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "throw new Error(`Missing required bank credentials: ${missing.join(\", \")}`);",
+      "fetched_at": "2026-10-12T19:00:34.079589+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "card-future-months",
+      "claim": "Card scrapers scrape one month ahead by default.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/max.ts",
+      "raw_snippet": "const futureMonthsToScrape = options.futureMonthsToScrape ?? 1;",
+      "fetched_at": "2026-10-12T19:00:34.079589+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "fix-installments-max",
+      "claim": "Max applies fixInstallments, moving instalment dates forward.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/max.ts",
+      "raw_snippet": "clonedTxns = fixInstallments(clonedTxns);",
+      "fetched_at": "2026-10-12T19:00:34.079589+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "max-pending-zero",
+      "claim": "For Max (ex Leumi Card) pending transactions, the API returns amount 0 (maintainer comment on issue #249).",
+      "source_url": "https://api.github.com/repos/eshaham/israeli-bank-scrapers/issues/249/comments",
+      "raw_snippet": "when the transaction is in status pending, the api return amount 0",
+      "fetched_at": "2026-10-12T19:00:34.079589+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/categorize_transactions.py"
+      ]
+    },
+    {
+      "claim_id": "onezero-otp-context-required",
+      "claim": "getLongTermTwoFactorToken fails unless trigger ran on the same scraper instance.",
+      "source_url": "https://raw.githubusercontent.com/eshaham/israeli-bank-scrapers/v6.12.2/src/scrapers/one-zero.ts",
+      "raw_snippet": "return createGenericError('triggerOtp was not called before calling getPermenantOtpToken()');",
+      "fetched_at": "2026-10-12T19:04:32.953767+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-2fa-fresh-scraper",
+      "claim": "israeli-bank-mcp's two-factor-auth creates a new scraper inside each call.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "const scraper = createScraper({",
+      "fetched_at": "2026-10-12T19:04:32.953767+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/supported-banks.md"
+      ]
+    },
+    {
+      "claim_id": "mcp-2fa-trigger-always-sent",
+      "claim": "The trigger action always replies 2FA code sent.",
+      "source_url": "https://raw.githubusercontent.com/mottibec/israeli-bank-mcp/main/src/server.ts",
+      "raw_snippet": "text: JSON.stringify({ success: true, message: \"2FA code sent\" })",
+      "fetched_at": "2026-10-12T19:04:32.953767+00:00",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",

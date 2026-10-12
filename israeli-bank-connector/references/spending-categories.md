@@ -72,6 +72,6 @@ Major Israeli supermarket chains:
 
 ## Categorization Tips
 - Israeli banks often abbreviate merchant names
-- Credit card charges may show the card company name, not merchant
+- Credit card charges may show the card company name, not merchant. In the BANK account the whole monthly card bill is one line (Isracard, Max, Cal, Leumi Card, Amex, Diners). The bundled script files that line as Card bill, outside Total Spending, because the card company's own data lists the same purchases one by one. Max Stock (מקס סטוק) is a retail chain and is deliberately not matched
 - Standing orders (horaot keva) should be categorized by destination
 - ATM withdrawals are NOT auto-categorized. The bundled script has no cash category and no withdrawal pattern, so a withdrawal lands in Other. If you want a cash bucket, add it yourself; do not tell the user the script produced one.
