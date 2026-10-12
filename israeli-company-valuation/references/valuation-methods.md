@@ -34,6 +34,7 @@ Notes on applying multiples in Israel:
 - The Israeli listed peer set is thin in most sectors. Global sector data is often the only workable source, and the substitution itself must be disclosed.
 - A multiple derived from listed companies embeds liquidity that a private company does not have. That is part of what the marketability discount addresses. Do not silently apply a listed multiple to a private company and then also skip the discount.
 - Match the multiple to the same normalized earnings figure you built in the normalization bridge, not to reported earnings.
+- Listed sector multiples are not small-business multiples. A two-partner owner-managed company is smaller, more dependent on its owners, and sold into a much thinner pool of buyers than the listed companies behind a sector median, so treat a listed multiple as an upper bound and prefer private-transaction comparables where any exist. We are not aware of a published Israeli study of small-business transaction multiples; say so rather than inventing one, and if you rely on one, name it, and treat an implied multiple far above private-deal evidence as a red flag.
 
 ## Asset / NAV approach
 
@@ -100,10 +101,26 @@ After running the approaches, reconcile:
 Three things decide the rung, and percentage alone decides none of them:
 
 1. **What the articles actually give this block.** Ordinary resolutions pass by simple majority, but reserved matters, veto rights, board appointment rights and special majorities are set in the articles and the shareholders' agreement. A large minority holder with vetoes holds a blocking position and is not a plain minority.
-2. **Who the buyer is.** This is the one most often missed. A stake sold to an existing holder who thereby crosses into full or majority control is a control-consolidating purchase. That block carries swing value, and in real Israeli deals it commands a premium rather than a discount. Applying a textbook minority discount in that situation systematically underprices the seller. If the buyer ends up at or near full ownership, say explicitly that a discount is likely inappropriate and that a control premium is arguable.
+2. **Who the buyer is.** This is the one most often missed. A stake sold to an existing holder who thereby crosses into full or majority control is a control-consolidating purchase. That block carries swing value, and in practice it can command a premium rather than a discount. Applying a textbook minority discount in that situation systematically underprices the seller. If the buyer ends up at or near full ownership, say explicitly that a discount is likely inappropriate and that a control premium is arguable.
 3. **Whether tag-along or drag-along equalises the per-share price.** If the minority is contractually entitled to the same price per share as the majority, much of the rationale for a discount disappears.
 
 Never stack a marketability and a control discount without justifying each one independently. Careless stacking is the most challenged move in a review.
+
+### Placing a marketability discount
+
+No Israeli regulator publishes a range, and we are not aware of a published Israeli empirical study, so the discount has to be argued from the facts of this holding. The factors practitioners weigh, none of which is a number on its own:
+
+- **The pool of likely buyers.** When the natural buyer is an existing shareholder, or the company itself, the marketability rationale largely disappears, because the holding already has a ready buyer.
+- **Transfer restrictions** in the articles and the shareholders' agreement: rights of first refusal, consent requirements, lock-ups. Tag-along and drag-along rights point the other way.
+- **Distribution history and policy.** A holding that pays regular dividends is easier to hold and to sell than one whose only return is an eventual exit.
+- **Expected holding period and exit route.** A planned sale or listing shortens the period the discount compensates for.
+- **Size of the block and the company's financial strength.** A larger block and a stronger company draw more buyers.
+
+The empirical support comes from international study families: restricted-stock studies, pre-IPO studies, and option-based models such as the protective put. We are not aware of an Israeli one. Name the specific study and its vintage, and explain where on its range this holding sits by reference to the factors above.
+
+## Purchase price allocation after an acquisition
+
+A buyer that consolidates the target allocates the price, under the applicable financial reporting framework, to identifiable assets and liabilities, including intangibles such as customer relationships, technology and brands, with the remainder as goodwill. That is a fair-value exercise for financial statements, a different standard of value from the market value this skill estimates. Flag it to a buyer who reports consolidated statements and route it to the auditor; do not perform it here.
 
 ## Discount rate components
 
@@ -113,20 +130,18 @@ The risk-free rate and the Israel country risk premium are handled in SKILL.md S
 
 Consider a total beta where the owner is undiversified, which is the normal case for an Israeli private company whose owner holds most of their wealth in it: a market beta prices only the risk a diversified investor cannot shed, while an owner with everything in one company bears the total risk. A market beta for a sale to a diversified buyer and a total beta for a valuation from the owner's perspective is a defensible distinction. State which one you used and why.
 
-**Size premium.** An Israeli private company almost always sits below the smallest listed size bucket, and conventional practice adds a size premium. Treat that as contested, not settled: part of the literature argues the premium has largely disappeared from the data. Present it as a choice you can defend rather than as a correction whose omission would be an error. There is no published Israeli-specific size study, so practitioners import US empirical data, and the primary dataset is paywalled. Name the dataset and vintage you are using. If you do not have access to one, say so and present the valuation across a band of size premia instead of asserting a figure you cannot source.
+**Size premium.** An Israeli private company almost always sits below the smallest listed size bucket, and conventional practice adds a size premium. Treat that as contested, not settled: part of the literature argues the premium has largely disappeared from the data. Present it as a choice you can defend rather than as a correction whose omission would be an error. We are not aware of a published Israeli-specific size study, so practitioners import US empirical data, and the primary dataset is paywalled. Name the dataset and vintage you are using. If you do not have access to one, say so and present the valuation across a band of size premia instead of asserting a figure you cannot source.
 
 **Company-specific premium.** Key-person dependency, customer concentration, thin management depth. Reason it out loud rather than adding a round number.
 
 **Cost of debt and WACC.** Take the pre-tax cost from the company's actual borrowing rate, or build it synthetically as a spread over the shekel government yield. Apply the tax shield at the Step 4 effective rate. Weight at market values, state whether you used the target or the actual capital structure, and note that market-value weighting is circular and resolved by iteration.
 
-## רכיבי שיעור ההיוון
+## Documentation benchmarks used in Israeli practice
 
-**ביתא.** לחברה פרטית אין ביתא נצפית. קחו ביתא ענפית מקבוצת השוואה, נטרלו את המינוף לפי מבנה ההון ושיעור המס של קבוצת ההשוואה, ואז מנפו מחדש לפי מבנה ההון היעד של החברה ושיעור המס האפקטיבי הישראלי שלה משלב 4.
+Israel has no licensing statute for business valuers, unlike real estate appraisal, which the Real Estate Appraisers Law reserves to licensed appraisers. So no statute tells a private-company valuation what it must contain. The closest statutory benchmark is regulation 8ב of the Securities Regulations (Periodic and Immediate Reports), which binds only reporting corporations but is the checklist reviewers instinctively reach for. When a material valuation is used in a periodic report, it must disclose in a table, among other things:
 
-שקלו ביתא כוללת כשהבעלים לא מפוזר, וזה המצב הרגיל בחברה פרטית ישראלית שהבעלים מחזיק בה את רוב ההון שלו. ביתא רגילה מתמחרת רק את הסיכון שמשקיע מפוזר לא יכול לפזר. בעלים שכל ההון שלו בחברה אחת סופג את הסיכון הכולל, וביתא כוללת מתפרסמת בדיוק בשביל זה: היא נותנת אומדן טוב יותר למחיר ההון העצמי של בעלים לא מפוזר של עסק פרטי. הבחנה סבירה היא ביתא רגילה למכירה לקונה מפוזר, וביתא כוללת להערכה מנקודת המבט של הבעלים. אמרו באיזו מהן השתמשתם ולמה.
+- the identity and characteristics of the valuer, including education, experience, and dependence on whoever commissioned the valuation, and any indemnity agreement with the valuer;
+- the valuation model used;
+- the assumptions, including the share of the value that comes from the terminal value.
 
-**פרמיית גודל.** יש להתייחס לזה כנתון שנוי במחלוקת ולא כמוסכמה: חלק מהספרות טוען שפרמיית הגודל כמעט נעלמה מהנתונים, ולכן הציגו אותה כבחירה שאתם עושים ויכולים להגן עליה, לא כהשמטה שהיא טעות. חברה פרטית ישראלית כמעט תמיד קטנה מהקבוצה הקטנה ביותר בבורסה, ולכן ויתור על פרמיית גודל מקטין את שיעור ההיוון בצורה מהותית. אין מחקר גודל ישראלי מפורסם, ולכן מעריכים מייבאים נתונים אמפיריים אמריקאיים, ומסד הנתונים המרכזי הוא בתשלום. נקבו בשם מסד הנתונים והמהדורה שאתם משתמשים בהם. אם אין לכם גישה לאחד כזה, אמרו את זה והציגו את ההערכה על פני טווח של פרמיות גודל במקום לקבוע מספר שאתם לא יכולים לבסס.
-
-**פרמיה ספציפית לחברה.** תלות באיש מפתח, ריכוזיות לקוחות, שכבת ניהול דקה. הסבירו את ההיגיון בקול רם במקום להוסיף מספר עגול.
-
-**מחיר החוב ושיעור ההיוון המשוקלל.** קחו את מחיר החוב לפני מס מריבית האשראי בפועל של החברה, או בנו אותו סינתטית כמרווח מעל תשואת האג"ח הממשלתי השקלי. הפעילו את מגן המס בשיעור האפקטיבי משלב 4. שקללו לפי שווי שוק, אמרו אם השתמשתם במבנה ההון היעד או בזה שקיים בפועל, וזכרו ששקלול לפי שווי שוק הוא מעגלי ונפתר באיטרציות.
+Use the same list as the minimum disclosure for any indicative valuation this skill produces. It is also why Step 10 asks for a statement of who prepared the valuation and on what basis: in a market without a licence, acceptance turns on exactly those disclosures.

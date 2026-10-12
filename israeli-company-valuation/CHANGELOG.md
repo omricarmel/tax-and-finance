@@ -2,6 +2,50 @@
 
 All notable changes to this skill are documented here.
 
+## [1.3.0] - 2026-10-12
+
+Second review. Every market input was re-checked and is unchanged: the July 2026 country-risk file is still the newest on the data-current index, Moody's still rates Israel Baa1, the corporate rate is 23% for 2026 with no enacted change, the domestic minimum top-up tax applies from fiscal years beginning 1 January 2026 with no income inclusion or undertaxed profits rule, and the surtax threshold is ILS 721,560 for 2026. The work this cycle went into the script and the deal guidance.
+
+### Fixed
+
+- scripts/valuation_model.py printed the whole-company enterprise value range as its headline, below a smaller equity figure, so a reader asking what a 30% stake is worth could quote a number for the wrong thing. The headline range is now the equity value of the stake after the bridge and the discounts, across WACC, terminal growth and the marketability discount. Enterprise value is shown for reference only.
+- The script silently defaulted the tax rate to 23%, the exact error the skill exists to prevent for a preferred enterprise. `--tax-rate` is now required.
+- Inputs typed as percentages (a discount of 25 instead of 0.25) produced confident absurd figures, including a negative equity value. All rate and discount inputs are now range-checked and rejected with a message saying to use decimals. `--years 0` no longer crashes.
+- Negative EBIT printed a full negative valuation and range under a note saying it was meaningless. It now prints no DCF at all and routes to the asset or round-based methods.
+- A discount applied to negative equity raised the value. Discounts are no longer applied to negative equity.
+- The vintage line claimed the built-in dataset when some, but not all, premia were overridden. It now says the vintages are mixed.
+- The equity bridge deducted any severance shortfall unconditionally. Under a full section 14 arrangement there is no company-level shortfall for the insured salary; deposits at 12% without the top-up replace only 72%, and pay above the insured salary keeps its severance right.
+- The closely held company reference listed two escape routes from the 2% charge. Section 81ב(ב) has three: the loss-year exclusion (losses above 10% of accumulated profits) is the one summaries drop.
+- The Gotchas called the overstatement from applying 23% to the lowest preferred rates "roughly threefold"; against 5% it is more than fourfold. Both files and the tax-regimes reference now say three to more than four times.
+- The excess-profitability formula under section 62א(א1) started from gross income from personal-exertion-intensive activity. The statute starts from TAXABLE income and deducts 25% of that income less related-company payments; the old wording overstated the attribution for any company with real costs.
+- The officer and management-services limb of section 62א(א)(1) dropped its condition that the individual or the company was an officer of the other body.
+- Preferred Technology Enterprise eligibility was described as four cumulative conditions with the R&D test always required. Section 51כד has two routes, R&D test plus a secondary test OR Innovation Authority approval, and on the second route the R&D test does not apply.
+- The Approved and Beneficiary Enterprise rows said "pre-2017" and tied the 15% dividend withholding to an election year before 2014. Those regimes closed with the 2005 and 2011 amendments, and the 15% applies to dividends from benefits-period profits distributed during that period or the following 12 years. The 2014 switch from 15% to 20% belongs to the Preferred Enterprise regime.
+- The country-risk dataset was described as refreshing in January and July. It updates at least that often and sometimes in between (there was an April 2026 file). The script now measures staleness from the date a reviewer last confirmed the file is still the newest (90-day window), not from the file's vintage, and points to the data-current index.
+- The company self-purchase passage said a distribution may be made only out of profits. Section 303 lets a court approve one that fails the profit test where the solvency test is met.
+- The Companies Law personal-interest approval track was applied to any sale to an officer or controlling shareholder. It governs transactions of the company, such as a buyback, not a plain sale between shareholders.
+- The legal notice was the tax template unchanged and never mentioned the valuation. It now says what the tool builds, names the accountant, valuer and lawyer it replaces none of, lists what it does not do, and says that reading a shareholders' agreement is for valuation inputs only. The script now prints the full two-paragraph scope limit before any figure as well as after.
+- In the script, a country premium passed in the convention that ignores it was printed as if it had been used, and the vintage was labelled mixed. That combination is now rejected with a message naming the right flag. A capex-heavy company with positive EBIT but negative terminal free cash flow got a negative valuation presented as a range; it now gets no DCF. Stake values floor at zero. The capital structure no longer defaults silently to 30% debt.
+- The scope limit called the output "not admissible" to the Tax Authority or a court. Nothing bars submitting it; the point is that it is not fit to submit. Reworded in both files and in the script.
+
+### Added
+
+- `--stake`, `--nol` (carried-forward losses shelter the explicit years only; the terminal value stays fully taxed), `--exit-multiple`, an implied exit EV/EBITDA on every run, and warnings for unsupplied risk premia, WACC debt with no net debt in the bridge, growth with no reinvestment, and a range whose high end is more than twice its low end.
+- Step 3 now starts from operating profit rather than profit before tax, and replaces a departing partner's draw with a market replacement cost.
+- Step 4 covers carried-forward business losses under section 28, and the change-of-control restriction that comes from case law on section 86 rather than from section 28 itself.
+- A buyer-side section in the transaction reference (inherited tax history, warranties and indemnities, non-compete, guarantees, financing), the company self-purchase route, which the Companies Law treats as a distribution subject to the profit and solvency tests, and retained earnings in the price, including section 94ב for a corporate seller. Mirrored in the Hebrew reference.
+- The factors that place a marketability discount (buyer pool, transfer restrictions, distribution history, holding period, block size) and the international study families behind it, a caution that listed sector multiples are an upper bound for a small owner-managed business, and a purchase price allocation note for a consolidating buyer, in references/valuation-methods.md and its Hebrew twin.
+- The excess-profitability reference now carries the section 62א(א1)(2) carve-outs: a partnership share under 10%, and the exclusion for a company whose controllers control no other company and whose accumulated profits are at most ILS 750,000.
+- The company-buyback route now explains the בית חוסן ruling (ע"א 9308/20): in a quasi-partnership a buyback is taxed as a dividend to the remaining shareholders and a purchase by them, so the partner who stays can owe tax. Company financing of a purchase is a distribution too.
+- A full Hebrew twin of the methods reference, references/valuation-methods-he.md, which SKILL_HE.md now routes to; the English file is English-only.
+- Transfer pricing now names section 85א and the 2006 market-conditions regulations, and the share-versus-asset fork covers VAT, the buyer's cost base, and real estate taxes in an asset sale.
+- A documentation benchmark in references/valuation-methods.md, in both languages: regulation 8ב of the Securities Regulations, the closest statutory list of what a valuation discloses.
+- Sourced the long-standing claim that Israel has no licensing statute for business valuers, and recorded in the domain checklist that valuing private-company shares falls outside the Investment Advice Law, whose definition of securities excludes unlisted ones.
+
+### Changed
+
+- The real estate association detail moved from Step 7 into the transaction reference, the Section 104 passage was shortened to what the reference does not already say, and the reorganization gotcha it duplicated was removed, to stay under the word cap.
+
 ## [1.2.0] - 2026-08-26
 
 First review since publication.

@@ -27,6 +27,24 @@
         "Process lesson: the C4 script fix was applied to the staleness flag and the vintage line but NOT to the arithmetic the same code comment named, so for one round the separate-country-premium convention INVERTED the sign of country risk (a riskier Israel produced a lower cost of equity and a higher valuation). Fixed in this cycle by holding the mature-market ERP as its own constant instead of deriving it by subtraction. Writing a comment that names a defect is not fixing it.",
         "Process lesson: SKILL_HE.md had silently lost three Must-cover items (exit-multiple terminal value, the enumerated multiples table, six of the ten Step 10 documentation items) and nothing in the pipeline compared the two bodies section by section. Heading parity passed throughout, because the headings were present and the content under them was not."
       ]
+    },
+    {
+      "version": "1.3.0",
+      "date": "2026-10-12",
+      "lessons": [
+        "Phase 5.7 skipped: description unchanged; eval_pass_rate 0.92 / 12 assertions carried forward.",
+        "Phase 5.11 value-add gate NOT run: the batch brief forbids editing the monorepo, and the gate's cases must live in .claude/skills/value-add-gate/cases/<slug>/ there. Run it next cycle.",
+        "Resolved CARRY: 'no statutory licence for a business valuer' now sourced (no licensing statute; Appraisers Law s.13(א) reserves only real estate; reg 8ב disclosure benchmark). Investment Advice Law excludes unlisted securities.",
+        "Resolved CARRY: Israeli valuation-practice benchmark named (Securities Regulations reg 8ב), in valuation-methods.md and -he.md.",
+        "Resolved deferred MAJORs: required --tax-rate, --stake equity headline with DLOM axis, implied/explicit exit multiple, NOL (section 28, case-law change-of-control on s.86), section 14 severance, negative-EBIT and negative-terminal-FCF suppression, input bounds, transfer pricing named, asset-sale fork, PPA, Hebrew twin of valuation-methods.",
+        "Deferred: the 2025-2030 transitional route for start-day profits under the 2% undistributed-profits charge (ITA circular 7/2025 update, 8 Feb 2026) is not covered; research flagged it, not verified against the statute.",
+        "Deferred: Section 104 primary source is Amendment 279 (Book of Laws 3384, 27 Mar 2025, in force for reorganizations from 1 May 2025); the skill still says only 'amended in 2025'. Consider citing it.",
+        "Deferred: בית חוסן further-hearing outcome (decision 2.10.2023) not confirmed; text says 'further proceedings followed'. Verify on next update.",
+        "Deferred MINOR: the script has no mid-year discounting option (disclosed as end-of-year), no --control-premium flag (disclosed as not modelled), and does not value NOL left at the horizon (disclosed).",
+        "Process lesson: a judge pass on round 1 surfaced 5 pre-existing statutory misstatements (62א(א1) formula from gross income, 62א(א)(1) officer condition, PTE route structure, AE/BE 'pre-2017' and 2014 conflation, Damodaran cadence) that had survived the 1.2.0 cycle. Reading the statute (Wikisource raw text) settled each one.",
+        "Process lesson: the script's staleness window keyed off the file vintage fired on every run once the window was tightened; staleness now runs from COUNTRY_DATA_CONFIRMED_ISO, which a reviewer must bump each cycle after checking datacurrent.html.",
+        "Process lesson: a round-2 expert reported a Supreme Court holding (seller's consideration partly reclassified as dividend) that the primary-source summary did not support; only the remaining-shareholder dividend was written. Reviewer claims about case law need the same source check as statute claims."
+      ]
     }
   ]
 }

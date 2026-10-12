@@ -1,7 +1,7 @@
 {
   "skill_slug": "israeli-company-valuation",
   "schemaVersion": "1.0",
-  "generated_at": "2026-08-26T17:07:08Z",
+  "generated_at": "2026-10-12T19:30:00Z",
   "claims": [
     {
       "claim": "The Israeli standard corporate tax rate is 23% in 2026, the same as 2025",
@@ -173,7 +173,7 @@
       ]
     },
     {
-      "claim": "As of the July 2026 dataset, Israel carries a Moody's rating of Baa1, an adjusted default spread of 1.27%, a country risk premium of 1.98%, and a total equity risk premium of 6.18%",
+      "claim": "As of the July 2026 dataset, Israel carries a Moody's rating of Baa1, an adjusted default spread of 1.27%, a country risk premium of 1.98%, and a total equity risk premium of 6.18%. Re-checked 2026-10-12: July 2026 is still the newest file on the data-current index.",
       "claim_type": "percentage",
       "source_url": "https://pages.stern.nyu.edu/~adamodar/pc/datasets/ctrypremJuly26.xlsx",
       "raw_snippet": "Israel\t540379.92126168101\tBaa1\t0.012726408900586053\t0.061783145701302992\t0.01978314570130299\t0.23\tMiddle East",
@@ -186,10 +186,10 @@
         "scripts/valuation_model.py"
       ],
       "verified_via": "file",
-      "verified_at": "2026-08-26T16:47:08Z"
+      "verified_at": "2026-10-12"
     },
     {
-      "claim": "The country-risk dataset in force is the July 2026 vintage, whose default spreads were corrected on 9 July 2026. The ctryprem.html landing page still advertises the January 5, 2026 file, so the vintage must be confirmed against the data-current index",
+      "claim": "The country-risk dataset in force is the July 2026 vintage, whose default spreads were corrected on 9 July 2026. The ctryprem.html landing page still advertises the January 5, 2026 file, so the vintage must be confirmed against the data-current index. Re-checked 2026-10-12: July 2026 is still the newest file on the data-current index.",
       "claim_type": "date",
       "source_url": "https://pages.stern.nyu.edu/~adamodar/pc/datasets/ctrypremJuly26.xlsx",
       "raw_snippet": "Default spreads corrected on July 9, 2026",
@@ -201,7 +201,7 @@
         "SKILL_HE.md"
       ],
       "verified_via": "file",
-      "verified_at": "2026-08-26T16:47:08Z"
+      "verified_at": "2026-10-12"
     },
     {
       "claim": "The Bank of Israel publishes yields to maturity on Israeli government bonds and makam, which is the reference source for the shekel risk-free rate",
@@ -214,7 +214,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-12"
     },
     {
       "claim": "The Tel Aviv Stock Exchange publishes live market data, including indices and securities data, which is the route to Israeli comparable-company multiples and to government bond data",
@@ -311,7 +313,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-12"
     },
     {
       "claim": "The 2% tax on undistributed profits of a closely held company may be avoided by distributing a dividend of at least 6% of accumulated profits as of the end of the prior tax year, or more than 50% of accumulated profits less certain deductions",
@@ -419,13 +423,13 @@
     },
     {
       "claim_id": "damodaran-mature-erp-july26",
-      "claim": "The mature-market equity risk premium implied by the July 2026 dataset is 4.20%, being the US equity risk premium of 4.42% less the US adjusted default spread of 0.2186%",
+      "claim": "The mature-market equity risk premium implied by the July 2026 dataset is 4.20%, being the US equity risk premium of 4.42% less the US adjusted default spread of 0.2186%. Re-checked 2026-10-12: July 2026 is still the newest file on the data-current index.",
       "claim_type": "percentage",
       "source_url": "https://pages.stern.nyu.edu/~adamodar/pc/datasets/ctrypremJuly26.xlsx",
       "raw_snippet": "United States\t28750956.130731199\tAa1\t0.0021863536781947081\t0.044200000000000003\t0.0021863536781947081\t0.25\tNorth America",
       "fetched_at": "2026-08-26T16:47:08Z",
       "verified_via": "file",
-      "verified_at": "2026-08-26T16:47:08Z",
+      "verified_at": "2026-10-12",
       "confidence": "high",
       "appears_in": [
         "SKILL.md",
@@ -434,11 +438,11 @@
     },
     {
       "claim_id": "excess-profitability-62a-a1",
-      "claim": "Section 62A(a1) of the Income Tax Ordinance deems the excess profitability of a closely held company, being income from personal-exertion-intensive activity less payments to a related company less 25% of that difference, to be the active shareholder's own section 2(1) earned income pro rata to their rights in profits",
+      "claim": "Section 62א(א1): the excess profitability is the company's TAXABLE income from personal-exertion-intensive activity less 25% of the difference between its income from that activity and its payments to a related company",
       "claim_type": "legal_reference",
-      "source_url": "https://www.grantthornton.co.il/insights1/professional-insights/2025/profitability/",
-      "raw_snippet": "סעיף 62א(א1) לפקודת מס הכנסה",
-      "fetched_at": "2026-08-26T16:47:08Z",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "מפעילות עתירת יגיעה אישית של חברת מעטים בהפחתת סכום השווה למכפלה של 25% בסכום המתקבל מההפרש שבין ההכנסה מפעילות עתירת יגיעה אישית של חברת המעטים ובין תשלומים לחברה קשורה",
+      "fetched_at": "2026-10-12T18:00:00Z",
       "confidence": "high",
       "appears_in": [
         "references/israeli-tax-regimes.md",
@@ -538,7 +542,7 @@
     },
     {
       "claim_id": "pte-competitiveness-and-group-revenue",
-      "claim": "A Preferred Technology Enterprise must satisfy, in addition to the R&D test, both a group-income ceiling of ILS 10 billion and the competitiveness test under section 18A(c)(1) or (2)",
+      "claim": "Both technology routes must also meet the competitiveness test (by reference to section 18א(ג)(1) or (2)) and group revenue under ILS 10 billion; these apply in addition to EITHER the R&D-plus-secondary-test route OR the Innovation Authority route",
       "claim_type": "legal_reference",
       "source_url": "https://www.nevo.co.il/law_html/law01/p181_001.htm",
       "raw_snippet": "המפעל היה מפעל בר-תחרות בהתאם לאמור בסעיף 18א(ג)(1) או (2)",
@@ -602,7 +606,7 @@
     },
     {
       "claim_id": "damodaran-ctryprem-landing",
-      "claim": "Damodaran publishes country default spreads and equity risk premiums on the country-premium page, whose stated last-updated date can lag the current data file",
+      "claim": "Damodaran publishes country default spreads and equity risk premiums on the country-premium page, whose stated last-updated date can lag the current data file. Re-checked 2026-10-12: July 2026 is still the newest file on the data-current index.",
       "claim_type": "url",
       "source_url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/ctryprem.html",
       "raw_snippet": "Country Default Spreads and Risk Premiums",
@@ -611,7 +615,8 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_at": "2026-10-12"
     },
     {
       "claim_id": "igud-shevach-rates-48a",
@@ -700,6 +705,429 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "sec14-statute",
+      "claim": "Severance Pay Law s.14: a deposit to a provident or pension fund replaces severance only where a collective agreement or the Minister's approval so provides, and to that extent (סעיף 14 לחוק פיצויי פיטורים)",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A4%D7%99%D7%A6%D7%95%D7%99%D7%99_%D7%A4%D7%99%D7%98%D7%95%D7%A8%D7%99%D7%9D",
+      "raw_snippet": "לא יבוא במקום פיצויי פיטורים אלא אם נקבע כך בהסכם הקיבוצי החל על המעסיק והעובד ובמידה שנקבע, או אם תשלום כאמור אושר על ידי שר העבודה ובמידה שאושר",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/domain-checklist.md",
+        "scripts/valuation_model.py"
+      ]
+    },
+    {
+      "claim_id": "sec14-approval-insured-salary",
+      "claim": "Under the general section 14 approval, deposits replace severance for the salary from which they were paid (the insured salary) and for the period they were paid",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%90%D7%99%D7%A9%D7%95%D7%A8_%D7%9B%D7%9C%D7%9C%D7%99_%D7%91%D7%93%D7%91%D7%A8_%D7%AA%D7%A9%D7%9C%D7%95%D7%9E%D7%99_%D7%9E%D7%A2%D7%91%D7%99%D7%93%D7%99%D7%9D_%D7%9C%D7%A7%D7%A8%D7%9F_%D7%A4%D7%A0%D7%A1%D7%99%D7%94_%D7%95%D7%9C%D7%A7%D7%95%D7%A4%D7%AA_%D7%91%D7%99%D7%98%D7%95%D7%97_%D7%91%D7%9E%D7%A7%D7%95%D7%9D_%D7%A4%D7%99%D7%A6%D7%95%D7%99%D7%99_%D7%A4%D7%99%D7%98%D7%95%D7%A8%D7%99%D7%9D",
+      "raw_snippet": "יבואו במקום פיצויי הפיטורים המגיעים לעובד האמור בגין השכר שממנו שולמו התשלומים האמורים ולתקופה ששולמו",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "sec14-approval-72pct",
+      "claim": "Deposits without the additional top-up replace only 72% of severance",
+      "claim_type": "percentage",
+      "source_url": "https://he.wikisource.org/wiki/%D7%90%D7%99%D7%A9%D7%95%D7%A8_%D7%9B%D7%9C%D7%9C%D7%99_%D7%91%D7%93%D7%91%D7%A8_%D7%AA%D7%A9%D7%9C%D7%95%D7%9E%D7%99_%D7%9E%D7%A2%D7%91%D7%99%D7%93%D7%99%D7%9D_%D7%9C%D7%A7%D7%A8%D7%9F_%D7%A4%D7%A0%D7%A1%D7%99%D7%94_%D7%95%D7%9C%D7%A7%D7%95%D7%A4%D7%AA_%D7%91%D7%99%D7%98%D7%95%D7%97_%D7%91%D7%9E%D7%A7%D7%95%D7%9D_%D7%A4%D7%99%D7%A6%D7%95%D7%99%D7%99_%D7%A4%D7%99%D7%98%D7%95%D7%A8%D7%99%D7%9D",
+      "raw_snippet": "יבואו תשלומיו במקום 72% מפיצויי הפיטורים של העובד, בלבד",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "sec14-approval-above-insured",
+      "claim": "Pay above the insured salary keeps its severance right",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%90%D7%99%D7%A9%D7%95%D7%A8_%D7%9B%D7%9C%D7%9C%D7%99_%D7%91%D7%93%D7%91%D7%A8_%D7%AA%D7%A9%D7%9C%D7%95%D7%9E%D7%99_%D7%9E%D7%A2%D7%91%D7%99%D7%93%D7%99%D7%9D_%D7%9C%D7%A7%D7%A8%D7%9F_%D7%A4%D7%A0%D7%A1%D7%99%D7%94_%D7%95%D7%9C%D7%A7%D7%95%D7%A4%D7%AA_%D7%91%D7%99%D7%98%D7%95%D7%97_%D7%91%D7%9E%D7%A7%D7%95%D7%9D_%D7%A4%D7%99%D7%A6%D7%95%D7%99%D7%99_%D7%A4%D7%99%D7%98%D7%95%D7%A8%D7%99%D7%9D",
+      "raw_snippet": "בגין שכר שמעבר לשכר המופטר",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "sec28-carryforward",
+      "claim": "Section 28: unused business losses carry forward to following years, one after another, against business income, with no time limit stated (סעיף 28 לפקודה)",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "יועבר סכום ההפסד שלא קוזז לשנים הבאות בזו אחר זו",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/valuation_model.py",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "81b-loss-exclusion",
+      "claim": "Section 81ב(ב)(1): no 2% charge for a year in which the company's losses under sections 28, 29 or 92 exceed 10% of accumulated profits at the end of the previous year",
+      "claim_type": "percentage",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "עולה על 10% מסכום הרווחים הנצברים של חברת המעטים בתום שנת המס הקודמת",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "81b-50pct-excess",
+      "claim": "Section 81ב(ב)(2): no 2% charge where taxed dividends exceed 50% of the excess profits at the end of the previous year",
+      "claim_type": "percentage",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "עולה על 50% מסכום הרווחים העודפים של חברת המעטים בתום שנת המס הקודמת",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "81b-6pct-accumulated",
+      "claim": "Section 81ב(ב)(3): no 2% charge where taxed dividends are 6% or more of accumulated profits at the end of the previous year",
+      "claim_type": "percentage",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "הוא בשיעור של 6% או יותר מסכום הרווחים הנצברים של חברת המעטים בתום שנת המס הקודמת",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "94b-dividend-rate-portion",
+      "claim": "Section 94ב: on a sale of unlisted shares by a body of persons (or an individual for shares bought before the commencement date), the part of the real gain equal to the seller's share of distributable profits is taxed at the rate that would have applied had it been received as a dividend just before the sale (סעיף 94ב לפקודה)",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "יהיה שיעור המס שהיה חל עליהם, אילו היו מתקבלים כדיבידנד בסמוך לפני המכירה",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "companies-law-distribution-def",
+      "claim": "Companies Law s.1: a \"distribution\" includes a dividend and also a purchase by the company of its own shares",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%97%D7%91%D7%A8%D7%95%D7%AA",
+      "raw_snippet": "מתן דיבידנד או התחייבות לתיתו, במישרין או בעקיפין, וכן רכישה",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "companies-law-302-tests",
+      "claim": "Companies Law s.302: a distribution may be made out of profits (profit test) provided there is no reasonable concern it will prevent the company from meeting existing and expected liabilities when due (solvency test)",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%97%D7%91%D7%A8%D7%95%D7%AA",
+      "raw_snippet": "חברה רשאית לבצע חלוקה מתוך רווחיה (להלן – מבחן הרווח), ובלבד שלא קיים חשש סביר שהחלוקה תמנע מן החברה את היכולת לעמוד בחבויותיה הקיימות והצפויות, בהגיע מועד קיומן",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "reg-8b-valuer-disclosure",
+      "claim": "Securities Regulations (Periodic and Immediate Reports) reg. 8ב(ט)(5): a material valuation used in a periodic report must disclose the valuer's identity and characteristics including education, experience and dependence on the commissioning party (תקנה 8ב)",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA_%D7%A0%D7%99%D7%99%D7%A8%D7%95%D7%AA_%D7%A2%D7%A8%D7%9A_%28%D7%93%D7%95%D7%97%D7%95%D7%AA_%D7%AA%D7%A7%D7%95%D7%A4%D7%AA%D7%99%D7%99%D7%9D_%D7%95%D7%9E%D7%99%D7%99%D7%93%D7%99%D7%99%D7%9D%29",
+      "raw_snippet": "זיהוי המעריך ואפיוניו, לרבות השכלה",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/valuation-methods.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "reg-8b-model",
+      "claim": "Reg. 8ב(ט)(6)-(7): the disclosure table also states the valuation model used and the assumptions, including the terminal value share of the value",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%AA%D7%A7%D7%A0%D7%95%D7%AA_%D7%A0%D7%99%D7%99%D7%A8%D7%95%D7%AA_%D7%A2%D7%A8%D7%9A_%28%D7%93%D7%95%D7%97%D7%95%D7%AA_%D7%AA%D7%A7%D7%95%D7%A4%D7%AA%D7%99%D7%99%D7%9D_%D7%95%D7%9E%D7%99%D7%99%D7%93%D7%99%D7%99%D7%9D%29",
+      "raw_snippet": "מודל ההערכה שמעריך השווי פעל לפיו",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/valuation-methods.md"
+      ]
+    },
+    {
+      "claim_id": "appraisers-law-13a",
+      "claim": "Real Estate Appraisers Law 2001 s.13(א) reserves real estate appraisal for hire to licensed real estate appraisers. No corresponding licensing statute exists for business valuers (a negative claim: no such statute was found; reg. 8ב requiring disclosure of a valuer's education and experience is consistent with there being no licence)",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%A9%D7%9E%D7%90%D7%99_%D7%9E%D7%A7%D7%A8%D7%A7%D7%A2%D7%99%D7%9F",
+      "raw_snippet": "לא יעסוק אדם בשומת מקרקעין דרך שירות לכל בשכר, אלא אם כן הוא שמאי מקרקעין",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/valuation_model.py",
+        "references/valuation-methods.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "advice-law-unlisted-excluded",
+      "claim": "Regulation of Investment Advice Law: \"securities\" for the purposes of investment advice exclude securities not listed for trading on the exchange, so valuing private-company shares is outside \"investment advice\"",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%A1%D7%93%D7%A8%D7%AA_%D7%94%D7%A2%D7%99%D7%A1%D7%95%D7%A7_%D7%91%D7%99%D7%99%D7%A2%D7%95%D7%A5_%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA%2C_%D7%91%D7%A9%D7%99%D7%95%D7%95%D7%A7_%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA_%D7%95%D7%91%D7%A0%D7%99%D7%94%D7%95%D7%9C_%D7%AA%D7%99%D7%A7%D7%99_%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA",
+      "raw_snippet": "למעט ניירות ערך שאינם רשומים למסחר בבורסה",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "loss-change-of-control-case-law",
+      "claim": "The limitation on using a loss company's losses after acquisition comes from case law on artificial transactions (section 86), where the watershed is a change or absence of change in control; section 28 itself contains no change-of-control rule (סעיף 86 לפקודה; סעיף 28)",
+      "claim_type": "legal_reference",
+      "source_url": "https://www.capitax.co.il/content/1/391",
+      "raw_snippet": "קו פרשת המים, כדברי בית-המשפט, ביישום שני העקרונות האמורים הוא השינוי או היעדר-השינוי",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "sec14-approval-12pct",
+      "claim": "The 72% limb applies where the employer paid 12% without the additional top-up",
+      "claim_type": "percentage",
+      "source_url": "https://he.wikisource.org/wiki/%D7%90%D7%99%D7%A9%D7%95%D7%A8_%D7%9B%D7%9C%D7%9C%D7%99_%D7%91%D7%93%D7%91%D7%A8_%D7%AA%D7%A9%D7%9C%D7%95%D7%9E%D7%99_%D7%9E%D7%A2%D7%91%D7%99%D7%93%D7%99%D7%9D_%D7%9C%D7%A7%D7%A8%D7%9F_%D7%A4%D7%A0%D7%A1%D7%99%D7%94_%D7%95%D7%9C%D7%A7%D7%95%D7%A4%D7%AA_%D7%91%D7%99%D7%98%D7%95%D7%97_%D7%91%D7%9E%D7%A7%D7%95%D7%9D_%D7%A4%D7%99%D7%A6%D7%95%D7%99%D7%99_%D7%A4%D7%99%D7%98%D7%95%D7%A8%D7%99%D7%9D",
+      "raw_snippet": "לא שילם המעביד בנוסף ל־12% גם",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T16:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "62a-a-1-officer-condition",
+      "claim": "Section 62א(א)(1) (סעיף 62א) attributes officer and management-services income only where the individual or the closely held company was an officer of the other body",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "והיחיד או חברת המעטים היו נושאי משרה באותו חבר בני אדם",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "pte-route-structure",
+      "claim": "Encouragement Law s.51כד: a Preferred Technology Enterprise meets conditions (1) and (2), or condition (3), and also conditions (4) and (5)",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9C%D7%A2%D7%99%D7%93%D7%95%D7%93_%D7%94%D7%A9%D7%A7%D7%A2%D7%95%D7%AA_%D7%94%D7%95%D7%9F",
+      "raw_snippet": "כל התנאים הקבועים בפסקאות (1) ו־(2) שלהלן או התנאי הקבוע בפסקה (3) שלהלן, וכן התנאים האמורים בפסקאות (4) ו־(5) שלהלן",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "ae-be-closed-regimes",
+      "claim": "The Approved and Beneficiary Enterprise regimes were granted to operations qualifying before the Law's 2005 and 2011 amendments",
+      "claim_type": "legal_reference",
+      "source_url": "https://taxsummaries.pwc.com/israel/corporate/tax-credits-and-incentives",
+      "raw_snippet": "The AE and BE regimes discussed below were tax incentive programs granted to operations qualifying under the Law prior to the Law's amendments in 2005 and 2011.",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "ae-be-15-wht",
+      "claim": "Dividends from AE/BE profits earned in the benefits period carry 15% withholding if distributed during the benefits period or the following 12 years, reducible under treaty",
+      "claim_type": "percentage",
+      "source_url": "https://taxsummaries.pwc.com/israel/corporate/tax-credits-and-incentives",
+      "raw_snippet": "A WHT rate of 15% (subject to a possible reduction under a tax treaty) applies to dividends paid from profits of an AE/BE earned during the benefits period if distributed either during the benefits period or during the subsequent 12 years.",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "damodaran-interim-april-2026",
+      "claim": "Damodaran's country risk data updates more than twice a year: the data-current index lists an April 1, 2026 update between the January and July 2026 files",
+      "claim_type": "date",
+      "source_url": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datacurrent.html",
+      "raw_snippet": "April 1, 2026 update",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "references/domain-checklist.md",
+        "scripts/valuation_model.py"
+      ]
+    },
+    {
+      "claim_id": "companies-law-303-court",
+      "claim": "Companies Law s.303: a court may approve a distribution that fails the profit test if the solvency test is met",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%97%D7%91%D7%A8%D7%95%D7%AA",
+      "raw_snippet": "בית המשפט רשאי, לבקשת חברה, לאשר לה לבצע חלוקה שלא מקיימת את מבחן הרווח, ובלבד ששוכנע שמתקיים מבחן יכולת הפירעון",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md"
+      ]
+    },
+    {
+      "claim_id": "tp-85a-market-conditions",
+      "claim": "Section 85א (סעיף 85א): an international transaction between parties with a special relationship is reported and taxed at market conditions",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "תדווח העסקה בהתאם לתנאי השוק ותחויב במס בהתאם",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md"
+      ]
+    },
+    {
+      "claim_id": "tp-regulations-2006",
+      "claim": "Transfer pricing is governed by the Income Tax (Determination of Market Conditions) Regulations, 2006",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "תקנות מס הכנסה (קביעת תנאי שוק), התשס״ז–2006",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md"
+      ]
+    },
+    {
+      "claim_id": "62a-a1-2-c-750k-exclusion",
+      "claim": "Section 62א(א1)(2)(ג): paragraph (1) does not apply where, among other conditions, the company's accumulated profits at the end of the previous year did not exceed ILS 750,000 (750 אלף שקלים חדשים)",
+      "claim_type": "currency",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "לא עלה על 750 אלף שקלים חדשים",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "62a-a1-2-c-no-other-company",
+      "claim": "Section 62א(א1)(2)(ג)(1): the small-company exclusion also requires that no controlling shareholder is a controlling shareholder in another company",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "אין בין בעלי השליטה בה יחיד שהוא בעל שליטה בחברה אחרת",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "62a-a1-2-b-partnership-10pct",
+      "claim": "Section 62א(א1)(2)(ב): where the company's share in a partnership's income is under 10%, paragraph (1) does not apply to it and subsection (א2) applies",
+      "claim_type": "percentage",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "היה פחות מ־10% – לא יחולו הוראות פסקה (1), ויחולו הוראות סעיף קטן (א2)",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
+      ]
+    },
+    {
+      "claim_id": "beit-hosen-buyback",
+      "claim": "ע\"א 9308/20 (בית חוסן): by majority, in a private company that is a quasi-partnership a buyback is a dividend in kind to the remaining shareholders pro rata plus a capital-gains purchase by them, which the court said is consistent with the first alternative of Income Tax Circular 2/2018",
+      "claim_type": "legal_reference",
+      "source_url": "https://www.efraty.com/?p=2553",
+      "raw_snippet": "נפסק ברוב דעות (השופטת רונן והשופט פוגלמן) כי בחברות שהן מעין שותפויות ברכישה עצמית יש שתי עסקאות דיבידנד בעין של בעלי המניות הנותרים לפי חלקם היחסי ערב המכירה ועסקת רווח הון כשבעלי מניות נותרים רוכשים את חלק המוכרים זאת בהתאם לחלופה הראשונה בחוזר מס הכנסה 2/2018",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "companies-law-financing-is-purchase",
+      "claim": "Companies Law s.1: \"purchase\" for the definition of distribution includes the company giving financing for the purchase of its own shares",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%97%D7%91%D7%A8%D7%95%D7%AA",
+      "raw_snippet": "”רכישה“ – רכישה או מתן מימון לרכישה, במישרין או בעקיפין, בידי חברה",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "beit-hosen-quantum",
+      "claim": "ע\"א 9308/20 (בית חוסן): remaining shareholders are taxed on a dividend equal to their pre-transaction holding percentage multiplied by the amount paid for the departing shareholder's shares",
+      "claim_type": "legal_reference",
+      "source_url": "https://www.efraty.com/?p=2553",
+      "raw_snippet": "לחייב את בעלי המניות הנותרים במס דיבידנד בשווי המכפלה של שיעור אחזקותיהם בחברה ערב העסקה בסכום שבו נרכשו מניותיו של בעל המניות היוצא",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:30:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md"
+      ]
+    },
+    {
+      "claim_id": "62a-a1-2-c-dormant-company",
+      "claim": "Section 62א(א1)(2)(ג)(1): a dormant company with no accumulated profits does not count as another company for the small-company exclusion",
+      "claim_type": "legal_reference",
+      "source_url": "https://he.wikisource.org/wiki/%D7%A4%D7%A7%D7%95%D7%93%D7%AA_%D7%9E%D7%A1_%D7%94%D7%9B%D7%A0%D7%A1%D7%94",
+      "raw_snippet": "לא תיחשב כחברה אחרת, ובלבד שאין לה רווחים נצברים",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:30:00Z",
+      "appears_in": [
+        "references/israeli-tax-regimes.md"
       ]
     }
   ]
