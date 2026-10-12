@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.7.1 - 2026-10-12
+
+- Hebrew site description now says "שיעור של עד 25%", matching the 25% ceiling in the body and the English description.
+- Calculator: the same-day-acquisitions warning also covers lots bought in earlier years (a newest-first export from a prior December could still reverse FIFO silently); the Hebrew gershayim spelling ש״ח is accepted as shekels.
+
 ## 1.7.0 - 2026-10-12
 
 Correctness and currency cycle. The surtax correction changes figures the skill, its calculator and its published checker all printed.

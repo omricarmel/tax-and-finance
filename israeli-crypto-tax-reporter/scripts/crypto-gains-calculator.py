@@ -773,7 +773,7 @@ def process_transactions(transactions: list, year: int, other_income: float = 0.
             "use the 1399י monthly-aggregation route, which nets a month's trades.")
     buys_by_day = defaultdict(set)
     for tx in transactions:
-        if tx.date.year == year and tx.tx_type in ("buy", "trade_buy") and tx.amount > 0:
+        if tx.tx_type in ("buy", "trade_buy") and tx.amount > 0:
             buys_by_day[(tx.date, tx.asset)].add(round(tx.cost_per_unit, 6))
     if any(len(v) > 1 for v in buys_by_day.values()):
         report.warnings.append(
