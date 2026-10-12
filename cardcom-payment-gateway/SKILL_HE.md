@@ -10,11 +10,11 @@
 
 קארדקום היא חברת סליקה ישראלית עם יתרון ייחודי אחד: הפקת חשבוניות וקבלות משולבת בתשלום, לפי חוק המס הישראלי. שערי תשלום אחרים מטפלים רק בתשלום עצמו, אבל קארדקום יכולה להפיק אוטומטית חשבוניות מס וקבלות כחלק מתהליך התשלום, דבר שעסקים ישראליים חייבים לספק לפי חוק.
 
-המדריך הזה עובר אתכם דרך אינטגרציה עם REST API V11 של קארדקום לתשלומים, טוקניזציה, חיובים חוזרים והפקת מסמכים. כל endpoint וכל שם שדה במדריך הזה לקוחים ממפרט ה-OpenAPI הרשמי של קארדקום V11.
+הסקיל מכסה את REST API V11 של קארדקום לתשלומים, טוקניזציה, חיובים חוזרים ומסמכים. שמות ה-endpoints והשדות לקוחים ממפרט ה-OpenAPI הרשמי של V11.
 
 תיעוד רשמי נמצא בכתובת `https://secure.cardcom.solutions/Api/v11/Docs`, מרכז התמיכה בכתובת `https://support.cardcom.solutions`. V11 הוא ה-API הנוכחי נכון ל-2026, אין V12 פומבי.
 
-קארדקום בנוף הישראלי: מתחרה בטרנזילה, ישראפיי וביט עסקי. התמחור נסגר מול כל בית עסק. קארדקום מפרסמת עמלה שמתחילה בכ-1.2% ויורדת בהתאם למחזור, אבל זו רצפה ולא הצעת מחיר, אז תתייחסו אליה כנקודת פתיחה בלבד ותפנו את המשתמש לקארדקום לקבלת מספר אמיתי במקום להבטיח לו תעריף. היתרון הייחודי שנשאר לעסקים ישראליים הוא הפקת מסמכי מס מובנית. לאינטגרציה עם טרנזילה, השתמשו ב-`tranzila-payment-gateway` במקום.
+קארדקום בנוף הישראלי: מתחרה בטרנזילה ובשערי תשלום ישראליים אחרים. קארדקום מפרסמת עמלה שמתחילה בכ-1.2% ויורדת בהתאם למחזור; זו רצפה ולא הצעת מחיר, אז תפנו את המשתמש לקארדקום לקבלת מספר אמיתי. היתרון הייחודי נשאר הפקת מסמכי מס מובנית. לאינטגרציה עם טרנזילה, השתמשו ב-`tranzila-payment-gateway` במקום.
 
 ## הוראות
 
@@ -31,13 +31,17 @@
 ### שלב 2: הגדרת אימות
 
 פרטי הגישה ל-Cardcom API V11:
-- `TerminalNumber` (מספר שלם), מזהה המסוף שלכם (תשתמשו ב-`1000` לבדיקות)
+- `TerminalNumber` (מספר שלם), מזהה המסוף שלכם (`1000` הוא מסוף הבדיקות של קארדקום, ראו למטה)
 - `ApiName` (מחרוזת), שם משתמש API
-- `ApiPassword` (מחרוזת), סיסמת API. נדרשת בכ-26 מסכמות הבקשה של V11 בגרסת המפרט הנוכחית. המספר משתנה בין גרסאות, אז תקראו את הסכמה של נקודת הקצה במקום להסתמך עליו. כלל האצבע: **פעולות שקוראות או פועלות על נתונים ברמת החברה דורשות אותה, ופעולות שמחייבות כרטיס בודד לא.** היא נדרשת בכל כתיבה ב-`Documents/*`, בכל דוח ב-`Financial/*`, בכל קריאה ב-`TapTransactions/*`, וגם ב-`Transactions/ListTransactions`, ב-`RefundByTransactionId` וב-`SpecialTransactions`. היא בכלל לא שדה קיים ב-`LowProfile/Create` או ב-`Transactions/Transaction`, אז אל תשלחו אותה שם. במקרה של ספק, תבדקו את מערך ה-`required` של סכמת הבקשה ב-[מפרט ה-OpenAPI של V11](https://secure.cardcom.solutions/swagger/v11/swagger.json).
+- `ApiPassword` (מחרוזת), סיסמת API. כלל האצבע: **פעולות שקוראות או פועלות על נתונים ברמת החברה דורשות אותה, ופעולות שמחייבות כרטיס בודד לא.** היא נדרשת, בין השאר, ב-`Transactions/ListTransactions`, ב-`RefundByTransactionId`, ב-`SpecialTransactions`, ב-`Documents/CreateDocument`, ב-`CancelDoc` ובדוחות `Financial/*`. היא לא שדה ברמה העליונה של `LowProfile/Create` או של `Transactions/Transaction`, אז אל תשלחו אותה שם. רשימת הסכמות שדורשות אותה משתנה בין גרסאות של המפרט (ראו מלכודות נפוצות), אז תבדקו את מערך ה-`required` של סכמת הבקשה ב-[מפרט ה-OpenAPI של V11](https://secure.cardcom.solutions/swagger/v11/swagger.json) ולא תסתמכו על רשימה.
 
-סביבת בדיקות: מסוף `1000` עם ה-`ApiName` של ה-demo מצוטט הרבה בספריות קהילתיות כסביבת הבדיקות, עם כרטיס בדיקה `4580000000000000`, כל תפוגה עתידית ו-CVV `123`. לא הצלחנו לאמת את הפרטים האלה מול עמוד רשמי של קארדקום, אז תתייחסו אליהם כפולקלור קהילתי: תאמתו את פרטי סביבת הבדיקות מול התמיכה של קארדקום לפני שאתם מסתמכים עליהם, ואל תניחו שקריאה מול מסוף 1000 לא יכולה להזיז כסף.
+**סביבת בדיקות (לפי עמוד המידע למתכנתים של קארדקום עצמה):**
+- מסוף `1000`. שם המשתמש והסיסמה לממשקים במסוף הזה לא מפורסמים: מבקשים אותם מהתמיכה של קארדקום.
+- כרטיס בדיקה ישראלי `4580280000000008` (תומך תשלומים וקרדיט); כרטיס בדיקה תייר `4580000000000000` (לא תומך תשלומים וקרדיט). כל תוקף עתידי, CVV `123`, כל מספר ת.ז.
+- בכרטיסי הבדיקה, עסקאות מתחת ל-5,000 ש"ח ידמו הצלחה ועסקאות מעל 5,000 ש"ח ידמו כישלון, אז כישלון של חיוב בדיקה גדול הוא צפוי ולא באג.
+- עסקאות במסוף הבדיקות עוברות את כל תהליך הסליקה בלי לחייב את הכרטיס בפועל. כרטיס אמיתי שמשמש לבדיקה לא מחויב, אבל נתפסת בו מסגרת בגובה הסכום לשלושה ימים, אז לעולם אל תבדקו עם כרטיס של לקוח.
 
-תשמרו פרטי גישה בצורה מאובטחת, אף פעם לא בקוד מקור או ב-JavaScript בצד הלקוח.
+**תתייחסו ל-`ApiName`, ל-`ApiPassword` ולכל טוקן שמור כסודות.** ל-`Transactions/Transaction` מספיקים `TerminalNumber`, `ApiName` ו-`Amount`, כך ש-`ApiName` יחד עם טוקן יכולים לחייב כרטיס שמור. שמרו אותם במשתני סביבה של צד השרת בלבד (ב-Next.js לעולם לא `NEXT_PUBLIC_*`), פנו לקארדקום רק מקוד שרת, ואל תכתבו ללוג תגובה מלאה (היא נושאת את הטוקן ואת מספר הזהות של בעל הכרטיס).
 
 ### שלב 3: מימוש זרימת התשלום
 
@@ -77,6 +81,8 @@ Content-Type: application/json
 
 השדה `Operation` שולט בהתנהגות: `ChargeOnly` (ברירת מחדל), `ChargeAndCreateToken`, `CreateTokenOnly`, `SuspendedDeal`, `Do3DSAndSubmit`.
 
+**שורות ה-`Document` חייבות להסתכם בדיוק ב-`Amount`** (קארדקום: "יש לדאוג שסה\"כ שורות החשבונית שווה לסכום החיוב"), ולכן מחירי השורות נרשמים כסכומים שהלקוח משלם בפועל, כולל מע"מ. אי-התאמה עלולה להשאיר כרטיס מחויב בלי חשבונית, כי קארדקום נותנת עדיפות לחיוב.
+
 **שלב 3ב: קבלת התוצאות**
 
 אחרי שהתשלום מסתיים, קארדקום קוראת ל-`WebHookUrl` שלכם, או שאתם עושים שאילתה:
@@ -100,26 +106,22 @@ POST https://secure.cardcom.solutions/api/v11/LowProfile/GetLpResult
 4. `TranzactionInfo.ResponseCode` שווה 0 (700 ו-701 הם הצלחה רק ל-J2 ו-J5).
 5. `TranzactionInfo.Amount` שווה לסכום שציפיתם לו, ו-`ReturnValue` תואם למזהה ההזמנה שלכם.
 
-תבדקו גם את `TranzactionInfo.IsRefund` ואת `DealType`: החזר הוא עסקה מוצלחת ויעבור בדיקה נאיבית של `ResponseCode == 0`. אם ביקשתם מסמך, גם `DocumentInfo` חייב להיות לא-null, כי חיוב שהצליח עם `DocumentInfo: null` פירושו שלקחתם את הכסף ולא הפקתם חשבונית מס. הסקריפט `scripts/validate_cardcom_response.py --expect charge --amount <n>` מחיל את כל זה ונכשל בברירת מחדל בטוחה.
+תבדקו גם את `TranzactionInfo.IsRefund` ואת `DealType`: החזר הוא עסקה מוצלחת ויעבור בדיקה נאיבית של `ResponseCode == 0`. אם ביקשתם מסמך, גם `DocumentInfo` חייב להיות לא-null, כי חיוב שהצליח עם `DocumentInfo: null` פירושו שלקחתם את הכסף ולא הפקתם חשבונית מס. (קארדקום נותנת עדיפות לחיוב כשהפקת החשבונית נכשלת.) הסקריפט `scripts/validate_cardcom_response.py --expect charge --amount <n> --return-value <order-id> --with-document` מחיל את כל זה ונכשל בברירת מחדל בטוחה.
 
-אף פעם אל תספקו על סמך נחיתת הדפדפן ב-`SuccessRedirectUrl`, שנמצא בשליטת הלקוח, או על סמך גוף ה-webhook, שהוא POST ציבורי לא מאומת. תתייחסו ל-webhook רק כאות לקרוא ל-`GetLpResult` ולבדוק מחדש. `TokenInfo` נושא את ה-`Token` השמור עם `CardMonth`/`CardYear`, ו-`SuspendedInfo` מכסה עסקאות ממתינות.
+אף פעם אל תספקו על סמך נחיתת הדפדפן ב-`SuccessRedirectUrl`, שנמצא בשליטת הלקוח, או על סמך גוף ה-webhook. `TokenInfo` נושא את ה-`Token` השמור עם `CardMonth`/`CardYear`, ו-`SuspendedInfo` מכסה עסקאות ממתינות.
+
+**ה-handler של ה-webhook (השדה `WebHookUrl` הוא חובה ב-`LowProfile/Create`):** מפרט V11 לא מגדיר לו חתימה, סוד משותף או HMAC, ולא מתעד את מבנה הגוף שלו או את מדיניות השליחה החוזרת. תתייחסו לכל פנייה כאות לא מאומת, שעלול להגיע יותר מפעם אחת:
+
+1. מחפשים את ה-`LowProfileId` שבפנייה בין המזהים ששמרתם בעצמכם מ-`LowProfile/Create`. מזהה לא מוכר מתעלמים ממנו, לא שולפים אותו.
+2. קוראים ל-`GetLpResult` עם פרטי הגישה שלכם ומריצים את חמש הבדיקות שלמעלה. לעולם לא קוראים סכום או סטטוס מגוף ה-webhook.
+3. מספקים באופן אידמפוטנטי (מסמנים שההזמנה סופקה באותה טרנזקציה שבודקת את זה), כי אותו אירוע יכול להגיע יותר מפעם אחת. התיעוד של קארדקום לממשק הישן `IndicatorUrl` אומר שהיא שולחת שוב עד 7 פעמים כשהשרת שלכם לא עונה HTTP 200; תניחו שגם V11 יכול לחזור.
+4. כותבים את הפנייה לאחסון עמיד, ורק אז מחזירים HTTP 200 (תשובת 200 עוצרת את השליחות החוזרות של קארדקום). בנוסף סורקים הזמנות ממתינות עם `GetLpResult` במקום לחכות ל-webhook שאולי לא יגיע; קוד הדף פג 24 שעות אחרי היצירה. עוד ב-`references/production-checklist.md`.
 
 #### אמצעי תשלום חלופיים
 
-תגובת ה-Low Profile כוללת כתובות לאמצעי תשלום חלופיים כשהם מופעלים במסוף שלכם:
-
-| אמצעי | שדה בתגובה | הערות |
-|--------|---------------|-------|
-| **Bit** | `UrlToBit` | אפליקציית התשלום הנייד הפופולרית ביותר בישראל, מנותבת דרך קארדקום |
-| **PayPal** | `UrlToPayPal` | תשלומים בינלאומיים |
-| **Apple Pay** | נרנדר בתוך דף ה-Low Profile עצמו | מופיע באתר `cardcom.solutions` כארנק נתמך בדף התשלום |
-| **Google Pay** | נרנדר בתוך דף ה-Low Profile עצמו | זהה ל-Apple Pay, מוצג ככפתור ארנק בדף ה-Low Profile |
-
-`UrlToBit` ו-`UrlToPayPal` הם שדות URL מפורשים שאפשר להציג ליד טופס הכרטיס. Apple Pay ו-Google Pay עולים ככפתורי ארנק בתוך דף ה-Low Profile עצמו אחרי שמפעילים אותם במסוף, אז אין שדה URL נפרד בתגובה. הפעילו כל אמצעי במסוף שלכם בלוח הבקרה של קארדקום לפני שאתם סומכים עליו בפרודקשן.
+השדות `UrlToBit` ו-`UrlToPayPal` בתגובת `LowProfile/Create` הם כתובות נפרדות שאפשר להציג ליד טופס הכרטיס; Google Pay ו-Apple Pay מופיעים ככפתורי ארנק בתוך הדף המתארח אחרי שמפעילים אותם במסוף. **Apple Pay לא תומך בשמירת אסימון או בהוראות קבע** (לפי קארדקום, בהוראת קבע הכפתור עשוי להופיע אבל אי אפשר להשלים בו את התשלום), אז דף מנוי מסוג `ChargeAndCreateToken` לא ניתן לתשלום בו, ובתוך iframe הוא דורש רישום של הדומיין שלכם מול Apple דרך התמיכה של קארדקום. פירוט: `references/api-endpoints.md`.
 
 ### שלב 4: הפקת מסמכי מס ישראליים
-
-היתרון הייחודי של קארדקום הוא הפקת מסמכים אוטומטית עם התשלומים. זה קריטי לעסקים ישראליים כי חוק המס מחייב להנפיק מסמכים מתאימים לכל עסקה.
 
 סוג המסמך נקבע באמצעות השדה **`DocumentTypeToCreate`**, שהוא enum מסוג מחרוזת (לא מספר שלם). ערכים נפוצים:
 
@@ -131,11 +133,8 @@ POST https://secure.cardcom.solutions/api/v11/LowProfile/GetLpResult
 | `Receipt` | קבלה | אישור תשלום בלבד |
 | `TaxInvoiceAndReceiptRefund` | זיכוי חשבונית מס / קבלה | ביטול של `TaxInvoiceAndReceipt` |
 | `TaxInvoiceRefund` | זיכוי חשבונית מס | ביטול של `TaxInvoice` |
-| `ReceiptRefund` | זיכוי קבלה | ביטול של `Receipt` |
-| `ProformaInvoice` | חשבונית עסקה / פרופורמה | מסמך הצעת מחיר טרום מכירה |
-| `DonationReceipt` | קבלת תרומות | עמותות רשומות |
 
-ל-enum המלא של `DocumentToCreate` יש 25 ערכים, וכולל גם `Quote`, `Order`, `OrderConfirmation`, `DeliveryNote`, `DemandForPayment`, `ProformaDealInvoice`, `ReceiptForTaxInvoice` ו-`CouponDocumentAndReceipt`. לרובם קיימות גרסאות החזר אבל לא לכולם: אין `QuoteRefund` ואין `OrderRefund`. אלה 11 שכן קיימות: `TaxInvoiceAndReceiptRefund`, `ReceiptRefund`, `OrderConfirmationRefund`, `DeliveryNoteRefund`, `DemandForPaymentRefund`, `ProformaDealInvoiceRefund`, `ProformaInvoiceRefund`, `TaxInvoiceRefund`, `DonationReceiptRefund`, `CouponDocumentAndReceiptRefund` ו-`ReceiptForTaxInvoiceRefund`. תאמתו את הערך המדויק שאתם צריכים מול התיעוד הרשמי בכתובת `https://secure.cardcom.solutions/Api/v11/Docs`.
+ל-enum המלא של `DocumentToCreate` יש 25 ערכים, והם מפורטים ב-`references/document-types.md`. אין `QuoteRefund` ואין `OrderRefund`, אז אל תמציאו גרסת החזר על ידי הוספת `Refund` לשם.
 
 איך לכלול מסמך בתהליך תשלום: תוסיפו את אובייקט `Document` לבקשת `LowProfile/Create` או `Transaction`. קארדקום מפיקה את המסמך אוטומטית כשהתשלום מצליח.
 
@@ -163,33 +162,24 @@ POST https://secure.cardcom.solutions/api/v11/Documents/CreateDocument
 
 התגובה היא `DocumentInfo`: תבדקו `ResponseCode == 0`, ואז תקראו את `DocumentType`, `DocumentNumber`, `AccountId` ו-`DocumentUrl` (קישור ל-PDF).
 
-שימו לב לאיות האמיתי של השדות ב-V11 בתוך אובייקט `Document`: `DocumentTypeToCreate` (enum מחרוזת), `Name` (ה"document To", נדרש, עד 50 תווים), `TaxId` (מספר עוסק או מספר זהות, מחליף את `VAT_Number` הישן), `IsSendByEmail` (מחליף את `SendByEmail`), `Languge` (האיות בסכמה הזו, חסרה ה-`a` השנייה; שימו לב שאובייקט המסמך של Low Profile, `DocumentLP`, משתמש דווקא באיות התקין `Language`), `ISOCoinID` (מחליף את `CoinID`), `IsVatFree`, ו-`Products[]` עם `Description`, `UnitCost`, `Quantity`, `IsVatFree`. ראו את `references/document-types.md` לרשימת השדות המלאה.
+איות השדות שונה בין שלושת אובייקטי המסמך (`Languge` לעומת `Language`, ו-`ISOCoinID` קיים רק ב-`Document` העצמאי הזה, לעולם לא בתוך מסמך של Low Profile או של Transaction); ראו מלכודות נפוצות ואת `references/document-types.md` לרשימת השדות המלאה. `TaxId` מחליף את `VAT_Number` הישן ו-`IsSendByEmail` מחליף את `SendByEmail`.
 
 ### שלב 4.5: מספר הקצאה בחשבוניות מס
 
-**אל תחפשו שדה של מספר הקצאה ב-API. אין כזה, וזו לא השמטה.** קארדקום פיתחה ממשק ישיר מול
-רשות המסים, ולכן כשמפיקים חשבונית מס מעל התקרה בקשת מספר ההקצאה נשלחת אוטומטית בעת הפקת
-המסמך, בצד השרת. בגוף הבקשה של `CreateDocument` אין שדה `AllocationNumber`, ומפתח שיחפש
-אותו במפרט ה-OpenAPI יסיק בטעות שקארדקום לא תומכת בדרישה.
+**אל תחפשו שדה של מספר הקצאה ב-API של המסמכים. אין כזה, וזו לא השמטה.** מערכת המסמכים של קארדקום מחוברת לרשות המסים ומבקשת את המספר בעצמה כשהיא מפיקה חשבונית מס מעל הסף. לא בקשת `CreateDocument` ולא תגובת `DocumentInfo` נושאות אותו; המספר מודפס על המסמך תחת הכותרת "מספר הקצאה:", אז קוראים אותו מקובץ ה-PDF שב-`DocumentUrl`.
 
-**זה לא פעיל כברירת מחדל. נדרשת הגדרה חד-פעמית, ובלעדיה הלקוח שלכם לא יוכל לקזז מע"מ
-תשומות.** קיום מספר הקצאה על חשבונית מס הוא תנאי לניכוי מס תשומות אצל המקבל, בכל חשבונית
-שסכומה לפני מע"מ עולה על התקרה שנקבעה בחוק. ההגדרה, שמבצע בעל העסק או הדירקטור פעם אחת
-באתר רשות המסים, היא:
+**זה עובד רק אחרי רישום שפג תוקפו.** בלי מספר, הלקוח שלכם לא יכול לקזז מע"מ תשומות על חשבונית שסכומה לפני מע"מ עולה על הסף. לפי המדריך של קארדקום עצמה:
 
-1. הזדהות באזור האישי באתר רשות המסים, ורישום אם עוד אין חשבון.
-2. בחברה בע"מ או באיחוד עוסקים צריך גם לבצע רישום פרטי תאגיד.
-3. במערכת הרשאה לפעולות דיגיטליות של רשות המסים (יש אליה קישור מעמוד השירות של מספר
-   הקצאה) נותנים את ההרשאה ובוחרים את שני הנושאים של חשבוניות ישראל, לא אחד מהם. נושא
-   אחד הוא אימות מספר ההקצאה שעל חשבונית של ספק, והשני הוא בקשת מספר הקצאה לחשבונית
-   שאתם מוציאים ללקוח. לבחור רק את הראשון זו הטעות הנפוצה, והיא משאירה את החשבוניות
-   שלכם בלי מספר. הניסוח המדויק של שני הנושאים מופיע רק בתוך המערכת, שדורשת הזדהות, אז
-   תזהו אותם לפי המשמעות ולא לפי מחרוזת שמצוטטת כאן.
-4. בוחרים לכמה זמן ניתנת ההרשאה, ומקבל ההרשאה מאשר אותה.
+1. בעל העסק מזדהה באזור האישי באתר רשות המסים, ונרשם אם צריך.
+2. חברה בע"מ או איחוד עוסקים מבצעים שם רישום פרטי תאגיד.
+3. במערכת הניהול של קארדקום: הגדרות, אחר כך מסמכים, אחר כך שירות חשבוניות ישראל. מפיקים קוד אימות ומועברים לרשות המסים להזדהות. רק בעל העסק, או מי שבעל העסק נתן לו הרשאה לפעולות דיגיטליות, יכול לבצע את זה.
+4. לוחצים על "בדיקת קבלת מספר הקצאה" כדי לוודא שמספרים באמת מונפקים.
 
-**מתווה התקרות (הסכומים לפני מע"מ):**
+קוד האימות תקף **לשלושה חודשים**. אחרי שהוא פג, חשבוניות מונפקות בלי מספר; נרשמים מחדש ואז מדפיסים מחדש את המסמך כדי לצרף מספר. לכן job מתוזמן שמפיק חשבוניות גדולות חייב לבדוק שהשירות פעיל, לא להניח את זה. שגיאה `Not Acceptable (406)` פירושה שלמשתמש שהזדהה אין הרשאה מול רשות המסים עבור העסק הזה: בעל העסק נותן אותה תחת "הרשאות לפעולות דיגיטליות", ובוחר את שני הנושאים "חשבוניות ישראל – אימות מספר הקצאה בחשבונית ספק" ו-"חשבוניות ישראל – בקשת מספר הקצאה עבור חשבונית ללקוח".
 
-החובה למספר הקצאה נכנסה לתוקף במאי 2024.
+קארדקום מתעדת גם שלא יונפק מספר כאשר: חסר מספר הזהות או ח.פ. של הלקוח (`TaxId`); הספק והלקוח הם אותו ח.פ.; או שחשבונית מס קבלה לא כוללת מע"מ.
+
+**מתווה התקרות (לפני מע"מ; החוק כותב `עולה על`):**
 
 | נכון מ | תקרה |
 |---------|------|
@@ -198,15 +188,7 @@ POST https://secure.cardcom.solutions/api/v11/Documents/CreateDocument
 | 1.1.2026 | 10,000 ש"ח |
 | 1.6.2026 | **5,000 ש"ח (בתוקף עכשיו)** |
 
-חשבוניות שתאריכן לפני מאי 2024 קדמו למודל ומעולם לא נדרש להן מספר. הסף נקבע לפי תאריך
-המסמך עצמו, אז אם אתם מפיקים מחדש, מעבירים או מבקרים מסמכים ישנים, תבדקו כל אחד מול הסף
-שהיה בתוקף בתאריך שלו ולא מול 5,000 של היום. החוק כותב "עולה על", כך שמסמך בדיוק בגובה
-הסף אינו בתחולה.
-
-עוסק פטור לא מושפע, כי הוא לא מוציא חשבוניות מס ולא מקזז מע"מ תשומות. גם חשבוניות בשיעור
-אפס וחשבוניות פטורות בלבד מחוץ לתחולה (סעיף 47(א2)(1)), אז חשבונית ייצוא אינה טעונה מספר
-יהיה סכומה אשר יהיה. אם האינטגרציה נכתבה מוקדם יותר ב-2026 מול הסף של 10,000, הטווח שבין
-5,000 ל-10,000 הוא מה שצריך לבדוק מחדש.
+הסף נקבע לפי התאריך של כל מסמך; ראו `references/document-types.md` למסמכים ישנים, עוסק פטור וחשבוניות בשיעור אפס. גם כשהכול מוגדר, מספר יכול להיעצר: לפי סעיף 47(א2)(3) המנהל רשאי להחליט שלא להקצות מספר כשיש לו יסוד סביר לחשש שהחשבונית תוצא שלא כדין (החלטה מקדמית, עם שימוע בתוך שני ימי עסקים), וסעיף 47(א2)(4) מאפשר לעוסק לבקש מספר גם לאחר הוצאת החשבונית. תוודאו שהמספר מופיע על המסמך לפני שאתם מסתמכים עליו.
 
 ### שלב 4.6: מניעת כפילות, ואישור מול גבייה
 
@@ -215,16 +197,9 @@ POST https://secure.cardcom.solutions/api/v11/Documents/CreateDocument
 קרון שהקריאה שלו נכשלה בטיימאאוט אחרי שקארדקום כבר חייבה את הכרטיס ינסה שוב ויחייב את הלקוח
 פעמיים.
 
-**608 אומר "כבר חויב", לא "התשלום נכשל".** זה קוד השגיאה היחיד שחייבים לטפל בו בנפרד:
-תתייחסו אליו ככפילות שנחסמה כראוי, ולא ככישלון שצריך לנסות שוב או לחייב ידנית. אחרי כל
-טיימאאוט או תוצאה לא ברורה, תקראו ל-`POST /api/v11/Transactions/GetTransactionByExternalUniqTran`
-כדי לברר אם החיוב המקורי עבר, לפני שאתם עושים משהו אחר.
+**608 אומר "המזהה הזה כבר קיבל תשובה תקינה מהכרטיס", לא "התשלום נכשל".** לפי ההנחיות של קארדקום לממשק חיוב האסימונים, המזהה נצרך כשקריאה מקבלת תשובת חיוב (0), J2 (701) או J5 (700), כך ש-608 לא מוכיח שנגבה כסף. לעולם אל תנסו שוב עם מזהה חדש: אחרי כל 608, טיימאאוט או תוצאה לא ברורה, תקראו ל-`POST /api/v11/Transactions/GetTransactionByExternalUniqTran` ותחליטו לפי ה-`ResponseCode` של הרשומה ההיא (0 = חויב; 700/701 = רק נבדק או נתפס). חיוב שנדחה לא צורך את המזהה, אז אפשר לנסות שוב עם אותו מזהה; חכו לתשובה (עד 7 שניות) לפני שליחה חוזרת. לגבייה תנו מזהה משלה, לעולם לא את המזהה של התפיסה.
 
-**J2 ו-J5 אינם אותו דבר, ו-700/701 לא אומרים שהלקוח לא נגוע.** השדה
-`Advanced.JValidateType` בוחר בין J2 (אימות כרטיס פשוט, שום דבר לא נתפס) לבין J5 (אישור,
-שתופס את הכסף במסגרת של בעל הכרטיס). J5 חייב גבייה לאחר מכן באמצעות
-`Advanced.ApprovalNumber`, שמתועד במפרט כגבייה של בקשת J5. אישור שלא נגבה משאיר את כספי
-הלקוח תפוסים עד שהוא פג, אז אם אתם משתמשים ב-J5 חייב להיות לכם שלב גבייה ומסלול שחרור.
+**שימו לב: J2 ו-J5 אינם אותו דבר, ו-700/701 לא אומרים שהלקוח לא נגוע.** השדה `JValidateType` חל על הפעולות `CreateTokenOnly` ו-`SuspendedDeal`, ובוחר בין J2 (אימות כרטיס פשוט, שום דבר לא נתפס) לבין J5 (אישור, שתופס את הסכום במסגרת של בעל הכרטיס). ב-`LowProfile/Create` ברירת המחדל שלו היא `5`, כך שדף `CreateTokenOnly` תופס J5 על `Amount` אלא אם שולחים `AdvancedDefinition.JValidateType: 2`. גבייה של J5 נעשית בחיוב הטוקן כש-`Advanced.ApprovalNumber` מכיל את ה-`TokenInfo.TokenApprovalNumber` שקיבלתם (במפרט: גבייה של בקשת J5). אישור שלא נגבה משאיר את כספי הלקוח תפוסים עד שהוא פג, אז אם אתם משתמשים ב-J5 חייב להיות לכם שלב גבייה ומסלול שחרור (קארדקום מתעדת `MTI=420` עם מספר העסקה של התפיסה; במסוף הבדיקות אי אפשר לבצע J5 בכלל, ראו `references/production-checklist.md`).
 
 ### שלב 5: תשלומים חוזרים מבוססי טוקן
 
@@ -233,7 +208,7 @@ POST https://secure.cardcom.solutions/api/v11/Documents/CreateDocument
 - **הוראת קבע על כרטיס אשראי**, חיוב של `Token` שמור על מחזור קבוע. מטופל בשלב הזה.
 - **הוראת קבע בנקאית דרך מס"ב**, חיוב ישיר מחשבון הבנק הישראלי של הלקוח. מנוהל דרך ה-endpoints של `RecuringPayments` (`RecuringPayments/GetRecurringPayment`, `GetRecurringPaymentHistory`, `IsBankNumberValid`). תשתמשו בזה כשהלקוח מעדיף חיוב בנקאי על פני חיוב כרטיס או כשאין כרטיס זמין. ההוראה עצמה מוקמת מלוח הבקרה של קארדקום.
 
-לתשלום חוזר מבוסס כרטיס:
+לתשלום חוזר מבוסס כרטיס, קודם תוודאו שלבית העסק יש מודול אסימונים של קארדקום ומסוף שלא מחייב CVV (במסוף שמחייב CVV כל חיוב טוקן דורש מספר אישור J5 חד-פעמי), ובלי המודול קארדקום שומרת טוקן רק 6 חודשים, לצורכי זיכויים (`references/production-checklist.md`).
 
 1. **יצירת טוקן בתשלום הראשון.** תשתמשו ב-Low Profile עם `Operation: "ChargeAndCreateToken"` (או `"CreateTokenOnly"`). ה-`LowProfileResult` מחזיר `TokenInfo` עם `Token`, `CardMonth`, `CardYear` ו-`TokenExDate` (התאריך שבו הטוקן נמחק ממערכת קארדקום).
 
@@ -250,6 +225,7 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/Transaction
   "CardExpirationMMYY": "1227",
   "Amount": 99.00,
   "ISOCoinId": 1,
+  "ExternalUniqTranId": "sub-8841-2026-10",
   "Document": {
     "DocumentTypeToCreate": "TaxInvoiceAndReceipt",
     "Name": "שם המנוי",
@@ -262,7 +238,7 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/Transaction
 }
 ```
 
-התגובה היא `TransactionInfo`: תבדקו `ResponseCode == 0` (שימו לב ש-`700` ו-`701` נחשבים גם הם הצלחה לעסקאות אימות בלבד מסוג J2/J5), ואז תקראו את `TranzactionId`, `Token`, `DocumentNumber` ו-`DocumentUrl`. כל חיוב טוקן יכול להפיק ולשלוח חשבונית במייל אוטומטית כשמצורף אובייקט `Document`.
+ה-`ExternalUniqTranId` הוא מזהה אחד לכל מנוי בכל מחזור חיוב, כך שניסיון חוזר של אותו מחזור נחסם (608) והחיוב של החודש הבא עובר. התגובה היא `TransactionInfo`: רק `ResponseCode == 0` הוא חיוב (`700`/`701` הם תשובות לבדיקות J2/J5, שבהן לא חויב דבר), ואז תקראו את `TranzactionId`, `Token`, `DocumentNumber` ו-`DocumentUrl`. כל חיוב טוקן יכול להפיק ולשלוח חשבונית במייל אוטומטית כשמצורף אובייקט `Document`; אם חסר `DocumentNumber`, הכרטיס חויב אבל החשבונית לא הופקה, אז תפיקו אותה עם `CreateDocument` ולא תחייבו שוב.
 
 ### שלב 6: ביצוע החזרים
 
@@ -282,7 +258,7 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/RefundByTransactionId
 
 `ApiPassword` נדרשת להחזרים. `PartialSum` מחזיר חלק מהעסקה (תשמיטו אותו כדי להחזיר את הסכום המלא). `CancelOnly: true` מבטל עסקה לפני שהיא הופקדה. התגובה היא `RefundByTransactionIdResp`: תבדקו `ResponseCode == 0`, ואז תקראו את `NewTranzactionId` (מזהה עסקת ההחזר).
 
-כדי להנפיק את מסמך הזיכוי התואם, תקראו ל-`Documents/CreateDocument` עם `DocumentTypeToCreate` של זיכוי כמו `TaxInvoiceAndReceiptRefund` או `TaxInvoiceRefund`.
+כדי להנפיק את מסמך הזיכוי התואם, תקראו ל-`Documents/CreateDocument` עם `DocumentTypeToCreate` של זיכוי כמו `TaxInvoiceAndReceiptRefund` או `TaxInvoiceRefund`, ותקשרו אותו לעסקת הזיכוי דרך `DealNumbers: [{"DealNumber": <NewTranzactionId>}]`, לא לעסקת החיוב המקורית. ההנחיות של קארדקום לממשק הישן אומרות זאת במפורש: אחרי זיכוי פונים שוב ל-API להפקת מסמך זיכוי ומצליבים אותו לעסקת הזיכוי. אל תקראו בנוסף ל-`Documents/CancelDoc` עבור אותו זיכוי: לפי סיכום המפרט הוא מבטל מסמך ומזכה את כרטיס האשראי, הוא מקבל `ApiName`, `ApiPassword`, `DocumentNumber` ו-`DocumentType` שהוא מספר שלם, ומחזיר `NewDocumentNumber`, כך ששילוב שלו עם `RefundByTransactionId` מסכן זיכוי כפול. בזיכוי מלא של מכירה שיש לה מסמך, `CancelDoc` לבדו הוא החלופה שקשורה למסמך; `AllowMultipleRefunds` (ברירת מחדל `false`) הוא ההגנה שלכם מפני זיכוי כפול של אותה עסקה.
 
 ### שלב 6.5: שליפת עסקאות לדוחות
 
@@ -301,16 +277,11 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/ListTransactions
 }
 ```
 
-ארבעה דברים בנקודת הקצה הזו מפילים כמעט כל אינטגרציה:
-
-1. שדה `ApiPassword` נדרש. זו קריאה ברמת החברה, לא חיוב בודד.
-2. אין שדה `TerminalNumber`. הסכמה מגדירה `additionalProperties: false`, ולכן שליחת `TerminalNumber` נדחית על הסף. כדי לצמצם את התוצאות למסוף אחד, תשתמשו ב-`LimitForTerminal` האופציונלי.
-3. התאריכים הם מחרוזות בפורמט `DDMMYYYY`, לא ISO. הערך `01062026` הוא 1 ביוני 2026.
-4. השדות `Page` ו-`Page_size` שניהם נדרשים, ו-`Page_size` חייב להיות בין 10 ל-2000. הדפדוף מתחיל מ-1, לא מ-0.
+השדות `ApiPassword`, `FromDate`, `ToDate` (מחרוזות `DDMMYYYY`, כך ש-`01062026` הוא 1 ביוני 2026), `Page` (מ-1) ו-`Page_size` (10 עד 2000) כולם חובה. אין שדה `TerminalNumber`; לצמצום למסוף אחד תשתמשו ב-`LimitForTerminal`.
 
 התגובה היא `GetTranzactionsResp`: תבדקו `ResponseCode == 0`, ואז תקראו את `Tranzactions` (מערך של `TransactionInfo`), יחד עם `Page` ו-`Page_size` שמוחזרים בחזרה. תמשיכו לבקש את העמוד הבא עד שעמוד מחזיר פחות שורות מ-`Page_size`.
 
-נקודת הקצה `Transactions/SpecialTransactions` היא אחות שלה לקריאה בלבד (היא מחזירה עסקאות אחרות כשקארדקום היא הסולק שלכם) ומקבלת בדיוק את אותם ארבעה שדות נדרשים: `ApiName`, `ApiPassword`, `FromDate`, `ToDate`. למרות השם, היא לא יוצרת שום דבר.
+נקודת הקצה `Transactions/SpecialTransactions` היא נקודת קריאה בלבד למרות השם (ראו `references/api-endpoints.md`).
 
 ### שלב 7: עסקאות מושהות
 
@@ -318,29 +289,45 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/ListTransactions
 
 1. תיצרו סשן Low Profile עם `Operation: "SuspendedDeal"`.
 2. ה-`LowProfileResult` מחזיר `SuspendedInfo` עם `SuspendedDealId`.
-3. תחייבו את העסקה המושהית מאוחר יותר דרך לוח הבקרה של קארדקום או דרך נקודת הקצה `SuspendedDeals/Charge` (קבוצת `SuspendedDeals` כוללת גם `Cancel` ו-`GetSuspendedDealInfo`).
+3. מחייבים אותה מאוחר יותר בלוח הבקרה של קארדקום או עם `POST /api/v11/SuspendedDeals/Charge`, שהשדות היחידים שלו (כולם חובה, `additionalProperties: false`) הם `TerminalNumber`, `ApiName` ו-`SuspendedDealID`. **שימו לב לאותיות:** אובייקט התוצאה כותב `SuspendedDealId`, הבקשה `SuspendedDealID`; תשלחו את הכתיב של הבקשה. `SuspendedDeals/Cancel` ו-`GetSuspendedDealInfo` מקבלות את אותם שלושה שדות; בקבוצה יש גם `GetSuspendedDeals` ו-`UpdateSuspendedDealInfo`.
 
-שימושי להרשאות מראש ולשירותים שמחויבים אחרי אספקה. ודאו את שדות הבקשה המדויקים של `SuspendedDeals/Charge` מול התיעוד הרשמי לפני חיבור קריאת החיוב המאוחר.
+שימושי להרשאות מראש ולשירותים שמחויבים אחרי אספקה. גם כאן חל `JValidateType`, וברירת המחדל שלו ב-`LowProfile/Create` היא `5` (J5), כך שעסקה מושהית בדרך כלל תופסת את הסכום בכרטיס: תבטלו את אלה שלא תחייבו.
 
 ### שלב 8: טיפול בשגיאות
 
-כל endpoint ב-V11 מחזיר מספר שלם `ResponseCode` ומחרוזת `Description`. `ResponseCode == 0` משמעו הצלחה, כל ערך שאינו אפס הוא שגיאת מפתח/עסקה ו-`Description` נושא את הסיבה הקריאה לאדם.
+כל endpoint שהסקיל משתמש בו מחזיר מספר שלם `ResponseCode` ומחרוזת `Description` (כמה אחרים, כמו `GetTransactionInfoById` ושאילתות `CompanyOperations`, מחזירים במקום זאת מערך או ערך בוליאני). `ResponseCode == 0` משמעו הצלחה, כל ערך שאינו אפס הוא שגיאת מפתח/עסקה ו-`Description` נושא את הסיבה הקריאה לאדם.
 
 ```python
 import requests
 
-resp = requests.post(
-    "https://secure.cardcom.solutions/api/v11/Transactions/Transaction",
-    json=payload,
-).json()
+BASE = "https://secure.cardcom.solutions/api/v11"
+payload["ExternalUniqTranId"] = order_id  # same id on every retry of THIS charge
 
-if resp.get("ResponseCode") == 0:
-    deal_id = resp["TranzactionId"]
+try:
+    r = requests.post(f"{BASE}/Transactions/Transaction", json=payload, timeout=30)
+except requests.RequestException:
+    r = None  # outcome unknown: the card MAY have been charged
+
+if r is None or r.status_code != 200:
+    # Never re-charge blind. Ask Cardcom whether the charge went through.
+    q = requests.post(f"{BASE}/Transactions/GetTransactionByExternalUniqTran",
+                      json={"TerminalNumber": payload["TerminalNumber"],
+                            "ApiName": payload["ApiName"],
+                            "ExternalUniqTranId": order_id}, timeout=30)
+    resp = q.json() if q.status_code == 200 else None
 else:
-    log_error(f"Cardcom error {resp.get('ResponseCode')}: {resp.get('Description')}")
+    resp = r.json()
+
+code = resp.get("ResponseCode") if resp else None
+if code == 0:
+    deal_id = resp["TranzactionId"]
+elif code == 608:
+    mark_for_lookup(order_id)  # id already answered: look the record up, never re-charge
+else:
+    log_error(f"Cardcom error {code}: {resp.get('Description') if resp else 'no response'}")
 ```
 
-תמיד תבדקו גם את סטטוס ה-HTTP (200 משמעו שהבקשה התקבלה) וגם את `ResponseCode` (0 משמעו שהפעולה הצליחה). התיעוד הרשמי בכתובת `https://secure.cardcom.solutions/Api/v11/Docs` נושא את מדריך השגיאות המספרי המלא, אל תקודדו מיפוי קבוע של קוד שגיאה להודעה, תקראו את `Description` במקום. ראו את `references/api-responses.md` לדפוס הטיפול.
+תמיד תבדקו גם את סטטוס ה-HTTP (200 משמעו שהבקשה התקבלה) וגם את `ResponseCode` (0 משמעו שהפעולה הצליחה). שמרו את `ApiName`/`ApiPassword` בצד השרת בלבד; אף אחת מהקריאות האלה לא רצה מ-JavaScript בדפדפן. התיעוד הרשמי בכתובת `https://secure.cardcom.solutions/Api/v11/Docs` נושא את מדריך השגיאות המספרי המלא, אל תקודדו מיפוי קבוע של קוד שגיאה להודעה, תקראו את `Description` במקום. ראו את `references/api-responses.md` לדפוס הטיפול.
 
 ## דוגמאות
 
@@ -373,22 +360,20 @@ else:
 פעולות:
 1. תקראו ל-`Transactions/RefundByTransactionId` עם `TransactionId` ו-`ApiPassword`.
 2. תבדקו `ResponseCode == 0` ותקראו את `NewTranzactionId`.
-3. תקראו ל-`Documents/CreateDocument` עם `DocumentTypeToCreate: "TaxInvoiceAndReceiptRefund"`.
+3. תקראו ל-`Documents/CreateDocument` עם `DocumentTypeToCreate: "TaxInvoiceAndReceiptRefund"` ועם `DealNumbers: [{"DealNumber": <NewTranzactionId>}]`.
 תוצאה: ההחזר מעובד ומסמך הזיכוי התואם מופק.
 
 ### דוגמה 5: קבלת תשלום Bit, Apple Pay ו-Google Pay
 המשתמש אומר: "אני רוצה לאפשר ללקוחות לשלם גם עם Bit, Apple Pay ו-Google Pay בנוסף לכרטיס אשראי"
 פעולות:
-1. תפעילו כל אמצעי (Bit, Apple Pay, Google Pay) במסוף קארדקום דרך לוח הבקרה.
-2. תיצרו סשן Low Profile כרגיל דרך `LowProfile/Create`.
-3. תציגו את `UrlToBit` מהתגובה לצד טופס הכרטיס. Apple Pay ו-Google Pay יופיעו ככפתורי ארנק בתוך דף ה-Low Profile עצמו, בלי URL נפרד.
-תוצאה: לקוחות יכולים לבחור בין כרטיס אשראי, Bit, Apple Pay ו-Google Pay, אותו תהליך webhook.
+1. מפעילים כל אמצעי במסוף, ואז יוצרים את דף ה-Low Profile כרגיל.
+2. מציגים את `UrlToBit` ליד טופס הכרטיס; Apple Pay ו-Google Pay מופיעים בתוך הדף (Apple Pay רק בחיובים חד-פעמיים, לא בדף שיוצר טוקן).
+תוצאה: הלקוחות בוחרים אמצעי תשלום; אותו תהליך webhook.
 
 ## ספריות קהילתיות
 
-- **@tsdiapi/cardcom** (TypeScript/Node.js), לקוח API V11 עם תשלומים, החזרים, טוקניזציה, שאילתות עסקאות. התקנה: `npm install @tsdiapi/cardcom`
-- **CardCom/OpenFields-FrontEnd-React** (React), דוגמת OpenFields רשמית. ראו `https://github.com/CardCom/OpenFields-FrontEnd-React`
-- **CardCom/OpenFields-Backend-Node** (Node.js), דוגמת backend רשמית. ראו `https://github.com/CardCom/OpenFields-Backend-Node`
+- **@tsdiapi/cardcom** (TypeScript/Node.js), לקוח V11 קהילתי שלא נבדק על ידינו. `npm install @tsdiapi/cardcom`
+- **CardCom/OpenFields-FrontEnd-React** ו-**CardCom/OpenFields-Backend-Node**, דוגמאות OpenFields רשמיות של קארדקום (קישורים למטה).
 
 ## קישורים לחומרי עזר
 
@@ -405,21 +390,23 @@ else:
 - `references/api-endpoints.md`, מדריך endpoints של Cardcom REST API V11: נתיבי LowProfile, Transactions, Documents, RecuringPayments, Financial ו-CompanyOperations עם שדות הבקשה/תגובה המרכזיים שלהם. תסתכלו עליו כשאתם בונים אינטגרציות API.
 - `references/api-responses.md`, דפוס התגובה `ResponseCode` + `Description` של V11, אובייקטי התגובה לכל פעולה, וזרימת הטיפול המומלצת בשגיאות. תסתכלו עליו כשאתם מדבגים קריאות API שנכשלו.
 - `references/document-types.md`, ה-enum המחרוזתי `DocumentTypeToCreate`, רשימת השדות של אובייקט `Document`, וטיפול במעמ לפי חוק המס הישראלי. תסתכלו עליו כשאתם מחליטים איזה סוג מסמך להפיק.
+- `references/production-checklist.md`, תנאים למנויים, סכום שורות המסמך, שחרור J5, מצב ה-webhook, אידמפוטנטיות וסודות. לקרוא לפני עלייה לאוויר.
+- `references/domain-checklist.md`, רשימת הכיסוי שמולה הסקיל נבדק.
 
 ### סקריפטים
-- `scripts/validate_cardcom_response.py`, מאמת תגובת API של קארדקום V11: בודק `ResponseCode`, מציג את `Description`, ומוודא שדות צפויים לפעולות עסקה, טוקן ומסמך. רק `ResponseCode` 0 נחשב הצלחה; הקודים 700/701 נדחים אלא אם מוסיפים `--validation-only`, כי הם אומרים שבדיקת כרטיס מסוג J2/J5 עברה ושום כסף לא זז. להרצה: `python scripts/validate_cardcom_response.py --help`
+- `scripts/validate_cardcom_response.py`, מאמת תגובת API של קארדקום V11, גם `LowProfileResult` וגם תגובה שטוחה (`Transaction`, `CreateDocument`, `RefundByTransactionId`). הדגל `--expect {charge,token,document,refund,validation}` נכשל בבטחה כשהתוצאה הצפויה חסרה, `--amount` ו-`--return-value` משווים מול ההזמנה שלכם, ו-`--with-document` מכשיל חיוב שהחשבונית שלו לא הופקה. רק `ResponseCode` 0 נחשב הצלחה; הקודים 700/701 נדחים אלא אם מוסיפים `--validation-only`, כי הם אומרים שבדיקת כרטיס מסוג J2/J5 עברה ושום דבר לא חויב. קוד 608 מדווח ככפילות שנחסמה. להרצה: `python scripts/validate_cardcom_response.py --help`
 
 ## מלכודות נפוצות
-- בדיקת ההצלחה ב-V11 היא `ResponseCode == 0`, לא `DealResponse == 0`. `DealResponse` לא קיים ב-V11, סוכנים שאומנו על דוגמאות קארדקום ישנות ממציאים אותו. כל endpoint ב-V11 מחזיר `ResponseCode` יחד עם מחרוזת `Description`.
-- `DocumentTypeToCreate` הוא enum מסוג מחרוזת (`"TaxInvoiceAndReceipt"`, `"TaxInvoice"`, `"Receipt"`, ...), לא קוד מספרי. קודי מסמך מספריים כמו `101` או `400` שייכים לממשקי `.aspx` ישנים, לא ל-V11.
+- בדיקת ההצלחה ב-V11 היא `ResponseCode == 0`, לא `DealResponse == 0`. `DealResponse` לא קיים ב-V11, סוכנים שאומנו על דוגמאות קארדקום ישנות ממציאים אותו. נקודות הקצה שבסקיל מחזירות `ResponseCode` יחד עם מחרוזת `Description`.
+- השדה `DocumentTypeToCreate` (באובייקטי `Document`) והשדה `DocumentType` ב-`CreateDocumentUrl` הם enum מסוג מחרוזת (`"TaxInvoiceAndReceipt"`, `"TaxInvoice"`, ...). אבל כמה נקודות קצה של מסמכים ב-V11 מקבלות סוג מסמך כמספר שלם: `CancelDoc.DocumentType`, `SendAllDocumentsToEmail.DocumentType`, `GetReport.DocType` והשדות של `CrossDocument`. המפרט לא מפרסם את המיפוי ממספר לשם, אז קחו את הערך מקארדקום (או ממסמך שכבר יש לכם) ואל תנחשו.
 - ה-`TerminalNumber` חייב להישלח כמספר שלם, לא כמחרוזת. סוכנים נוטים לעטוף אותו במירכאות.
-- `ApiPassword` נדרשת בהרבה יותר מהחזרים ומסמכים: 26 סכמות בקשה מציינות אותה כ-required במפרט הנוכחי. אל תכלילו את זה למשפחת נתיבים שלמה, כי יש חריגים אמיתיים: ל-`Documents/ExternalShopCreateDocument` אין בכלל שדה `ApiPassword`, ו-`Documents/CrossDocument` ו-`TapTransactions/NotifyExternalTapTransaction` לא מגדירות מערך `required`. תבדקו את הסכמה של נקודת הקצה המסוימת. מקרה אחד פועל בכיוון ההפוך: `ApiPassword` אינו שדה ברמה העליונה של `LowProfile/Create` או `Transactions/Transaction`, אבל הוא כן נדרש בתוך האובייקט המקונן `Advanced` / `AdvancedDefinition` כשמסמנים `IsRefund` (ב-Transaction) או `IsRefundDeal` (ב-LowProfile). זה מסלול ההחזר השני, שמשמש כשיש לכם טוקן או כרטיס אבל אין מזהה עסקה מקורי. קריאות וכתיבות ברמת החברה דורשות אותה (`ListTransactions`, `SpecialTransactions`, `RefundByTransactionId`, כל הכתיבות ב-`Documents/*`, כל הדוחות ב-`Financial/*`, כל `TapTransactions/*`), וחיובי כרטיס בודד לא. היא אפילו לא שדה קיים ב-`LowProfile/Create` או ב-`Transaction`, אז גם שליחה שלה שם היא טעות. סוכנים נוטים להשמיט אותה ב-`ListTransactions` כי הנחיות ישנות תיארו אותה כנדרשת "רק להחזרים ומסמכים".
-- נקודות הקצה לדוחות `ListTransactions` ו-`SpecialTransactions` לא מקבלות `TerminalNumber`, ושתיהן מגדירות `additionalProperties: false`, ולכן הכללה שלו מפילה את הקריאה. תצמצמו למסוף מסוים עם `LimitForTerminal` ב-`ListTransactions`. התאריכים שלהן הם מחרוזות `DDMMYYYY`, ו-`ListTransactions` דורשת בנוסף `Page` ו-`Page_size` בטווח 10 עד 2000.
-- שימו לב לאיות האמיתי של השדות ב-V11: `ISOCoinID` / `ISOCoinId`, `IsSendByEmail` (לא `SendByEmail`), `TaxId` (לא `VAT_Number`). **שדה השפה מאויית אחרת לפי אובייקט המסמך שבו אתם נמצאים, וכל הסכמות האלה דוחות שדות לא מוכרים, ולכן טעות כאן מפילה את הקריאה:** `Document` (בקריאת `CreateDocument` העצמאית) ו-`DocumentTran` (ב-`Transaction`) משתמשים באיות השגוי `Languge`, בעוד `DocumentLP`, המסמך שמצרפים ל-`LowProfile/Create`, משתמש באיות התקין `Language`. שימוש ב-`Languge` בכל מקום שובר את זרימת ה-Low Profile, שהיא הזרימה שהסקיל ממליץ עליה קודם.
+- **רשימת ה-`ApiPassword` משתנה בין גרסאות של המפרט, אז לעולם אל תענו מהזיכרון.** הסקיל הזה אמר פעם שאין `ApiPassword` ב-`Documents/ExternalShopCreateDocument`; המפרט הנוכחי מחייב אותה, ונתיב `TapTransactions` שהוא ציטט כבר לא קיים. תקראו את הסכמה של נקודת הקצה. המקרה ההפוך: `ApiPassword` אינו שדה ברמה העליונה של `LowProfile/Create` או `Transactions/Transaction`, אבל הוא כן נדרש בתוך `Advanced` / `AdvancedDefinition` כשמסמנים `IsRefund` / `IsRefundDeal` (מסלול ההחזר עם טוקן או כרטיס, כשאין `TransactionId` מקורי).
+- **ה-webhook אינו מאומת.** אין שדה חתימה או סוד בשום מקום ב-`LowProfile/Create`, והשדה `WebHookUrl` הוא חובה ולא אופציונלי. כל מי שיודע את הכתובת יכול לשלוח אליה POST, ולכן היא רשאית רק להפעיל שליפת `GetLpResult` עבור `LowProfileId` שאתם יצרתם (שלב 3ב).
+- נקודות הקצה לדוחות `ListTransactions` ו-`SpecialTransactions` לא מקבלות `TerminalNumber`, ואף אחת מהסכמות לא מגדירה אותו (שתיהן מסומנות `additionalProperties: false`), אז אל תשלחו אותו. תצמצמו למסוף מסוים עם `LimitForTerminal` ב-`ListTransactions`. התאריכים שלהן הם מחרוזות `DDMMYYYY`, ו-`ListTransactions` דורשת בנוסף `Page` ו-`Page_size` בטווח 10 עד 2000.
+- שימו לב לאיות האמיתי של השדות ב-V11: `ISOCoinID` / `ISOCoinId`, `IsSendByEmail` (לא `SendByEmail`), `TaxId` (לא `VAT_Number`). **שדה השפה מאויית אחרת לפי אובייקט המסמך שבו אתם נמצאים, וכל סכמה מגדירה רק את הכתיב שלה (`additionalProperties: false`), כך שהכתיב האחר במקרה הטוב מתעלמים ממנו:** `Document` (בקריאת `CreateDocument` העצמאית) ו-`DocumentTran` (ב-`Transaction`) משתמשים באיות השגוי `Languge`, בעוד `DocumentLP`, המסמך שמצרפים ל-`LowProfile/Create`, משתמש באיות התקין `Language`. שימוש ב-`Languge` בכל מקום אומר ששפת המסמך ב-Low Profile לא נקבעת כפי שהתכוונתם.
 - שיעור המע"מ הנוכחי בישראל הוא 18% (מינואר 2025; לפני כן הוא היה 17%, אז מסמך שמופק מחדש לתקופה קודמת צריך את השיעור שהיה בתוקף בתאריך שלו). קארדקום מחשבת מעמ בצד השרת, אז סכומי המסמך מטופלים לפי דגל `IsVatFree`.
-- **היקף PCI**: Low Profile מארח שומר אתכם ב-SAQ-A. שרת-לשרת `Transaction` עם `CardNumber`/`CVV2` גולמיים נופל ל-SAQ-D. התקן הנוכחי הוא PCI DSS v4.0.1 (עדכון מצומצם שפורסם ביוני 2024), ו-51 הדרישות הדחויות נכנסו לתוקף ב-31 במרץ 2025, כך שכולן בתוקף היום. עדיף להישאר עם Low Profile או טוקנים אלא אם יש סיבה אמיתית לגעת בנתוני כרטיס גולמיים.
-- **לוח הסליקה הכספית** נקבע ברמת המסוף, לא בכל בקשה, ולא נקבע דרך ה-API. קארדקום מפרסמת שלושה מסלולי זיכוי: חודשי (עסקאות מה-1 לחודש ועד יום לפני סוף החודש מזוכות ב-6 לחודש העוקב), שבועי (מיום ראשון עד יום שישי, זיכוי ביום רביעי בשבוע שאחרי), ודו-חודשי (עסקאות מה-1 עד ה-15 מזוכות ב-2 לחודש העוקב, ועסקאות מה-16 ועד יום לפני סוף החודש מזוכות ב-8). עדיין כדאי לוודא איזה מסלול מוגדר בפועל במסוף של בית העסק לפני שמבטיחים לו יום מסוים.
-- **ל-Apple Pay ו-Google Pay אין שדות URL נפרדים** כמו `UrlToBit` / `UrlToPayPal`. הם מופיעים ככפתורי ארנק בתוך דף ה-Low Profile עצמו אחרי שמפעילים אותם במסוף בלוח הבקרה.
+- **היקף PCI**: Low Profile מארח שומר אתכם ב-SAQ-A. שרת-לשרת `Transaction` עם `CardNumber`/`CVV2` גולמיים נופל ל-SAQ-D. התקן הנוכחי הוא PCI DSS v4.0.1, ו-51 הדרישות הדחויות שלו בתוקף מאז 31 במרץ 2025. עדיף להישאר עם Low Profile או טוקנים אלא אם יש סיבה אמיתית לגעת בנתוני כרטיס גולמיים.
+- **לוח הסליקה הכספית** נקבע ברמת המסוף, לא בכל בקשה, ולא נקבע דרך ה-API. קארדקום מפרסמת מסלולי זיכוי חודשי, שבועי ודו-חודשי (התאריכים ב-`references/api-endpoints.md`); תוודאו איזה מסלול מוגדר במסוף של בית העסק לפני שמבטיחים לו יום מסוים.
 
 ## פתרון בעיות
 
@@ -428,16 +415,20 @@ else:
 פתרון: תקראו את מחרוזת ה-`Description` בתגובה, היא מציינת את הבעיה המדויקת. תוודאו ש-`TerminalNumber` הוא מספר שלם ו-`ApiName` נכון. מדריך השגיאות המספרי המלא נמצא בכתובת `https://secure.cardcom.solutions/Api/v11/Docs`.
 
 ### שגיאה: "דף Low Profile נטען אבל התשלום נכשל"
-סיבה: בדרך כלל בעיה ב-`WebHookUrl` או בכתובות ה-redirect.
-פתרון: תוודאו ש-`SuccessRedirectUrl`, `FailedRedirectUrl` ו-`WebHookUrl` הן כתובות HTTPS נגישות מהאינטרנט. כתובות localhost לא עובדות, תשתמשו ב-ngrok לפיתוח.
+סיבה: במסוף הבדיקות, סכומים מעל 5,000 ש"ח בכרטיסי הבדיקה מדומים ככישלון (לפי עמוד הבדיקות של קארדקום). אחרת, תוצאת הכרטיס נמצאת ב-`TranzactionInfo.Description`; סיבות אחרות לא אומתו בסקיל הזה.
+פתרון: בודקים מתחת ל-5,000 ש"ח, ואז קוראים את `TranzactionInfo.ResponseCode` ואת `Description` מ-`GetLpResult`. התיעוד של קארדקום מבקש כתובות redirect ו-notify חיצוניות ב-HTTPS (לא localhost), אז בפיתוח משתמשים ב-tunnel.
 
 ### שגיאה: "החזר מחזיר `ResponseCode` שאינו אפס"
 סיבה: `ApiPassword` חסרה, או שהעסקה כבר הופקדה ושלחתם `CancelOnly: true`.
 פתרון: תכללו `ApiPassword` בכל בקשת החזר. תשתמשו ב-`CancelOnly: true` רק לפני הפקדה, אחרי הפקדה תשלחו החזר אמיתי (תשמיטו את `CancelOnly` או תגדירו אותו `false`).
 
 ### שגיאה: "חשבונית נוצרה אבל לא נשלחה במייל"
-סיבה: `IsSendByEmail` לא מוגדר או שחסר אימייל.
-פתרון: תגדירו `IsSendByEmail: true` ותכללו `Email` תקין באובייקט `Document`. תבדקו בתיקיית ספאם, קארדקום שולחת מהדומיין שלה.
+סיבה: `IsSendByEmail` הוגדר במפורש כ-`false` (ברירת המחדל שלו היא `true`), או ש-`Email` חסר או לא תקין.
+פתרון: תשאירו את `IsSendByEmail` על `true` ותכללו `Email` תקין באובייקט `Document`. תבדקו בתיקיית ספאם, קארדקום שולחת מהדומיין שלה.
+
+### שגיאה: `ResponseCode` 608 בחיוב טוקן
+סיבה: אותו `ExternalUniqTranId` כבר שימש בקריאה שקיבלה תשובה תקינה מהכרטיס, חיוב או בדיקת J2/J5 (במפרט: שליחה חוזרת של אותו ExternalUniqTranId תחזיר שגיאה 608).
+פתרון: אל תחייבו שוב עם מזהה חדש. תקראו ל-`Transactions/GetTransactionByExternalUniqTran` ותחליטו לפי ה-`ResponseCode` של הרשומה: 0 אומר שהלקוח כבר חויב, 700/701 אומרים שהקריאה הקודמת הייתה רק בדיקת J2/J5.
 
 ### שגיאה: "חיוב טוקן מצליח אבל אין חשבונית"
 סיבה: אובייקט `Document` חסר מבקשת ה-`Transaction`.

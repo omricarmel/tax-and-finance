@@ -2,7 +2,9 @@
 
 ## ResponseCode + Description
 
-Every Cardcom V11 API response is a JSON object that carries two top-level fields:
+Every V11 response used by this skill (LowProfile, Transactions except `GetTransactionInfoById`,
+Documents, SuspendedDeals) is a JSON object with two top-level fields. Some other endpoints
+return a bare array or boolean instead, so check the response schema before branching:
 
 - **`ResponseCode`** (integer) -- `0` means success. Any non-zero value is a
   developer or transaction error.
@@ -12,8 +14,11 @@ There is no `DealResponse`, `TokenResponse`, or `InvoiceResponseCode` field in V
 Those belong to the legacy `.aspx` interfaces. In V11, always check `ResponseCode`
 and read `Description` for the reason.
 
-For `Transactions/Transaction`, J2/J5 validation-only operations return
-`ResponseCode` `700` or `701`, which also count as success.
+`700` and `701` answer J2/J5 validation-only checks (`CreateTokenOnly`, `SuspendedDeal`):
+success for that check, but nothing was charged. `608` on `Transactions/Transaction` means the
+`ExternalUniqTranId` was already used by a call that got a valid answer (a charge, or a J2/J5
+check); look up the original with `Transactions/GetTransactionByExternalUniqTran` and branch on
+its `ResponseCode` instead of re-charging.
 
 ## Per-operation response objects
 
@@ -47,29 +52,39 @@ See the official Cardcom error reference at
 ```python
 import requests
 
-resp = requests.post(
-    "https://secure.cardcom.solutions/api/v11/Transactions/Transaction",
-    json=payload,
-    timeout=30,
-).json()
+BASE = "https://secure.cardcom.solutions/api/v11"
+payload["ExternalUniqTranId"] = order_id   # reuse the SAME id on every retry of this charge
 
-if resp.get("ResponseCode") == 0:
-    # Success: extract TranzactionId, Token, DocumentNumber, DocumentUrl
-    transaction_id = resp["TranzactionId"]
+try:
+    r = requests.post(f"{BASE}/Transactions/Transaction", json=payload, timeout=30)
+    resp = r.json() if r.status_code == 200 else None
+except (requests.RequestException, ValueError):
+    resp = None   # outcome unknown: the card MAY have been charged
+
+if resp is None:
+    # Do not re-charge blind: ask Cardcom whether this order id was charged.
+    resp = lookup_by_external_uniq_tran_id(order_id)   # POST .../GetTransactionByExternalUniqTran
+
+code = resp.get("ResponseCode") if resp else None
+if code == 0:
+    transaction_id = resp["TranzactionId"]     # also read DocumentNumber / DocumentUrl
+elif code == 608:
+    pass   # id already answered (charge or J2/J5): look the record up, never re-charge
 else:
-    # Failure: Description carries the exact reason
-    log_error(
-        f"Cardcom error {resp.get('ResponseCode')}: {resp.get('Description')}"
-    )
-    show_error("Payment could not be completed. Please try again.")
+    log_error(f"Cardcom error {code}: {resp.get('Description') if resp else 'no response'}")
+    show_error("Payment could not be completed.")
 ```
+
+Run this only on your server. `ApiName` and `ApiPassword` must never reach browser JavaScript
+or a mobile app bundle.
 
 ## Notes
 
 - Always check both the HTTP status (`200` = request received) AND `ResponseCode`
   (`0` = operation succeeded). A `200` with a non-zero `ResponseCode` means the
   request was valid but the operation failed.
-- Log the full response body, including `Description`, for any non-zero
-  `ResponseCode` to aid debugging.
+- For any non-zero `ResponseCode`, log `ResponseCode`, `Description`, `TranzactionId` and
+  `Last4CardDigitsString`. Do NOT log the full body: it carries `Token`, `CardOwnerIdentityNumber`,
+  `CardOwnerEmail` and `CardOwnerPhone`.
 - For `LowProfileResult`, also inspect the nested object `ResponseCode` values
   (for example `DocumentInfo.ResponseCode`) when a document was requested.

@@ -89,6 +89,26 @@
         "CARRY (deferred, MAJOR): the webhook is never treated as untrusted, and CreateLowProfile actually REQUIRES WebHookUrl alongside the two redirect URLs, which the skill presents as optional. Step 3b now says never to fulfil on the redirect or the raw webhook body, but the Gotchas and Troubleshooting still do not.",
         "CARRY (deferred): SuspendedDeals has five endpoints and the skill names three; the result object returns SuspendedDealId while the charge request requires SuspendedDealID, and with additionalProperties:false the wrong casing fails outright. Also 3DS (Do3DSAndSubmit, ThreeDSecureState) is listed in the Operation enum and never explained, TranStatus' documented default is not a member of its own enum, and RecuringPayments carries three different credential shapes across its endpoints."
       ]
+    },
+    {
+      "version": "2.5.0",
+      "date": "2026-10-12",
+      "trigger": "update-oldest-skills batch 2026-10-12 (third-party API drift)",
+      "lessons": [
+        "SPEC DRIFT IN SIX WEEKS: the live V11 spec grew from 59 to 62 paths; ExternalShopCreateDocument went from no ApiPassword to requiring it (via allOf on CreateDocumentRequest), and TapTransactions/NotifyExternalTapTransaction disappeared. Any per-endpoint list in the skill rots; the skill now tells readers to read the schema and names the drift.",
+        "CARDCOM'S KB IS REACHABLE AS JSON. The /hc/ pages on cardcomapinametovalue.zendesk.com and support.cardcom.solutions are Cloudflare-blocked to scripts, but /api/v2/help_center/he/articles/<id>.json (and articles/search.json?query=) return the full article. This resolved the three-cycle CARRY on test credentials (official page: terminal 1000, credentials from support, cards 4580280000000008 / 4580000000000000, >5,000 NIS simulates failure, real cards get a 3-day hold) and replaced the unsourced allocation-setup steps with Cardcom's own guide (three-month verification code, 406 error, two authorization subjects).",
+        "608 WAS MIS-TAUGHT AS 'ALREADY CHARGED'. Cardcom's duplicate-prevention article: the id is consumed once a call gets 0, J2 (701) or J5 (700), so 608 does not prove money was taken. The skill now says to look the record up and branch on its ResponseCode; a declined charge does not consume the id.",
+        "VALIDATOR: six defect classes this cycle, found in sequence by self-probe, judge and expert: --expect failed every non-LowProfile success shape; crash on non-numeric Amount; DealType Cancel/Information passed as a charge; no invoice/ReturnValue checks; nested results without ResponseCode passed; --expect refund/validation/token one-way checks (a charge passed as a refund or a validation). 39 probes now pin every case; rerun probes.sh on any script change.",
+        "WEBHOOK: V11 defines no signature for WebHookUrl (and it is REQUIRED). The skill now gives a concrete handler: match LowProfileId to ones you created, re-fetch with GetLpResult, idempotent fulfilment, persist-then-ACK, pending-order sweep (LP page 20 min after opening, code 24 h after creation).",
+        "INFERENCE IS NOT BEHAVIOUR: every schema in this NSwag spec is additionalProperties:false (a generator default, response objects included), so 'the server rejects X' was an unsourced inference. Reworded everywhere to 'not in the schema, do not send it'.",
+        "CARRY RESOLVED: webhook untrusted (now Step 3b + Gotcha); CancelDoc fields (ApiName, ApiPassword, DocumentNumber, INTEGER DocumentType); SuspendedDealID casing and five endpoints; document-types.md split by schema (ISOCoinID only on Document); allocation refusal (s.47(a2)(3)-(4)).",
+        "DEFERRED (MAJOR): PCI SAQ A eligibility criterion for iframe pages on script-attack exposure. The only reachable SAQ A PDF (v4.0) lacks it; fetch the current SAQ A / FAQ 1588 primary text and add it next cycle.",
+        "DEFERRED (MAJOR): crediting an allocation-numbered original invoice (Cardcom UI control, KB 36821718717714); V11 Document has no field referencing the original invoice.",
+        "DEFERRED (MINOR): DealType allow-list for --expect charge (Discharge, ForcedCharge, CashBack, Recharge semantics undocumented); multi-operation --expect for ChargeAndCreateToken; V11 MTI=420 release call is mapped from the legacy KB and hedged, confirm with Cardcom.",
+        "OPEN (owner decision, from the legal gate, WARN not BLOCK): metadata.json display_description and DB description_en/he carry no opening tax clause although SKILL.md frontmatter opens with 'Not tax or accounting advice.' Not changed this cycle (description edits trigger the routing holdout gate).",
+        "Cardcom's own Israel Invoices guide says the 2024 threshold was 20,000; icount, greeninvoice and the ITA say 25,000 from May 2024. The skill keeps 25,000 on the independent sources (evidence 27.1 note).",
+        "VALUE-ADD (advisory): PASS, with=1.00 without=0.08 delta=+0.92 over 4 cases (608 lookup, Israel Invoices 406/three-month code, SuspendedDealID casing, test-terminal 5,000 NIS / Israeli test card). Cases kept outside the monorepo for the lead to copy."
+      ]
     }
   ]
 }

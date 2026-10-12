@@ -47,8 +47,9 @@ guessing.
   buyer needs it to claim an input-VAT deduction, and above the statutory threshold that
   deduction ALSO requires an allocation number (mispar haktzaa) on the invoice. The
   threshold is 5,000 NIS pre-VAT from 1 June 2026 (10,000 from 1 January 2026, 20,000 in
-  2025). Cardcom requests the number automatically at document creation,
-  but only after a one-time Tax Authority authorization; see SKILL.md Step 4.5. Issuing the
+  2025, 25,000 from May 2024). Cardcom requests the number automatically at document creation,
+  but only while its Israel Invoices registration is active (a three-month verification
+  code); see SKILL.md Step 4.5. Issuing the
   document is not the whole of compliance. Issue at the time of supply or
   payment, whichever is earlier.
 - **`Receipt`:** Confirms payment was received. Does NOT replace a tax invoice.
@@ -58,34 +59,48 @@ guessing.
   price reductions, returned goods).
 - **Osek Patur** (exempt dealer): issues a `Receipt` only, not tax invoices.
 
-## Document Object Fields (DocumentBase + Document)
+## Document Object Fields
 
-| Field | Type | Required | Notes |
-|-------|------|----------|-------|
-| `DocumentTypeToCreate` | string enum | Yes | One of the values above; default `Auto` |
-| `Name` | string | Yes | The "document To" / customer name, 1-50 chars |
-| `TaxId` | string | For B2B | Business registration number or ID number (replaces the older `VAT_Number`) |
-| `Email` | string | No | Email to send the document to, max 50 chars |
-| `IsSendByEmail` | bool | No | `true` to auto-email the PDF (default `true`) |
-| `AddressLine1` / `AddressLine2` | string | No | Customer address |
-| `City` | string | No | Customer city |
-| `Mobile` / `Phone` | string | No | Customer phone numbers |
-| `Comments` | string | No | Free text printed on the document, max 250 chars |
-| `IsVatFree` | bool | No | `true` if every line in the document is VAT-free |
-| `ISOCoinID` | int | No | `1` = ILS (default), `2` = USD, the rest per ISO |
-| `ISOCoinName` | string | No | Alternative to `ISOCoinID` |
-| `Languge` | string | No | Document language, `he` (default) or `en`. Lives on the `Document` and `DocumentTran` schemas (the standalone `CreateDocument` and `Transaction` flows), NOT on `DocumentBase` itself. Note the V11 misspelling: `Languge`, missing the second `a` |
-| `DepartmentId` | int | No | Department id from the admin panel, for reports |
-| `ExternalId` | string | No | Your custom id stored on the document |
-| `Products` | array | Yes (for financial docs) | See the Products fields below |
+V11 has three document objects, all built on `DocumentBase` and all with
+`additionalProperties: false`, so a field that belongs to one of them is not part of the others (the server may reject or ignore it; neither does what you meant):
 
-In the `LowProfile/Create` flow the document object is a `DocumentLP`; in the
-`Transaction` flow it is a `DocumentTran` (which uses `DocumentDateDDMMYYYY` and
-`Languge`). Both extend the same `DocumentBase` shown above. One quirk: the
-`DocumentLP` sub-schema uses the correctly-spelled `Language`, while `DocumentTran`
-uses the misspelled `Languge`; for the LowProfile page as a whole, set the
-top-level `Language` field on the `LowProfile/Create` request (see
-api-endpoints.md).
+| Object | Used in | Required |
+|--------|---------|----------|
+| `Document` | `Documents/CreateDocument` (standalone) | `Name`, `DocumentTypeToCreate` |
+| `DocumentLP` | `LowProfile/Create` | `Name` |
+| `DocumentTran` | `Transactions/Transaction` | `Name` |
+
+### Fields on all three (DocumentBase)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| `DocumentTypeToCreate` | string enum | One of the values above; `Auto` uses your admin-panel configuration. Required on `Document` |
+| `Name` | string | The "document To" / customer name, 1-50 chars. Required |
+| `TaxId` | string | Business registration number or ID number (replaces the older `VAT_Number`) |
+| `Email` | string | Email to send the document to, max 50 chars |
+| `IsSendByEmail` | bool | `true` to auto-email the PDF (default `true`) |
+| `AddressLine1` / `AddressLine2` / `City` | string | Customer address |
+| `Mobile` / `Phone` | string | Customer phone numbers |
+| `Comments` | string | Free text printed on the document, max 250 chars |
+| `IsVatFree` | bool | `true` if every line in the document is VAT-free |
+| `DepartmentId` | int | Department id from the admin panel, for reports |
+| `ExternalId` | string | Your custom id stored on the document |
+| `DeliveryName` | string | Delivery method name |
+| `AdvancedDefinition` | object | Advanced document definition |
+| `Products` | array | See the Products fields below |
+
+### Fields on only some of them
+
+| Field | `Document` | `DocumentLP` | `DocumentTran` | Notes |
+|-------|:---:|:---:|:---:|-------|
+| `Languge` (misspelled) | yes | no | yes | `Document`: `he` (default) or `en`; `DocumentTran`: `he`/`en`/`ru`/`ar`/`fr`/`it` |
+| `Language` (correct spelling) | no | yes | no | `Languge` is not a field here |
+| `ISOCoinID` / `ISOCoinName` | yes | no | no | Currency of a standalone document. In the payment flows the currency comes from the request's own `ISOCoinId` |
+| `DocumentDate` | yes | no | no | |
+| `DocumentDateDDMMYYYY` | no | no | yes | |
+| `ManualNumber`, `ValueDate` | yes | no | yes | |
+| `IsAllowEditDocument`, `IsShowOnlyDocument` | no | yes | no | Hosted-page document options |
+| `IsSendSMS` | no | no | yes | |
 
 ## Products Array Fields
 
@@ -98,6 +113,19 @@ api-endpoints.md).
 | `IsVatFree` | bool | No | `true` for a VAT-free line, for mixed-VAT documents |
 | `ProductID` | string | No | Your internal SKU / product id |
 | `IsGiftCard` | bool | No | `true` creates a non-financial gift-card document type |
+
+## Allocation numbers: older documents and exclusions
+
+- The regime began in May 2024. Invoices dated before that never needed a number.
+- The threshold is keyed to the DOCUMENT's own date. When reissuing, migrating or auditing
+  older documents, test each against the threshold in force on its date, not today's 5,000.
+- The statute (VAT Law s.38(a1)) says `עולה על` (EXCEEDS), so a document exactly at the
+  threshold is outside it.
+- An osek patur is unaffected: they do not issue tax invoices and do not deduct input VAT.
+- Zero-rated invoices are outside the requirement (s.47(a2)(1) applies only where the tax is
+  "אינו בשיעור אפס"), so an export invoice does not need a number however large.
+- If an integration was written earlier in 2026 against the 10,000 figure, invoices between
+  5,000 and 10,000 are the band to re-check.
 
 ## VAT Handling
 

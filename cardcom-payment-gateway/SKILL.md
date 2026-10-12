@@ -16,13 +16,13 @@ The documents this integration produces are tax documents. Responsibility for is
 
 Cardcom is an Israeli payment processor with a unique strength: integrated invoice and receipt generation compliant with Israeli tax law. While other Israeli gateways handle only the payment, Cardcom can automatically generate tax invoices (hashbonit mas) and receipts (kabala) as part of the payment flow, something Israeli businesses are legally required to issue.
 
-This skill guides integration with Cardcom's REST API V11 for payments, tokenization, recurring billing, and document generation. Every endpoint and field name in this skill is taken from the official Cardcom V11 OpenAPI specification.
+This skill covers Cardcom's REST API V11 for payments, tokenization, recurring billing and documents. Endpoint and field names come from the official V11 OpenAPI specification.
 
 **Official docs:** `https://secure.cardcom.solutions/Api/v11/Docs` (interactive API reference with the full OpenAPI schema). V11 is the current API as of 2026; there is no public V12.
 
 **Support center:** `https://support.cardcom.solutions`
 
-**Cardcom in the Israeli landscape:** competes with Tranzila, Israpay, and Bit Business. Pricing is quoted per merchant. Cardcom publishes a starting rate of about 1.2% that falls with volume, but that is a floor and not a quote, so treat it as a starting point only and send the user to Cardcom for an actual figure rather than promising them a rate. The distinguishing feature for Israeli businesses remains the built-in tax document generation. For Tranzila integration use the `tranzila-payment-gateway` skill instead.
+**Cardcom in the Israeli landscape:** competes with Tranzila and other Israeli gateways. Cardcom publishes a starting rate of about 1.2% that falls with volume; that is a floor, not a quote, so send the user to Cardcom for an actual figure. The distinguishing feature remains the built-in tax document generation. For Tranzila integration use the `tranzila-payment-gateway` skill instead.
 
 ## Instructions
 
@@ -39,14 +39,17 @@ Most Israeli merchants use **Low Profile** for the initial payment plus token cr
 ### Step 2: Set Up Authentication
 
 Cardcom API V11 credentials:
-- `TerminalNumber` (integer) -- your terminal ID (use `1000` for testing)
+- `TerminalNumber` (integer) -- your terminal ID (`1000` is Cardcom's test terminal, see below)
 - `ApiName` (string) -- API username
-- `ApiPassword` (string) -- API password. Required on roughly half the V11 request schemas (26 of the 219 component schemas list it in `required` as of the current spec; the count moves between spec revisions, so read the schema rather than trusting a number). The rule of thumb: **operations that read or act on company-wide data require it; operations that charge a single card do not.** It is required on every `Documents/*` write, every `Financial/*` report, every `TapTransactions/*` call, and on `Transactions/ListTransactions`, `RefundByTransactionId`, and `SpecialTransactions`. It is NOT a field on `LowProfile/Create` or `Transactions/Transaction` at all, so do not send it there. When in doubt, check the `required` array for the endpoint's request schema in the [V11 OpenAPI spec](https://secure.cardcom.solutions/swagger/v11/swagger.json).
+- `ApiPassword` (string) -- API password. The rule of thumb: **operations that read or act on company-wide data require it; operations that charge a single card do not.** It is required on `Transactions/ListTransactions`, `RefundByTransactionId`, `SpecialTransactions`, `Documents/CreateDocument`, `CancelDoc` and the `Financial/*` reports, among others. It is NOT a top-level field on `LowProfile/Create` or `Transactions/Transaction`, so do not send it there. The set of schemas that require it changes between spec revisions (see Gotchas), so check the `required` array of the endpoint's request schema in the [V11 OpenAPI spec](https://secure.cardcom.solutions/swagger/v11/swagger.json) rather than trusting a list.
 
-**Test environment:**
-Terminal `1000` with the demo `ApiName` is widely cited in community libraries as the sandbox, with test card `4580000000000000`, any future expiry, CVV `123`. We have NOT been able to confirm these against an official Cardcom test-credentials page, so treat them as community folklore: confirm your sandbox credentials with Cardcom support before relying on them, and never assume a call against terminal 1000 cannot move money.
+**Test environment (Cardcom's own developer test page):**
+- Terminal `1000`. The API username and password for it are NOT published: request them from Cardcom support.
+- Israeli test card `4580280000000008` (supports installments and credit deals); tourist test card `4580000000000000` (no installments or credit). Any future expiry, CVV `123`, any ID number.
+- On the test cards, amounts under 5,000 NIS simulate success and amounts above 5,000 NIS simulate a failure, so a large test charge failing is expected, not a bug.
+- Test-terminal transactions run through the full clearing flow without actually charging the card. A REAL card used on the test terminal is not charged but its credit line is held (מסגרת) for three days for the amount, so never test with a customer's card.
 
-Store credentials securely, never in source code or client-side JavaScript.
+**Treat `ApiName`, `ApiPassword` and every stored token as secrets.** `Transactions/Transaction` needs only `TerminalNumber`, `ApiName` and `Amount`, so `ApiName` plus a token can charge a saved card. Keep them in server-only environment variables (in Next.js never `NEXT_PUBLIC_*`), call Cardcom only from server code, and never log a full response (it carries the token and the cardholder's ID number).
 
 ### Step 3: Implement the Payment Flow
 
@@ -86,6 +89,8 @@ The response is a `CreateLowProfileResponse`: check `ResponseCode == 0` (success
 
 The `Operation` field controls behaviour: `ChargeOnly` (default), `ChargeAndCreateToken`, `CreateTokenOnly`, `SuspendedDeal`, `Do3DSAndSubmit`.
 
+**The `Document` lines must add up exactly to `Amount`** (Cardcom: "יש לדאוג שסה\"כ שורות החשבונית שווה לסכום החיוב"), so line prices are entered as the amounts the customer actually pays, VAT included. A mismatch can leave the card charged with no invoice, because Cardcom gives the charge priority.
+
 **Step 3b: Get the results**
 
 After payment completes, Cardcom calls your `WebHookUrl`, or you query:
@@ -109,26 +114,22 @@ The response is a `LowProfileResult`, and its top-level `ResponseCode` is NOT th
 4. `TranzactionInfo.ResponseCode == 0` (its own description: "if equal zero then success , 700 and 701 success for J2 and J5 transaction").
 5. `TranzactionInfo.Amount` equals the amount you expected, and `ReturnValue` matches your own order id.
 
-Also check `TranzactionInfo.IsRefund` / `DealType`: a refund is a successful transaction and will pass a naive `ResponseCode == 0` test. If you asked for a document, `DocumentInfo` must be non-null too -- a charge that succeeded with `DocumentInfo: null` means you took the money and never issued the tax invoice. `scripts/validate_cardcom_response.py --expect charge --amount <n>` applies all of this and fails closed.
+Also check `TranzactionInfo.IsRefund` / `DealType`: a refund is a successful transaction and will pass a naive `ResponseCode == 0` test. If you asked for a document, `DocumentInfo` must be non-null too -- a charge that succeeded with `DocumentInfo: null` means you took the money and never issued the tax invoice (Cardcom gives the charge priority when the invoice fails). `scripts/validate_cardcom_response.py --expect charge --amount <n> --return-value <order-id> --with-document` applies all of this and fails closed.
 
-Never fulfil on the browser landing at `SuccessRedirectUrl`, which the customer controls, or on the raw webhook body, which is an unauthenticated public POST. Treat the webhook only as a signal to call `GetLpResult` and re-check. `TokenInfo` carries the stored `Token` plus `CardMonth`/`CardYear`; `SuspendedInfo` covers suspended deals.
+Never fulfil on the browser landing at `SuccessRedirectUrl`, which the customer controls, or on the raw webhook body. `TokenInfo` carries the stored `Token` plus `CardMonth`/`CardYear`; `SuspendedInfo` covers suspended deals.
+
+**The webhook handler (`WebHookUrl` is REQUIRED on `LowProfile/Create`):** the V11 spec defines no signature, shared secret or HMAC for it, and does not document its payload or retry schedule. Treat every hit as an untrusted, possibly repeated "something happened" signal:
+
+1. Look up the `LowProfileId` it names among the ids YOU saved from `LowProfile/Create`. An unknown id is ignored, never fetched.
+2. Call `GetLpResult` with your own credentials and apply the five checks above. Never read the amount or status from the webhook body.
+3. Make fulfilment idempotent (mark the order fulfilled in the same transaction that checks it), because the same event can arrive more than once. Cardcom's documentation for the older `IndicatorUrl` interface says it re-sends up to 7 times when your server does not answer HTTP 200; assume V11 can repeat too.
+4. Write the hit to durable storage, THEN return HTTP 200 (a 200 ends Cardcom's re-sends). Also sweep pending orders with `GetLpResult` instead of waiting for a webhook that may never come; a page code expires 24 hours after creation. More in `references/production-checklist.md`.
 
 #### Alternative Payment Methods
 
-The Low Profile response includes URLs for alternative payment methods when enabled on your terminal:
-
-| Method | Response Field | Notes |
-|--------|---------------|-------|
-| **Bit** | `UrlToBit` | Israel's most popular mobile payment app, routed through Cardcom |
-| **PayPal** | `UrlToPayPal` | International payments |
-| **Apple Pay** | rendered inside the hosted Low Profile page | Listed on `cardcom.solutions` as a supported wallet on the hosted payment page |
-| **Google Pay** | rendered inside the hosted Low Profile page | Same as Apple Pay, surfaced as a wallet button on the Low Profile page |
-
-`UrlToBit` and `UrlToPayPal` are explicit URL fields you can show alongside the card form. Apple Pay and Google Pay surface as wallet buttons inside the hosted Low Profile page itself once enabled on the terminal, so no separate URL field is exposed. Enable each method on your terminal in the Cardcom admin panel before relying on it in production.
+`UrlToBit` and `UrlToPayPal` on the `LowProfile/Create` response are separate URLs you can show alongside the card form; Google Pay and Apple Pay appear as wallet buttons inside the hosted page once enabled on the terminal. **Apple Pay does not support saving a token or standing orders** (Cardcom: the button may show on a standing-order page but the payment cannot complete), so a `ChargeAndCreateToken` subscription page cannot be paid with it, and inside an iframe it needs your domain registered with Apple through Cardcom support. Details: `references/api-endpoints.md`.
 
 ### Step 4: Generate Israeli Tax Documents
-
-Cardcom's standout feature is automatic document generation with payments. This is critical for Israeli businesses because tax law requires issuing proper documents for every transaction.
 
 The document type is set with the **`DocumentTypeToCreate`** field, a STRING enum (not an integer). Common values:
 
@@ -140,11 +141,8 @@ The document type is set with the **`DocumentTypeToCreate`** field, a STRING enu
 | `Receipt` | kabala | Receipt | Payment confirmation only |
 | `TaxInvoiceAndReceiptRefund` | --- | Tax Invoice + Receipt Refund | Reversing a `TaxInvoiceAndReceipt` |
 | `TaxInvoiceRefund` | --- | Tax Invoice Refund | Reversing a `TaxInvoice` |
-| `ReceiptRefund` | --- | Receipt Refund | Reversing a `Receipt` |
-| `ProformaInvoice` | hashbonit iska / proforma | Proforma Invoice | Pre-sale quote document |
-| `DonationReceipt` | kabalat trumot | Donation Receipt | Registered non-profits |
 
-The full `DocumentToCreate` enum has 25 values and also includes `Quote`, `Order`, `OrderConfirmation`, `DeliveryNote`, `DemandForPayment`, `ProformaDealInvoice`, `ReceiptForTaxInvoice` and `CouponDocumentAndReceipt`. Refund variants exist for MOST but not all of these: there is no `QuoteRefund` and no `OrderRefund`. The 11 that do exist are `TaxInvoiceAndReceiptRefund`, `ReceiptRefund`, `OrderConfirmationRefund`, `DeliveryNoteRefund`, `DemandForPaymentRefund`, `ProformaDealInvoiceRefund`, `ProformaInvoiceRefund`, `TaxInvoiceRefund`, `DonationReceiptRefund`, `CouponDocumentAndReceiptRefund` and `ReceiptForTaxInvoiceRefund`. Verify the exact value you need against the official docs at `https://secure.cardcom.solutions/Api/v11/Docs`.
+The full `DocumentToCreate` enum has 25 values, listed in `references/document-types.md`. There is no `QuoteRefund` and no `OrderRefund`, so do not invent a refund variant by appending `Refund`.
 
 **Include a document in a payment flow:**
 Add the `Document` object to your Low Profile `Create` or `Transaction` request. Cardcom generates the document automatically when the payment succeeds.
@@ -173,39 +171,38 @@ POST https://secure.cardcom.solutions/api/v11/Documents/CreateDocument
 
 The response is a `DocumentInfo`: check `ResponseCode == 0`, then read `DocumentType`, `DocumentNumber`, `AccountId`, and `DocumentUrl` (link to the PDF).
 
-Note the real V11 field spellings inside the `Document` object: `DocumentTypeToCreate` (string enum), `Name` (the "document To", required, max 50 chars), `TaxId` (business registration or ID number, replaces the older `VAT_Number`), `IsSendByEmail` (replaces `SendByEmail`), `Languge` (the V11 spelling in THIS schema, missing the second `a`; note that the Low Profile document object `DocumentLP` uses the correctly spelled `Language` instead), `ISOCoinID` (replaces `CoinID`), `IsVatFree`, and `Products[]` with `Description`, `UnitCost`, `Quantity`, `IsVatFree`. See `references/document-types.md` for the complete field list.
+Field spellings differ between the three document objects (`Languge` vs `Language`, and `ISOCoinID` exists ONLY on this standalone `Document`, never inside a Low Profile or Transaction document); see the Gotchas and `references/document-types.md` for the full field list. `TaxId` replaces the older `VAT_Number` and `IsSendByEmail` replaces `SendByEmail`.
 
 ### Step 4.5: Allocation Numbers (Mispar Haktzaa) on Tax Invoices
 
-**Do not look for an allocation-number field in the API. There isn't one, and that is not an
-omission.** Cardcom built a direct interface to the Tax Authority, so when you issue a tax
-invoice over the threshold the allocation number is requested automatically at document
-creation, server-side. The `CreateDocument` request body carries no `AllocationNumber`
-field, and a developer hunting for one in the OpenAPI spec will conclude, wrongly, that
-Cardcom does not support the requirement.
+**Do not look for an allocation-number field in the document API. There isn't one, and that is
+not an omission.** Cardcom's document system is connected to the Tax Authority and requests the
+number itself when it issues a tax invoice over the threshold. Neither the `CreateDocument`
+request nor the `DocumentInfo` response carries one; the number is printed on the document
+under the heading "מספר הקצאה:", so read it from the PDF at `DocumentUrl`.
 
-**It is not on by default. It needs a one-time setup, and without it your customer cannot
-deduct their input VAT.** An allocation number on a tax invoice is a precondition for the
-recipient to deduct input VAT on any invoice whose pre-VAT amount exceeds the statutory
-threshold. The setup, done once by the business owner or director on the Tax Authority
-site, is:
+**It only works after a registration that EXPIRES.** Without a number, your customer cannot
+deduct input VAT on an invoice whose pre-VAT amount exceeds the threshold. Cardcom's own guide:
 
-1. Identify (הזדהות) in the Tax Authority personal area, registering if necessary.
-2. For a company or a VAT-registered group (איחוד עוסקים), complete corporation
-   registration (רישום פרטי תאגיד).
-3. In the Tax Authority digital-actions authorization system (מערכת הרשאה לפעולות
-   דיגיטליות, linked from the ITA allocation-number service page), grant the authorization
-   and select BOTH Israel-Invoice subjects, not one of them. One covers verifying the
-   allocation number on a supplier's invoice; the other covers requesting an allocation
-   number for an invoice you issue to a customer. Granting only the first is the common
-   mistake, and it leaves your own invoices without a number. The exact wording of the two
-   subjects is only visible inside that system, which is behind a login, so match them by
-   meaning rather than by a string quoted here.
-4. Choose the authorization duration, and have the grantee confirm it.
+1. The business owner identifies (הזדהות) in the Tax Authority personal area, registering if needed.
+2. A company or an איחוד עוסקים completes רישום פרטי תאגיד there.
+3. In the Cardcom admin: הגדרות, then מסמכים, then שירות חשבוניות ישראל. Generate a
+   verification code (קוד אימות); you are sent to the Tax Authority to identify. Only the
+   owner, or someone the owner authorised for digital actions, can do this.
+4. Press "בדיקת קבלת מספר הקצאה" to confirm numbers are actually issued.
 
-**Threshold schedule (amounts are pre-VAT):**
+The code is valid for **three months**. After it lapses, invoices are issued WITHOUT a number;
+re-register, then re-print the document to attach one. A scheduled job that issues large
+invoices must therefore check the service is active, not assume it. Error `Not Acceptable (406)`
+means the identified user has no Tax Authority authority for that business: the owner grants it
+under "הרשאות לפעולות דיגיטליות", selecting both subjects "חשבוניות ישראל – אימות מספר הקצאה
+בחשבונית ספק" and "חשבוניות ישראל – בקשת מספר הקצאה עבור חשבונית ללקוח".
 
-The allocation-number requirement began in May 2024.
+Cardcom also documents that no number is issued when: the customer's ID / company number
+(`TaxId`) is missing; supplier and customer are the same company number; or a tax
+invoice-receipt carries no VAT.
+
+**Threshold schedule (pre-VAT; the statute says `עולה על`, EXCEEDS):**
 
 | Effective from | Threshold |
 |----------------|-----------|
@@ -214,16 +211,12 @@ The allocation-number requirement began in May 2024.
 | 1 January 2026 | 10,000 NIS |
 | 1 June 2026 | **5,000 NIS (in force now)** |
 
-Invoices dated before May 2024 predate the regime and never needed a number. The threshold
-is keyed to the DOCUMENT's own date, so if you are reissuing, migrating or auditing older
-documents, test each against the threshold in force on its date rather than today's 5,000.
-The statute says `עולה על` (EXCEEDS), so a document exactly at the threshold is outside it.
-
-An osek patur is unaffected, because they do not issue tax invoices and do not deduct input
-VAT. Zero-rated and exempt-only invoices are also outside the requirement (s.47(a2)(1)), so
-an export invoice does not need a number however large. If an integration was written
-earlier in 2026 against the 10,000 figure, invoices between 5,000 and 10,000 are the band to
-re-check.
+The threshold is keyed to each DOCUMENT's own date; see `references/document-types.md` for
+older documents, osek patur and zero-rated invoices. Even when everything is set up, a number
+can be withheld: under s.47(a2)(3) the Director may decide not to allocate one on reasonable
+suspicion the invoice is improper (a החלטה מקדמית, with a hearing within two business days),
+and s.47(a2)(4) lets the dealer request a number after issuing the invoice. Confirm the
+number is on the document before relying on it.
 
 ### Step 4.6: Idempotency, and Authorize vs Capture
 
@@ -233,18 +226,25 @@ prevent duplication of transaction. if the same ExternalUniqTranId will be send 
 receive and error code 608". Without it, a cron whose HTTP call times out AFTER Cardcom
 charged the card retries and charges the customer twice.
 
-**608 means "already charged", not "payment failed".** It is the one error code you must
-special-case: treat it as a duplicate that was correctly blocked, not as a failure to retry
-or to re-charge manually. After any timeout or ambiguous result, call
-`POST /api/v11/Transactions/GetTransactionByExternalUniqTran` to find out whether the
-original charge actually went through before doing anything else.
+**608 means "this id already got a valid card answer", not "payment failed".** Cardcom's
+token-charge guidance says the id is consumed once a call gets a charge (0), J2 (701) or J5
+(700) answer, so 608 does not prove money was taken. Never retry it under a new id: after any
+608, timeout or ambiguous result, call `POST /api/v11/Transactions/GetTransactionByExternalUniqTran`
+and branch on THAT record's `ResponseCode` (0 = charged; 700/701 = only checked or held). A
+declined charge does not consume the id, so it can be retried with the same one; wait for a
+response (up to 7 seconds) before resending. Give a capture its own id, never the hold's.
 
 **J2 and J5 are not the same thing, and 700/701 do not mean the customer is untouched.**
-`Advanced.JValidateType` selects J2 (a simple card validation, nothing reserved) or J5 (an
-authorization, which HOLDS the funds on the cardholder's limit). A J5 must then be captured
-with `Advanced.ApprovalNumber`, documented in the spec as "capture an J5 (authoriz)
-request". An authorization that is never captured leaves the customer's money held until it
-expires, so if you use J5 you must have a capture step and a release path.
+`JValidateType` applies to the `CreateTokenOnly` and `SuspendedDeal` operations and selects
+J2 (a simple card validation, nothing reserved) or J5 (an authorization, which HOLDS the
+amount on the cardholder's limit). On `LowProfile/Create` its default is `5`, so a
+`CreateTokenOnly` page places a J5 hold for `Amount` unless you send
+`AdvancedDefinition.JValidateType: 2`. A J5 is captured by charging the token with `Advanced.ApprovalNumber` set to
+the `TokenInfo.TokenApprovalNumber` you received (the spec: "capture an J5 (authoriz)
+request"). An authorization that is never captured leaves the customer's money held until it
+expires, so if you use J5 you must have a capture step and a release path (Cardcom documents
+`MTI=420` with the hold's deal number; the test terminal cannot run J5 at all, see
+`references/production-checklist.md`).
 
 ### Step 5: Implement Token-Based Recurring Payments
 
@@ -253,7 +253,7 @@ For subscriptions and recurring billing (hora'ot keva), Cardcom supports two fla
 - **Card-based recurring**, charging a stored credit-card `Token` on a schedule. Covered in this step.
 - **MASAV bank standing orders**, debiting the customer's Israeli bank account directly. Managed through the `RecuringPayments` endpoints (`RecuringPayments/GetRecurringPayment`, `GetRecurringPaymentHistory`, `IsBankNumberValid`). Use this when the customer prefers a bank debit over a card charge or when the card is unavailable. The Cardcom dashboard provisions the underlying instruction.
 
-For card-based recurring:
+For card-based recurring, first confirm the merchant has Cardcom's tokens module and a terminal that does NOT require CVV (on a CVV-required terminal each token charge needs a single-use J5 approval number), and without the module Cardcom keeps a token for only 6 months, for refunds (`references/production-checklist.md`).
 
 1. **Create a token during the first payment.** Use Low Profile with `Operation: "ChargeAndCreateToken"` (or `"CreateTokenOnly"`). The `LowProfileResult` returns `TokenInfo` with `Token`, `CardMonth`, `CardYear`, and `TokenExDate` (the date the token is purged from Cardcom).
 
@@ -270,6 +270,7 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/Transaction
   "CardExpirationMMYY": "1227",
   "Amount": 99.00,
   "ISOCoinId": 1,
+  "ExternalUniqTranId": "sub-8841-2026-10",
   "Document": {
     "DocumentTypeToCreate": "TaxInvoiceAndReceipt",
     "Name": "Subscriber Name",
@@ -282,7 +283,7 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/Transaction
 }
 ```
 
-The response is a `TransactionInfo`: check `ResponseCode == 0` (note `700` and `701` also count as success for J2/J5 validation-only transactions), then read `TranzactionId`, `Token`, `DocumentNumber`, and `DocumentUrl`. Each token charge can automatically generate and email an invoice when a `Document` object is attached.
+`ExternalUniqTranId` is one id per subscriber per billing cycle, so a retry of the same cycle is blocked (608) while next month's charge goes through. The response is a `TransactionInfo`: only `ResponseCode == 0` is a charge (`700`/`701` are J2/J5 validation answers, where nothing was charged), then read `TranzactionId`, `Token`, `DocumentNumber`, and `DocumentUrl`. Each token charge can automatically generate and email an invoice when a `Document` object is attached; if `DocumentNumber` is missing, the card was charged but the invoice was not issued, so issue it with `CreateDocument` rather than re-charging.
 
 ### Step 6: Process Refunds
 
@@ -302,7 +303,7 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/RefundByTransactionId
 
 `ApiPassword` is required for refunds. `PartialSum` refunds part of the transaction (omit it to refund the full amount). `CancelOnly: true` voids a transaction before it is deposited. The response is a `RefundByTransactionIdResp`: check `ResponseCode == 0`, then read `NewTranzactionId` (the id of the refund transaction).
 
-To issue the matching credit document, call `Documents/CreateDocument` with a refund `DocumentTypeToCreate` such as `TaxInvoiceAndReceiptRefund` or `TaxInvoiceRefund`.
+To issue the matching credit document, call `Documents/CreateDocument` with a refund `DocumentTypeToCreate` such as `TaxInvoiceAndReceiptRefund` or `TaxInvoiceRefund`, and link it to the REFUND transaction through `DealNumbers: [{"DealNumber": <NewTranzactionId>}]`, not to the original charge. Cardcom's refund guidance for its older interface states this explicitly: after a refund you call the document API again and cross it to the refund deal. Do not also call `Documents/CancelDoc` for the same refund: its spec summary is "Cancel document and refund credit card", it takes `ApiName`, `ApiPassword`, `DocumentNumber` and an INTEGER `DocumentType`, and returns a `NewDocumentNumber`, so combining it with `RefundByTransactionId` risks refunding twice. For a FULL refund of a sale that has a document, `CancelDoc` on its own is the document-linked alternative; `AllowMultipleRefunds` (default `false`) is your guard against refunding the same transaction twice.
 
 ### Step 6.5: Query Transactions for Reporting
 
@@ -321,16 +322,11 @@ POST https://secure.cardcom.solutions/api/v11/Transactions/ListTransactions
 }
 ```
 
-Four things about this endpoint trip up almost every integration:
-
-1. **`ApiPassword` is required.** This is a company-wide read, not a single charge.
-2. **There is no `TerminalNumber` field.** The schema sets `additionalProperties: false`, so sending `TerminalNumber` is rejected outright. To scope results to one terminal, use the optional `LimitForTerminal` instead.
-3. **Dates are `DDMMYYYY` strings**, not ISO. `01062026` is 1 June 2026.
-4. **`Page` and `Page_size` are both required**, and `Page_size` must be between 10 and 2000. Paging starts at 1, not 0.
+`ApiPassword`, `FromDate`, `ToDate` (`DDMMYYYY` strings, so `01062026` is 1 June 2026), `Page` (from 1) and `Page_size` (10 to 2000) are all required. There is no `TerminalNumber` field; scope to a terminal with `LimitForTerminal`.
 
 The response is a `GetTranzactionsResp`: check `ResponseCode == 0`, then read `Tranzactions` (an array of `TransactionInfo`), plus the echoed `Page` and `Page_size`. Keep requesting the next page until a page returns fewer rows than `Page_size`.
 
-`Transactions/SpecialTransactions` is a sibling read endpoint (it returns other transactions when Cardcom is your acquirer) and takes exactly the same four required fields: `ApiName`, `ApiPassword`, `FromDate`, `ToDate`. Despite the name, it does not create anything.
+`Transactions/SpecialTransactions` is a READ endpoint despite its name (see `references/api-endpoints.md`).
 
 ### Step 7: Suspended Deals (Deferred Charges)
 
@@ -338,29 +334,45 @@ A suspended deal authorizes a payment intent without an immediate charge:
 
 1. Create a Low Profile session with `Operation: "SuspendedDeal"`.
 2. The `LowProfileResult` returns `SuspendedInfo` with a `SuspendedDealId`.
-3. Charge the suspended deal later through the Cardcom admin panel or the `SuspendedDeals/Charge` endpoint (the `SuspendedDeals` group also exposes `Cancel` and `GetSuspendedDealInfo`).
+3. Charge it later in the Cardcom admin panel or with `POST /api/v11/SuspendedDeals/Charge`, whose only fields (all required, `additionalProperties: false`) are `TerminalNumber`, `ApiName` and `SuspendedDealID`. **Note the casing:** the result object spells it `SuspendedDealId`, the request `SuspendedDealID`; send the request spelling. `SuspendedDeals/Cancel` and `GetSuspendedDealInfo` take the same three fields; the group also has `GetSuspendedDeals` and `UpdateSuspendedDealInfo`.
 
-Useful for pre-authorizations and services billed after delivery. Verify the exact `SuspendedDeals/Charge` request fields against the official docs before wiring the charge-later call.
+Useful for pre-authorizations and services billed after delivery. `JValidateType` also applies here and defaults to `5` (J5) on `LowProfile/Create`, so a suspended deal normally holds the amount on the card: cancel the ones you will not charge.
 
 ### Step 8: Handle Errors
 
-Every V11 endpoint returns a `ResponseCode` integer and a `Description` string. `ResponseCode == 0` means success; any non-zero value is a developer/transaction error and `Description` carries the human-readable reason.
+Every endpoint this skill uses returns a `ResponseCode` integer and a `Description` string (a few others, such as `GetTransactionInfoById` and the `CompanyOperations` lookups, return bare arrays or booleans instead). `ResponseCode == 0` means success; any non-zero value is a developer/transaction error and `Description` carries the human-readable reason.
 
 ```python
 import requests
 
-resp = requests.post(
-    "https://secure.cardcom.solutions/api/v11/Transactions/Transaction",
-    json=payload,
-).json()
+BASE = "https://secure.cardcom.solutions/api/v11"
+payload["ExternalUniqTranId"] = order_id  # same id on every retry of THIS charge
 
-if resp.get("ResponseCode") == 0:
-    deal_id = resp["TranzactionId"]
+try:
+    r = requests.post(f"{BASE}/Transactions/Transaction", json=payload, timeout=30)
+except requests.RequestException:
+    r = None  # outcome unknown: the card MAY have been charged
+
+if r is None or r.status_code != 200:
+    # Never re-charge blind. Ask Cardcom whether the charge went through.
+    q = requests.post(f"{BASE}/Transactions/GetTransactionByExternalUniqTran",
+                      json={"TerminalNumber": payload["TerminalNumber"],
+                            "ApiName": payload["ApiName"],
+                            "ExternalUniqTranId": order_id}, timeout=30)
+    resp = q.json() if q.status_code == 200 else None
 else:
-    log_error(f"Cardcom error {resp.get('ResponseCode')}: {resp.get('Description')}")
+    resp = r.json()
+
+code = resp.get("ResponseCode") if resp else None
+if code == 0:
+    deal_id = resp["TranzactionId"]
+elif code == 608:
+    mark_for_lookup(order_id)  # id already answered: look the record up, never re-charge
+else:
+    log_error(f"Cardcom error {code}: {resp.get('Description') if resp else 'no response'}")
 ```
 
-Always check both the HTTP status (200 means the request was received) AND `ResponseCode` (0 means the operation succeeded). The official docs at `https://secure.cardcom.solutions/Api/v11/Docs` carry the full numeric error reference; do not hardcode error-code-to-message mappings, read `Description` instead. See `references/api-responses.md` for the handling pattern.
+Always check both the HTTP status (200 means the request was received) AND `ResponseCode` (0 means the operation succeeded). Keep `ApiName`/`ApiPassword` server-side only; none of these calls may run from browser JavaScript. The official docs at `https://secure.cardcom.solutions/Api/v11/Docs` carry the full numeric error reference; do not hardcode error-code-to-message mappings, read `Description` instead. See `references/api-responses.md` for the handling pattern.
 
 ## Examples
 
@@ -393,22 +405,20 @@ User says: "Customer wants a refund for order #5678, need to issue a credit note
 Actions:
 1. Call `Transactions/RefundByTransactionId` with `TransactionId` and `ApiPassword`.
 2. Check `ResponseCode == 0` and read `NewTranzactionId`.
-3. Call `Documents/CreateDocument` with `DocumentTypeToCreate: "TaxInvoiceAndReceiptRefund"`.
+3. Call `Documents/CreateDocument` with `DocumentTypeToCreate: "TaxInvoiceAndReceiptRefund"` and `DealNumbers: [{"DealNumber": <NewTranzactionId>}]`.
 Result: Refund processed and the matching credit document generated.
 
 ### Example 5: Accept Bit, Apple Pay, and Google Pay
 User says: "I want to let customers pay with Bit, Apple Pay, and Google Pay in addition to credit cards"
 Actions:
-1. Enable each method (Bit, Apple Pay, Google Pay) on your Cardcom terminal via the dashboard.
-2. Create a Low Profile session as usual via `LowProfile/Create`.
-3. Display `UrlToBit` from the response alongside the card form. Apple Pay and Google Pay surface as wallet buttons inside the Low Profile page itself, no extra URL needed.
-Result: Customers can choose between credit card, Bit, Apple Pay, and Google Pay, same webhook flow.
+1. Enable each method on the terminal, then create the Low Profile page as usual.
+2. Show `UrlToBit` beside the card form; Apple Pay and Google Pay appear inside the page (Apple Pay on one-off charges only, not on a token-creating page).
+Result: Customers choose a payment method; same webhook flow.
 
 ## Community Libraries
 
-- **@tsdiapi/cardcom** (TypeScript/Node.js) -- V11 API client with payments, refunds, tokenization, transaction queries. Install: `npm install @tsdiapi/cardcom`
-- **CardCom/OpenFields-FrontEnd-React** (React) -- official OpenFields example. See `https://github.com/CardCom/OpenFields-FrontEnd-React`
-- **CardCom/OpenFields-Backend-Node** (Node.js) -- official Node.js backend example. See `https://github.com/CardCom/OpenFields-Backend-Node`
+- **@tsdiapi/cardcom** (TypeScript/Node.js) -- community V11 client, not reviewed by us. `npm install @tsdiapi/cardcom`
+- **CardCom/OpenFields-FrontEnd-React** and **CardCom/OpenFields-Backend-Node** -- Cardcom's official OpenFields examples (links below).
 
 ## Reference Links
 
@@ -425,21 +435,23 @@ Result: Customers can choose between credit card, Bit, Apple Pay, and Google Pay
 - `references/api-endpoints.md` -- Cardcom REST API V11 endpoint reference: LowProfile, Transactions, Documents, RecuringPayments, Financial, and CompanyOperations paths with their key request/response fields. Consult when building API integrations.
 - `references/api-responses.md` -- the V11 `ResponseCode` + `Description` response pattern, the per-operation response objects, and the recommended error-handling flow. Consult when debugging failed API calls.
 - `references/document-types.md` -- the `DocumentTypeToCreate` string enum, the `Document` object field list, and VAT handling per Israeli tax law. Consult when determining which document type to generate.
+- `references/production-checklist.md` -- subscription preconditions, document totals, J5 release, webhook state, idempotency and secrets. Read before going live.
+- `references/domain-checklist.md` -- the coverage checklist this skill is reviewed against.
 
 ### Scripts
-- `scripts/validate_cardcom_response.py` -- Validates a Cardcom V11 API response: checks `ResponseCode`, surfaces `Description`, and verifies expected fields for transaction, token, and document operations. Only `ResponseCode` 0 counts as success; 700/701 are rejected unless you pass `--validation-only`, because they mean a J2/J5 card check passed and NO money moved. Run: `python scripts/validate_cardcom_response.py --help`
+- `scripts/validate_cardcom_response.py` -- Validates a Cardcom V11 API response, either a `LowProfileResult` or a flat response (`Transaction`, `CreateDocument`, `RefundByTransactionId`). `--expect {charge,token,document,refund,validation}` fails closed when the expected result is missing, `--amount` and `--return-value` reconcile against your order, and `--with-document` fails a charge whose invoice was not issued. Only `ResponseCode` 0 counts as success; 700/701 are rejected unless you pass `--validation-only`, because they mean a J2/J5 card check passed and nothing was charged. 608 is reported as a blocked duplicate. Run: `python scripts/validate_cardcom_response.py --help`
 
 ## Gotchas
-- The V11 success check is `ResponseCode == 0`, NOT `DealResponse == 0`. `DealResponse` does not exist in V11; agents trained on older Cardcom examples invent it. Every V11 endpoint returns `ResponseCode` plus a `Description` string.
-- `DocumentTypeToCreate` is a STRING enum (`"TaxInvoiceAndReceipt"`, `"TaxInvoice"`, `"Receipt"`, ...), not an integer code. Integer document codes like `101` or `400` belong to legacy `.aspx` interfaces, not V11.
+- The V11 success check is `ResponseCode == 0`, NOT `DealResponse == 0`. `DealResponse` does not exist in V11; agents trained on older Cardcom examples invent it. The endpoints in this skill return `ResponseCode` plus a `Description` string.
+- `DocumentTypeToCreate` (on `Document` objects) and `DocumentType` on `CreateDocumentUrl` are STRING enums (`"TaxInvoiceAndReceipt"`, `"TaxInvoice"`, ...). But several V11 document endpoints take an INTEGER type: `CancelDoc.DocumentType`, `SendAllDocumentsToEmail.DocumentType`, `GetReport.DocType` and the `CrossDocument` fields. The spec does not publish the integer-to-name mapping, so take the value from Cardcom (or from a document you already hold) rather than guessing.
 - The `TerminalNumber` must be sent as an integer, not a string. Agents commonly wrap it in quotes.
-- `ApiPassword` is required on far more than refunds and documents: 26 request schemas list it in `required` in the current spec. Do NOT generalise it to a whole path family, because the exceptions are real: `Documents/ExternalShopCreateDocument` has no `ApiPassword` property at all, and `Documents/CrossDocument` and `TapTransactions/NotifyExternalTapTransaction` declare no `required` array. Check the schema for the exact endpoint. One case runs the other way: `ApiPassword` is not a TOP-LEVEL property of `LowProfile/Create` or `Transactions/Transaction`, but it IS required INSIDE the nested `Advanced` / `AdvancedDefinition` object when you set `IsRefund` (Transaction) or `IsRefundDeal` (LowProfile) -- the spec says "Required only if 'IsRefund' is true". That nested refund path is the second way to refund, used when you have a token or card but no original `TransactionId`. Company-wide reads and writes need it (`ListTransactions`, `SpecialTransactions`, `RefundByTransactionId`, all `Documents/*` writes, all `Financial/*` reports, all `TapTransactions/*`); single-card charges do not. It is not even a property on `LowProfile/Create` or `Transaction`, so sending it there is wrong too. Agents routinely omit it on `ListTransactions` because older guidance described it as "refunds and documents only".
-- The reporting endpoints `ListTransactions` and `SpecialTransactions` do NOT accept `TerminalNumber`, and both set `additionalProperties: false`, so including it fails the call. Scope to a terminal with `LimitForTerminal` on `ListTransactions`. Their dates are `DDMMYYYY` strings, and `ListTransactions` additionally requires `Page` plus a `Page_size` between 10 and 2000.
-- Watch the real V11 field spellings: `ISOCoinID` / `ISOCoinId`, `IsSendByEmail` (not `SendByEmail`), `TaxId` (not `VAT_Number`). **The language field is spelled differently depending on which document object you are in, and every one of these schemas rejects unknown properties, so getting it wrong fails the call outright:** `Document` (standalone `CreateDocument`) and `DocumentTran` (`Transaction`) use the misspelled `Languge`, while `DocumentLP`, the document you attach to `LowProfile/Create`, uses the correctly spelled `Language`. Applying `Languge` everywhere breaks the Low Profile flow, which is the flow this skill recommends first.
+- **The `ApiPassword` list drifts between spec revisions, so never answer from memory.** This skill once said `Documents/ExternalShopCreateDocument` had no `ApiPassword`; the current spec requires it, and a `TapTransactions` path it cited is gone. Read the endpoint's schema. The reverse case: `ApiPassword` is not a top-level field of `LowProfile/Create` or `Transactions/Transaction`, but it IS required inside `Advanced` / `AdvancedDefinition` when you set `IsRefund` / `IsRefundDeal` (the token-or-card refund path, when you have no original `TransactionId`).
+- **The webhook is not authenticated.** There is no signature or secret field anywhere on `LowProfile/Create`, and `WebHookUrl` is a required field, not an optional one. Anyone who learns the URL can POST to it, so it must only ever trigger a `GetLpResult` lookup for a `LowProfileId` you created (Step 3b).
+- The reporting endpoints `ListTransactions` and `SpecialTransactions` do NOT accept `TerminalNumber`, and neither schema lists it (both are marked `additionalProperties: false`), so do not send it. Scope to a terminal with `LimitForTerminal` on `ListTransactions`. Their dates are `DDMMYYYY` strings, and `ListTransactions` additionally requires `Page` plus a `Page_size` between 10 and 2000.
+- Watch the real V11 field spellings: `ISOCoinID` / `ISOCoinId`, `IsSendByEmail` (not `SendByEmail`), `TaxId` (not `VAT_Number`). **The language field is spelled differently depending on which document object you are in, and each schema lists only its own spelling (`additionalProperties: false`), so the other spelling is at best ignored:** `Document` (standalone `CreateDocument`) and `DocumentTran` (`Transaction`) use the misspelled `Languge`, while `DocumentLP`, the document you attach to `LowProfile/Create`, uses the correctly spelled `Language`. Applying `Languge` everywhere means the Low Profile document language is not set as you intended.
 - The current Israeli VAT rate is 18% (effective January 2025; it was 17% before that, so a document reissued for an earlier period must use the rate in force on ITS date). Cardcom calculates VAT server-side, so document amounts are treated per the `IsVatFree` flag.
-- **PCI scope**: hosted Low Profile keeps you in SAQ-A. Server-to-server `Transaction` with raw `CardNumber`/`CVV2` lands in SAQ-D. The current standard is PCI DSS v4.0.1 (a limited revision published June 2024), and the 51 future-dated requirements became effective 31 March 2025, so all of them are now in force. Prefer Low Profile or tokens unless you have a real reason to touch raw card data.
-- **Settlement timing** is configured on the terminal, not per request, and is not settable via the API. Cardcom publishes three cycles: monthly (transactions from the 1st through the day before month-end are credited on the 6th of the following month), weekly (Sunday through Friday, credited the Wednesday of the following week), and bi-monthly (the 1st to the 15th credited on the 2nd of the following month; the 16th through the day before month-end credited on the 8th). Still confirm the cycle actually configured on the merchant's terminal before promising a business a specific day.
-- **Apple Pay and Google Pay don't have separate URL fields** like `UrlToBit` / `UrlToPayPal`. They surface as wallet buttons inside the hosted Low Profile page once enabled on the terminal in the admin panel.
+- **PCI scope**: hosted Low Profile keeps you in SAQ-A. Server-to-server `Transaction` with raw `CardNumber`/`CVV2` lands in SAQ-D. The current standard is PCI DSS v4.0.1; its 51 future-dated requirements have been in force since 31 March 2025. Prefer Low Profile or tokens unless you have a real reason to touch raw card data.
+- **Settlement timing** is configured on the terminal, not per request, and is not settable via the API. Cardcom publishes monthly, weekly and bi-monthly cycles (dates in `references/api-endpoints.md`); confirm the cycle configured on the merchant's terminal before promising a specific day.
 
 ## Troubleshooting
 
@@ -448,16 +460,20 @@ Cause: a validation or authentication problem with the request.
 Solution: Read the `Description` string in the response, it names the exact issue. Verify `TerminalNumber` is an integer and `ApiName` is correct. The full numeric error reference is at `https://secure.cardcom.solutions/Api/v11/Docs`.
 
 ### Error: "Low Profile page loads but payment fails"
-Cause: often a `WebHookUrl` or redirect URL issue.
-Solution: Ensure `SuccessRedirectUrl`, `FailedRedirectUrl`, and `WebHookUrl` are publicly accessible HTTPS URLs. Localhost URLs do not work, use a tunnel (ngrok) for development.
+Cause: on the test terminal, test-card amounts above 5,000 NIS are simulated as failures (Cardcom's test page). Otherwise the card result is in `TranzactionInfo.Description`; this skill has not verified other causes.
+Solution: Test below 5,000 NIS, then read `TranzactionInfo.ResponseCode` and `Description` from `GetLpResult`. Cardcom's documentation asks for external (not localhost) HTTPS redirect and notify URLs, so use a tunnel in development.
 
 ### Error: "Refund returns a non-zero `ResponseCode`"
 Cause: `ApiPassword` missing, or the transaction is already deposited and you sent `CancelOnly: true`.
 Solution: Include `ApiPassword` on every refund request. Use `CancelOnly: true` only before deposit; after deposit, send a real refund (omit `CancelOnly` or set it `false`).
 
 ### Error: "Invoice created but not emailed"
-Cause: `IsSendByEmail` not set or email address missing.
-Solution: Set `IsSendByEmail: true` and include a valid `Email` in the `Document` object. Check spam folders, Cardcom sends from its own domain.
+Cause: `IsSendByEmail` explicitly set to `false` (its default is `true`), or the `Email` is missing or invalid.
+Solution: Leave `IsSendByEmail` at `true` and include a valid `Email` in the `Document` object. Check spam folders, Cardcom sends from its own domain.
+
+### Error: `ResponseCode` 608 on a token charge
+Cause: the same `ExternalUniqTranId` was already used by a call that got a valid card answer, a charge or a J2/J5 check (spec: "if the same ExternalUniqTranId will be send you will receive and error code 608").
+Solution: do not re-charge with a new id. Call `Transactions/GetTransactionByExternalUniqTran` and branch on that record's `ResponseCode`: 0 means the customer was already charged, 700/701 mean the earlier call was only a J2/J5 check.
 
 ### Error: "Token charge succeeds but no invoice"
 Cause: `Document` object missing from the `Transaction` request.

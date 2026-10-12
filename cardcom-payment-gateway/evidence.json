@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0",
   "skill": "cardcom-payment-gateway",
-  "version": "2.3.0",
-  "updated_at": "2026-07-28T22:13:46Z",
+  "version": "2.5.0",
+  "updated_at": "2026-10-12T18:25:44.213393+00:00",
   "audit_basis": "Phase 3 verification against the live authoritative Cardcom V11 OpenAPI spec (https://secure.cardcom.solutions/swagger/v11/swagger.json, self-reported version 11.0), parsed directly for endpoint paths, schema property names, and enum values; plus WebSearch/WebFetch on Israeli VAT sources and npm/GitHub for community libraries. Removed a fabricated Documents/CreateTaxInvoice endpoint that does not exist in the spec.",
   "claims": [
     {
@@ -28,13 +28,15 @@
     },
     {
       "id": 3,
-      "claim": "Every V11 endpoint returns ResponseCode (int) and Description (string); ResponseCode == 0 means success.",
+      "claim": "The endpoints this skill uses (LowProfile, Transactions except GetTransactionInfoById, Documents, SuspendedDeals) return ResponseCode (int) and Description (string); ResponseCode == 0 means success. Not every V11 endpoint does: GetTransactionInfoById and the CompanyOperations lookups return bare arrays, and some Financial transfer calls return a bare boolean.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"ResponseCode\":{\"description\":\"if equal zero then success , 700 and 701 success for J2 and J5 transaction\"},\"Description\":{...} (present on every V11 response schema)",
+      "raw_snippet": "\"ResponseCode\": { \"type\": \"integer\", \"description\": \"if equel zero then success , else , a develper error see Description for more info \"",
       "where_in_skill": "SKILL.md Step 8, Gotchas",
       "confidence": "high",
       "verified_via": "spec",
-      "verified_at": "2026-07-28T22:05:58Z"
+      "verified_at": "2026-07-28T22:05:58Z",
+      "source_note": "GetTransactionInfoById 200 schema = {type: array, items: $ref ExtShvaParams}; Financial/SupplierApprovalForDWTransfer and TransferFromDigitalBank 200 schema = {type: boolean}; CompanyOperations/GetCities = array of DataGov_CityCodes (parsed 2026-10-12).",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 4,
@@ -51,32 +53,35 @@
       "id": 5,
       "claim": "Bit payments are returned as a separate UrlToBit field on CreateLowProfileResponse.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"CreateLowProfileResponse\":{\"properties\":{\"ResponseCode\",\"Description\",\"Url\",\"UrlToPayPal\",\"UrlToBit\"}}",
+      "raw_snippet": "\"UrlToBit\": { \"type\": \"string\", \"description\": \"the url you need to redirect the card holder\"",
       "where_in_skill": "SKILL.md Step 3a, references/api-endpoints.md",
       "confidence": "high",
       "verified_via": "spec",
-      "verified_at": "2026-07-28T22:05:58Z"
+      "verified_at": "2026-07-28T22:05:58Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 6,
       "claim": "PayPal is returned as a separate UrlToPayPal field on CreateLowProfileResponse.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"CreateLowProfileResponse\":{\"properties\":{\"ResponseCode\",\"Description\",\"Url\",\"UrlToPayPal\",\"UrlToBit\"}}",
+      "raw_snippet": "\"UrlToPayPal\": { \"type\": \"string\", \"description\": \"the url you need to redirect the card holder\"",
       "where_in_skill": "SKILL.md Step 3a, references/api-endpoints.md",
       "confidence": "high",
       "verified_via": "spec",
-      "verified_at": "2026-07-28T22:05:58Z"
+      "verified_at": "2026-07-28T22:05:58Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 7,
-      "claim": "Apple Pay and Google Pay are rendered as wallet buttons inside the hosted Low Profile page itself once enabled on the terminal; no separate URL field exists in the API response.",
-      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"CreateLowProfileResponse\":{\"properties\":{\"ResponseCode\",\"Description\",\"Url\",\"UrlToPayPal\",\"UrlToBit\"}}",
+      "claim": "Google Pay and Apple Pay are wallet buttons inside Cardcom's hosted pages once enabled on the terminal; CreateLowProfileResponse has no Apple/Google Pay URL field.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27009036176274.json",
+      "raw_snippet": "Goolge Pay button is integrated in the Low Profile Landing pages and the new Landing pages",
       "where_in_skill": "SKILL.md Alternative Payment Methods table, Gotchas",
       "confidence": "medium",
-      "source_note": "Only Bit and PayPal get their own URL fields. Apple Pay / Google Pay are wallet buttons rendered inside the hosted page (Url), which is why no separate field exists; Cardcom's homepage lists them as supported products.",
+      "source_note": "Cardcom KB 'How to configure Google Pay'. Apple Pay is covered by claim 76. CreateLowProfileResponse properties are only ResponseCode, Description, LowProfileId, Url, UrlToPayPal, UrlToBit.",
       "verified_via": "spec",
-      "verified_at": "2026-07-28T22:09:10Z"
+      "verified_at": "2026-07-28T22:09:10Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 8,
@@ -92,32 +97,35 @@
       "id": 9,
       "claim": "V11 Document object field spellings: Languge (missing second 'a', on the Document and DocumentTran schemas), ISOCoinID/ISOCoinId, IsSendByEmail, TaxId. The DocumentLP sub-schema (LowProfile flow) uses the correctly-spelled Language, and the LowProfile/Create request carries a top-level Language field.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"Document\":{\"properties\":{...\"Languge\"...}},\"DocumentTran\":{\"properties\":{...\"Languge\"...}},\"DocumentLP\":{\"properties\":{...\"Language\"...}} (Languge on Document+DocumentTran; correctly-spelled Language only on DocumentLP)",
+      "raw_snippet": "\"Languge\": { \"type\": \"string\" \"description\": \"document languge: \\\"he\\\" / \\\"en\\\" / \\\"ru\\\" / \\\"ar\\\" / \\\"fr\\\" / \\\"it\\\"\"",
       "where_in_skill": "SKILL.md Step 4, Gotchas, references/document-types.md",
       "confidence": "high",
       "source_note": "Document, DocumentTran, DocumentLP, DocumentBase schemas",
       "verified_via": "spec",
-      "verified_at": "2026-07-28T22:05:09Z"
+      "verified_at": "2026-07-28T22:05:09Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 10,
-      "claim": "ApiPassword is required on 19 of the 50 V11 endpoints, including Transactions/ListTransactions and Transactions/SpecialTransactions, not only CreateDocument and RefundByTransactionId. It is not a property at all on LowProfile/Create or Transactions/Transaction.",
+      "claim": "ListTransactionsReq requires ApiName, ApiPassword, FromDate, ToDate, Page and Page_size.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"ListTransactionsReq\": {\n        \"type\": \"object\",\n        \"description\": \"list transactions request\",\n        \"additionalProperties\": false,\n        \"required\": [\n          \"ApiName\",\n          \"ApiPassword\",\n          \"FromDate\",\n          \"ToDate\",\n          \"Page\",\n          \"Page_size\"\n        ]",
+      "raw_snippet": "\"required\": [ \"ApiName\" \"ApiPassword\" \"FromDate\" \"ToDate\" \"Page\" \"Page_size\" ]",
       "where_in_skill": "SKILL.md Step 2, Step 6.5, Gotchas; references/api-endpoints.md Base URL & Authentication",
       "confidence": "high",
       "verified_via": "spec",
       "verified_at": "2026-08-10T00:00:00Z",
-      "source_note": "Re-fetched from the live pretty-printed V11 spec 2026-08-10. Counted programmatically against the same file: 50 paths carry a requestBody and exactly 19 of their request schemas list ApiPassword in \"required\". ApiPassword is absent from the properties of CreateLowProfile and TransactionInfo (the LowProfile/Create and Transactions/Transaction bodies)."
+      "source_note": "Re-counted 2026-10-12 against the live spec: 27 resolved request schemas require ApiPassword (26 directly, plus ExternalShopCreateDocument via allOf on CreateDocumentRequest). The skill no longer states a count.",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 11,
-      "claim": "Israeli VAT rate is 18% as of 2026 (raised from 17% in January 2025; the 2026 budget proposal to raise to 19% was rejected).",
+      "claim": "Israeli VAT rate is 18% (raised from 17% in January 2025).",
       "source_url": "https://taxsummaries.pwc.com/israel/corporate/other-taxes",
       "raw_snippet": "Value-added tax (VAT) The 2025 current rate of VAT is 18%.",
       "where_in_skill": "SKILL.md Gotchas, SKILL_HE.md Gotchas",
       "confidence": "high",
-      "source_note": "PwC Israel corporate tax summary, page states 'Last reviewed - 29 June 2026'. Replaces vatcalc.com, which returns HTTP 403 to plain fetches."
+      "source_note": "PwC Israel corporate tax summary, page states 'Last reviewed - 29 June 2026'. Replaces vatcalc.com, which returns HTTP 403 to plain fetches.",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 12,
@@ -184,28 +192,30 @@
     },
     {
       "id": 17,
-      "claim": "Tranzila, Israpay and Bit Business are Israeli payment gateways operating in the same market as Cardcom. Which of them is any given merchant's realistic alternative is not something this skill asserts.",
+      "claim": "Tranzila is an Israeli payment gateway operating in the same market as Cardcom.",
       "source_url": "https://www.tranzila.com/",
-      "raw_snippet": "Tranzila operates a live Israeli payment-gateway service; skills-il additionally ships a dedicated tranzila-payment-gateway skill for it.",
+      "raw_snippet": "סליקה לעסקים - פתרונות סליקת אשראי באינטרנט ובעסק | טרנזילה",
       "where_in_skill": "SKILL.md Overview (landscape paragraph), SKILL_HE.md Overview",
       "confidence": "high",
       "source_note": "Downgraded from the previous 'main competitors' framing, which was editorial and cited to a crypto-payments marketing blog. The skill only needs the fact that alternatives exist and that Tranzila has its own skill.",
       "verified_via": "browser",
-      "verified_at": "2026-07-28T22:08:27Z"
+      "verified_at": "2026-07-28T22:08:27Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 18,
       "claim": "RecuringPayments path uses single 'r' spelling in the V11 schema (RecuringPayments, not RecurringPayments).",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"paths\":{\"/api/v11/RecuringPayments/GetMuhlafim\",\"/api/v11/RecuringPayments/GetRecurringPayment\",...} (single r in RecuringPayments)",
+      "raw_snippet": "\"/api/v11/RecuringPayments/GetRecurringPayment\": {",
       "where_in_skill": "references/api-endpoints.md (already documented)",
       "confidence": "high",
       "verified_via": "spec",
-      "verified_at": "2026-07-28T22:05:58Z"
+      "verified_at": "2026-07-28T22:05:58Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 19,
-      "claim": "Terminal 1000 (with demo ApiName barak9611) and card 4580000000000000 appear together as the test setup in a third-party community Cardcom library. NOT confirmed against any official Cardcom sandbox page; the skill presents them as unverified community folklore and warns not to assume terminal 1000 cannot move money.",
+      "claim": "Superseded by claim 53 (Cardcom's own developer test page). Kept for history: terminal 1000 and card 4580000000000000 also appear in a third-party library README.",
       "source_url": "https://raw.githubusercontent.com/yadahan/laravel-cardcom/master/README.md",
       "raw_snippet": "Cardcom::setConfig(['terminal' => '1000', 'username' => 'barak9611'])->card('4580000000000000', '01', '2020')->charge(10, 'ILS');",
       "where_in_skill": "SKILL.md Step 2",
@@ -260,12 +270,13 @@
       "id": 24,
       "claim": "Suspended deals (Operation SuspendedDeal) return a SuspendedDealId and are charged later via the SuspendedDeals endpoint group, which includes SuspendedDeals/Charge, SuspendedDeals/Cancel, and SuspendedDeals/GetSuspendedDealInfo.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"paths\":{\"/api/v11/SuspendedDeals/GetSuspendedDeals\",\"/api/v11/SuspendedDeals/GetSuspendedDealInfo\",\"/api/v11/SuspendedDeals/Charge\",\"/api/v11/SuspendedDeals/Cancel\",\"/api/v11/SuspendedDeals/UpdateSuspendedDealInfo\"}; \"SuspendedInfo\":{\"properties\":{\"SuspendedDealId\"...}}",
+      "raw_snippet": "\"SuspendedDealId\": { \"type\": \"integer\" \"description\": \"Suspended deal Id, can be charge via API or the admin panel \"",
       "where_in_skill": "SKILL.md Step 7, SKILL_HE.md Step 7",
       "confidence": "high",
       "source_note": "SuspendedDeals paths",
       "verified_via": "spec",
-      "verified_at": "2026-07-28T22:05:09Z"
+      "verified_at": "2026-07-28T22:05:09Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 25,
@@ -281,7 +292,7 @@
     },
     {
       "id": 26,
-      "claim": "Redirect and webhook URLs in the code samples (example.com/success, /failed, /webhook) are illustrative placeholders, not real Cardcom endpoints. Covers these references: https://example.com/success https://example.com/failed https://example.com/webhook https://secure.cardcom.solutions/doc/10042",
+      "claim": "Redirect and webhook URLs in the code samples (example.com/success, /failed, /webhook) are illustrative placeholders on the IANA-reserved example.com domain. (The script's generate_example DocumentUrl is a made-up demo value, not a citation.)",
       "source_url": "https://www.iana.org/help/example-domains",
       "raw_snippet": "Example Domains Domains Protocols Numbers About Instructions and Guides Example Domains As described in RFC 2606 and RFC 6761 , a number of domains such as example.",
       "where_in_skill": "SKILL.md + SKILL_HE.md LowProfile request examples",
@@ -289,7 +300,7 @@
       "source_note": "example.com is IANA-reserved for documentation, which is exactly why it is used here.",
       "verified_via": "source fetched; snippet copied from the cited page",
       "verified_at": "2026-08-19",
-      "fetched_at": "2026-08-19"
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 27,
@@ -309,7 +320,7 @@
       "raw_snippet": "מספרי הקצאה אלה יידרשו כתנאי לניכוי מס התשומות בעסקאות שמעל לתקרה שנקבעה בחוק (20,000 ₪ לשנת 2025) 10,000 החל מה-1 בינואר 2026 ו-5,000 ₪ החל מה-1 ביוני 2026.",
       "where_in_skill": "SKILL.md Step 4.5, SKILL_HE.md שלב 4.5",
       "confidence": "high",
-      "source_note": "Israel Tax Authority service page, footer states דף זה עודכן לאחרונה בתאריך 01.06.2026. The page also states the model applies from 1.1.2024 but gives no figure for 2024, so the former 25,000 (2024) table row was dropped from the skill body rather than left uncited.",
+      "source_note": "Israel Tax Authority service page, footer states דף זה עודכן לאחרונה בתאריך 01.06.2026. The page also states the model applies from 1.1.2024 but gives no figure for 2024, so the former 25,000 (2024) table row was dropped from the skill body rather than left uncited. UPDATE 2026-10-12: the body DOES carry a 'May 2024 | 25,000 NIS' row, backed by claims 35 and 36 (icount, greeninvoice). Cardcom's own guide (KB 27351210830738) says 'לשנת 2024 נקבעה התקרה בגובה של 20,000', which conflicts with 35/36; the skill keeps 25,000 for May-Dec 2024 on the two independent sources and does not cite Cardcom's 2024 figure.",
       "verified_via": "browser",
       "verified_at": "2026-08-10T00:00:00Z"
     },
@@ -320,29 +331,31 @@
       "raw_snippet": "עוסקים מורשים (יחידים ותאגידים) וכל מי שקיבלו מהם הרשאה במערכת למתן הרשאה לביצוע פעולות דיגיטליות.",
       "where_in_skill": "SKILL.md Step 4.5, SKILL_HE.md שלב 4.5",
       "confidence": "medium",
-      "source_note": "NARROWED. The skill previously quoted two exact Hebrew UI subject labels inside הרשאות לפעולות דיגיטליות. That screen lives behind a login at secapp.taxes.gov.il/SrHasmacha, so the exact strings cannot be verified from any public page; the body now describes the two permissions functionally instead of quoting them as verified UI text.",
+      "source_note": "UPDATE 2026-10-12: the two Israel-Invoices subject labels are now quoted verbatim in the body and are publicly verified by claim 79 (Cardcom KB 22089840540946). The earlier note that they could not be verified is superseded.",
       "verified_via": "browser",
       "verified_at": "2026-08-10T00:00:00Z"
     },
     {
       "id": 28,
-      "claim": "The Cardcom OpenAPI spec (title 'CardCom API', version 11.0, 59 paths) contains no allocation-number field: CreateDocumentRequest exposes ApiName, ApiPassword, Document, Cash, Cheques, CustomFields, DealNumbers, IsSendSMS, and DocumentBase's 17 properties include none.",
+      "claim": "CreateDocumentRequest and DocumentInfo carry no allocation-number field; the only such field in the 62-path spec is SlikaInvoicesResult.TaxAuthorityAllocationNumber on the Financial/GetSlikaInvoices billing report.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"title\": \"CardCom API\"",
+      "raw_snippet": "\"TaxAuthorityAllocationNumber\": { \"type\": \"string\" \"description\": \"Tax Authority Allocation Number\"",
       "where_in_skill": "SKILL.md Step 4.5, SKILL_HE.md שלב 4.5",
       "confidence": "high",
       "verified_via": "openapi-parse",
-      "verified_at": "2026-07-27T00:00:00Z"
+      "verified_at": "2026-07-27T00:00:00Z",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 29,
-      "claim": "ListTransactionsReq has no TerminalNumber property and sets additionalProperties:false, so sending TerminalNumber fails the call; terminal scoping uses the optional LimitForTerminal.",
+      "claim": "ListTransactionsReq has no TerminalNumber property (the schema is marked additionalProperties:false); terminal scoping is LimitForTerminal.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"ListTransactionsReq\":{\"additionalProperties\":false,\"properties\":{\"ApiName\",\"ApiPassword\",\"FromDate\",\"ToDate\",\"TranStatus\",\"Page\",\"Page_size\",\"LimitForTerminal\"}}",
+      "raw_snippet": "\"LimitForTerminal\": { \"type\": \"integer\" \"description\": \"return only transaction for a specific terminal in this company\"",
       "where_in_skill": "SKILL.md Step 6.5, Gotchas; references/api-endpoints.md Transactions table",
       "verified_via": "spec",
       "verified_at": "2026-07-28T22:02:47Z",
-      "confidence": "high"
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 30,
@@ -358,22 +371,23 @@
       "id": 31,
       "claim": "Transactions/SpecialTransactions is a read endpoint returning other transactions when Cardcom is the acquirer; its only four properties are ApiName, ApiPassword, FromDate, ToDate, all required. It takes no TerminalNumber and no Amount.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "LowProfile Create a new Iframe \\ Redirect page. ReturnValue string or null <= 250 characters A string of data to save on the transaction, usually send your unique order Id, you will get it back in the WebHook URL.",
+      "raw_snippet": "\"summary\": \"Special Transactions\" \"description\": \"get other transaction if you use CardCom as acquire\"",
       "where_in_skill": "SKILL.md Step 6.5, Gotchas; references/api-endpoints.md Transactions table",
       "verified_via": "CardCom v11 API reference rendered in a browser (Redoc, empty to a plain fetch)",
       "verified_at": "2026-08-19",
       "confidence": "high",
-      "fetched_at": "2026-08-19"
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 32,
       "claim": "ListTransactions returns GetTranzactionsResp with ResponseCode, Description, Tranzactions (array of TransactionInfo), Page, Page_size.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"GetTranzactionsResp\":{\"properties\":{\"ResponseCode\",\"Description\",\"Tranzactions\",\"Page\",\"Page_size\"}}",
+      "raw_snippet": "\"Tranzactions\": { \"type\": \"array\"",
       "where_in_skill": "SKILL.md Step 6.5; references/api-endpoints.md Transactions table",
       "verified_via": "spec",
       "verified_at": "2026-07-28T22:02:47Z",
-      "confidence": "high"
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:01.423206+00:00"
     },
     {
       "id": 33,
@@ -437,7 +451,7 @@
     },
     {
       "id": "39",
-      "claim": "Section 47(a2)(1) applies only to a tax invoice for a transaction whose tax is not at the zero rate, so zero-rated and exempt-only invoices are outside the requirement.",
+      "claim": "Section 47(a2)(1) of the VAT Law applies only to a tax invoice for a transaction whose tax is not at the zero rate, so zero-rated invoices are outside the allocation-number requirement.",
       "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9E%D7%A1_%D7%A2%D7%A8%D7%9A_%D7%9E%D7%95%D7%A1%D7%A3",
       "raw_snippet": "הוראות סעיף קטן זה יחולו לעניין חשבונית מס שהוצאה בשל עסקה שהמס שחל לגביה אינו בשיעור אפס",
       "where_in_skill": "SKILL.md Step 4.5, SKILL_HE.md, references/document-types.md",
@@ -449,15 +463,19 @@
       "source_url": "https://www.kolzchut.org.il/he/%D7%9E%D7%A1_%D7%A2%D7%A8%D7%9A_%D7%9E%D7%95%D7%A1%D7%A3_%28%D7%9E%D7%A2%22%D7%9E%29",
       "raw_snippet": "החל מיום 01.01.2025 הוא עומד על 18% ממחיר הרכישה או השירות. עד 31.12.2024 היה שיעור המע\"מ 17%",
       "where_in_skill": "SKILL.md Gotchas, SKILL_HE.md",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-12"
     },
     {
       "id": "41",
-      "claim": "26 of the V11 component schemas list ApiPassword in their required array. The exceptions are real: ExtShopCreateDocumentRequest has no ApiPassword property at all, and CrossDocumentRequest and NotifyExternalTapTransactionRequest declare no required array, so the rule must not be generalised to a whole path family.",
+      "claim": "ApiPassword's required set drifts between spec revisions. In the October 2026 spec ExtShopCreateDocumentRequest inherits CreateDocumentRequest (allOf), whose required array includes ApiName, ApiPassword and Document, so ExternalShopCreateDocument now requires ApiPassword plus OrderId, TerminalNumber, ExternalMerchantId, ExternalUniqueTranIds and Platform; CrossDocumentRequest declares no required array.",
       "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
-      "raw_snippet": "\"$ref\": \"#/components/schemas/ExtShopCreateDocumentRequest\"",
+      "raw_snippet": "\"OrderId\", \"TerminalNumber\", \"ExternalMerchantId\", \"ExternalUniqueTranIds\", \"Platform\"",
       "where_in_skill": "SKILL.md Step 2 and Gotchas, SKILL_HE.md, references/api-endpoints.md",
-      "confidence": "high"
+      "confidence": "high",
+      "source_note": "ExtShopCreateDocumentRequest = allOf [$ref CreateDocumentRequest, {required: OrderId, TerminalNumber, ExternalMerchantId, ExternalUniqueTranIds, Platform}]; CreateDocumentRequest.required = [ApiName, ApiPassword, Document]. Parsed from the live spec on 2026-10-12.",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
     },
     {
       "id": "42",
@@ -522,7 +540,453 @@
       "raw_snippet": "Is refund transaction , 'ApiPassword' is Required to use this option",
       "where_in_skill": "SKILL.md Step 3b and Step 4.6, SKILL_HE.md, scripts/validate_cardcom_response.py",
       "confidence": "high"
+    },
+    {
+      "id": "53",
+      "claim": "Cardcom's test terminal is 1000; its API username and password are obtained from Cardcom support, not published.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27008168721426.json",
+      "raw_snippet": "מספר המסוף = TerminalNumber = 1000",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Cardcom KB article 'מידע לביצוע טסטים (למתכנת)', updated 2026-08-27; served via the Zendesk Help Center API because the /hc/ page is Cloudflare-blocked to scripts. Same article states 'משתמש ממשקים = API Username = יש לפנות לתמיכה'."
+    },
+    {
+      "id": "54",
+      "claim": "Israeli test card 4580280000000008 supports installments and credit; tourist test card 4580000000000000 does not.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27008168721426.json",
+      "raw_snippet": "מספר כרטיס : 4580280000000008 (4580 ו 12 תווים)",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Same article lists the tourist card as 'מספר כרטיס : 4580000000000000 (4580 ו 12 אפסים )' under 'פרטי כרטיס האשראי תייר ( לא תומך תשלומים וקרדיט)'."
+    },
+    {
+      "id": "55",
+      "claim": "On the test cards, amounts under 5,000 NIS simulate success and amounts above 5,000 NIS simulate failure.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27008168721426.json",
+      "raw_snippet": "ידמו בהצלחה, עסקאות מעל ל 5000",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "56",
+      "claim": "Test-terminal transactions run the full clearing flow without charging the card; a real card used for testing is not charged but its credit line is held for three days for the amount.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27008168721426.json",
+      "raw_snippet": "הכרטיס לא יחויב, אבל כן תיתפס מסגרת לשלושה ימים",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "57",
+      "claim": "Cardcom's duplicate-prevention guidance for token charges: a repeated unique id returns a duplicate and is not charged; the id stays reusable until a valid answer (charge 0, J2 701, J5 700) is returned; a response can take up to 7 seconds, so wait before resending.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26960213410578.json",
+      "raw_snippet": "חיוב (קוד 0), בדיקה J2 (קוד 701), ואישור J5 (קוד 700)",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Article 'מניעת עסקאות כפולות בחיוב אסימונים' (updated 2026-06-04) describes the legacy TokenToCharge.UniqAsmachta parameter; the skill applies it to V11 ExternalUniqTranId and says it comes from the token-charge interface guidance. Same article: 'יכול לקחת עד 7 שניות'. Short article (about 800 chars of text); snippet confirmed by grep on the fetched JSON on 2026-10-12.",
+      "verified_via": "live-fetch",
+      "verified_at": "2026-10-12"
+    },
+    {
+      "id": "58",
+      "claim": "Cardcom's documentation for the older IndicatorUrl interface says the server re-sends the report up to 7 times when the merchant server does not answer HTTP 200, and warns not to rely on the success page.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27008964534162.json",
+      "raw_snippet": "Cardcom's server will repeatedly redirect to the transaction report 7 times",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Article 'Low profile interface - EN (Step 1 +2)'. Legacy LowProfile.aspx interface; the V11 spec does not document WebHookUrl retries, which the skill says."
+    },
+    {
+      "id": "59",
+      "claim": "After a refund, Cardcom's guidance is to call the document API again and cross the credit document to the REFUND credit-card deal, not the original charge.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26985420312082.json",
+      "raw_snippet": "להצליב אותו לעסקת אשראי של הזיכוי",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Article 'ממשק לביטול עסקה קיימת' (legacy CancelDeal interface). In V11 the link field is CreateDocumentRequest.DealNumbers[] (RciExtDealNum.DealNumber)."
+    },
+    {
+      "id": "60",
+      "claim": "When the charge succeeds but the invoice fails, Cardcom gives priority to the charge, so a charge can complete without its invoice.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27008946189074.json",
+      "raw_snippet": "gives priority to billing",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "61",
+      "claim": "The V11 spec defines no signature or secret field on LowProfile/Create; WebHookUrl is in its required array and is described only as a URL that receives real-time data about the transaction.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "A webhook URL is a web address that receives real-time data about the transaction",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "CreateLowProfile.required = [TerminalNumber, ApiName, Amount, SuccessRedirectUrl, FailedRedirectUrl, WebHookUrl]; no property named Signature/Secret/Hmac on CreateLowProfile (checked 2026-10-12)."
+    },
+    {
+      "id": "62",
+      "claim": "Documents/CancelDoc is summarised as 'Cancel document and refund credit card'; it requires ApiName, ApiPassword, DocumentNumber and an INTEGER DocumentType, and returns NewDocumentNumber/NewDocumentType.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "Cancel document and refund credit card",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "CancelDocRequest.required = [ApiName, ApiPassword, DocumentNumber, DocumentType]; DocumentType type integer, description 'document type to cancel'."
+    },
+    {
+      "id": "63",
+      "claim": "SuspendedDeals/Charge, Cancel and GetSuspendedDealInfo require TerminalNumber, ApiName and SuspendedDealID (capital ID) with additionalProperties false, while SuspendedInfo returns SuspendedDealId; the group also has GetSuspendedDeals and UpdateSuspendedDealInfo. POST /api/v11/SuspendedDeals/Charge.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "ID of suspended deal for charge",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Paths present: /api/v11/SuspendedDeals/{GetSuspendedDeals,GetSuspendedDealInfo,Charge,Cancel,UpdateSuspendedDealInfo}."
+    },
+    {
+      "id": "64",
+      "claim": "JValidateType applies to the CreateTokenOnly and SuspendedDeal operations, selects J2 or J5, and defaults to 5 on the LowProfile AdvancedLPDefinition.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "Type of transaction for credit card in operation : CreateTokenOnly or Suspended deal",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "AdvancedLPDefinition.JValidateType default = 5 (enum [2,5])."
+    },
+    {
+      "id": "65",
+      "claim": "TokenInfo.TokenApprovalNumber is the issuer approval number used for the capture operation.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "Issuer approval number for capture operation",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "66",
+      "claim": "Documents/CreateDocumentUrl returns DocUrl for an existing document and takes DocumentType (string enum, Auto not accepted) and DocumentNumber.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "URL to the requested document",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "67",
+      "claim": "Documents/SendAllDocumentsToEmail emails documents by date range (EmailTo, FromDateYYYYMMDD, ToDateYYYYMMDD; integer DocumentType, -1 for all).",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "send PDF docuemnts to email by date range",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "68",
+      "claim": "Documents/GetReport takes an integer DocType: -1 all invoices, -2 all documents, -3 refunds only; ItemsPerPage max 200.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "-1=All invoices. -2=All documents. -3=Refund only",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "69",
+      "claim": "GetTransactionByExternalUniqTran is for checking whether a successful transaction exists for an ExternalUniqTranId; it requires TerminalNumber and ApiName.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "use to validate if there is a successful transaction using the External UniqTranId parameter",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "70",
+      "claim": "TransactionInfo.DealType enum includes Information, Debit, Cancel, Refund and BalanceQuery, so a ResponseCode 0 transaction is not necessarily a charge.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"Information\", \"Debit\", \"Discharge\", \"ForcedCharge\"",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Enum DealType = [Information, Debit, Discharge, ForcedCharge, CashBack, CashTransaction, Recurring, BalanceQuery, Cancel, Refund, Recharge]."
+    },
+    {
+      "id": "71",
+      "claim": "On standalone Document only: ISOCoinID and ISOCoinName exist on Document but not on DocumentLP or DocumentTran; all three set additionalProperties false.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "if ISOCoinID is provided this property is not needed",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "Resolved allOf schemas on 2026-10-12."
+    },
+    {
+      "id": "72",
+      "claim": "The TapTransactions group in the current spec is GetDevices, GetTransactions, PrepareDevice, ProcessSDKTransaction and UpdateWebhookSettings; NotifyExternalTapTransaction is no longer present.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "/api/v11/TapTransactions/UpdateWebhookSettings",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00",
+      "source_note": "grep for NotifyExternalTapTransaction in the 2026-10-12 spec returns 0 matches. 62 paths total."
+    },
+    {
+      "id": "73",
+      "claim": "VAT Law s.47(a2)(3): the Director may decide not to allocate a number where there is reasonable suspicion the invoice will be issued unlawfully (החלטה מקדמית), with a hearing within two business days.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9E%D7%A1_%D7%A2%D7%A8%D7%9A_%D7%9E%D7%95%D7%A1%D7%A3",
+      "raw_snippet": "רשאי הוא להחליט שלא להקצות מספר לחשבונית המס",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "74",
+      "claim": "VAT Law s.47(a2)(4): an osek murshe may request an allocation number even after the invoice was issued.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9E%D7%A1_%D7%A2%D7%A8%D7%9A_%D7%9E%D7%95%D7%A1%D7%A3",
+      "raw_snippet": "עוסק מורשה רשאי לבקש מהמנהל להקצות מספר לחשבונית מס גם לאחר הוצאת החשבונית",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "75",
+      "claim": "s.47(a2)(3)(ב): the hearing is within two business days of the online notice.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9E%D7%A1_%D7%A2%D7%A8%D7%9A_%D7%9E%D7%95%D7%A1%D7%A3",
+      "raw_snippet": "אשר יהיה בתוך שני ימי עסקים מיום שליחת ההודעה המקוונת",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:25:44.213393+00:00"
+    },
+    {
+      "id": "76",
+      "claim": "Apple Pay on Cardcom hosted pages is not supported for token saving or standing orders (the button may show on a standing-order page but cannot complete the payment); iframe use requires registering the domain with Apple via Cardcom support; enabled per terminal.",
+      "source_url": "https://support.cardcom.solutions/api/v2/help_center/he/articles/4404382218258.json",
+      "raw_snippet": "ייתכן שכפתור Apple Pay יוצג, אך לא ניתן להשלים באמצעותו את התשלום",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00",
+      "source_note": "Cardcom support article 'תשלום באמצעות ApplePay & רישום דומיין מול APPLE בשביל IFRAME' (updated 2026-10-07): 'Apple Pay אינו נתמך עבור: שמירת אסימונים. הוראות קבע.'"
+    },
+    {
+      "id": "77",
+      "claim": "Cardcom's Israel Invoices setup: identify in the ITA personal area, register the corporation if a company, then in the Cardcom admin go to Settings > Documents > 5. Israel Invoices service and generate a verification code (owner or someone with digital-actions authorization).",
+      "source_url": "https://support.cardcom.solutions/api/v2/help_center/he/articles/27351210830738.json",
+      "raw_snippet": "בחרו בהגדרות -> מסמכים -> 5. שירות חשבוניות ישראל.",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00",
+      "source_note": "Cardcom support article '\"חשבוניות ישראל\": המדריך המלא - צעד אחר צעד' (updated 2026-05-28): 'שלב 1: הזדהות', 'שלב 2: רישום תאגיד', 'שלב 3: מפיקים קוד אימות במערכת קארדקום'."
+    },
+    {
+      "id": "78",
+      "claim": "The Israel Invoices verification code is valid for three months; documents issued while it is lapsed carry no number and get one when re-printed after re-registering.",
+      "source_url": "https://support.cardcom.solutions/api/v2/help_center/he/articles/27351210830738.json",
+      "raw_snippet": "קוד האימות אשר יתקבל יהיה תקף לשלושה חודשים",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00",
+      "source_note": "Corroborated by support article 19522038057362: 'תקף ל-3 חודשים בלבד' and 'ניתן להירשם מחדש לשירות, ואז להדפיס מחדש את המסמך'."
+    },
+    {
+      "id": "79",
+      "claim": "Error Not Acceptable (406) when getting an allocation number or code means the identified user lacks Tax Authority authorization for the business; the owner grants it under digital-actions authorizations, selecting both Israel-Invoices subjects.",
+      "source_url": "https://support.cardcom.solutions/api/v2/help_center/he/articles/22089840540946.json",
+      "raw_snippet": "המשמעות היא שאין למשתמש הרשאה מול רשות המסים לביצוע פעולה דיגיטלית זו בשם העסק",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00",
+      "source_note": "Same article lists the two subjects: 'חשבוניות ישראל – אימות מספר הקצאה בחשבונית ספק' and 'חשבוניות ישראל – בקשת מספר הקצאה עבור חשבונית ללקוח'."
+    },
+    {
+      "id": "80",
+      "claim": "No allocation number is issued when supplier and customer are the same company number, or when a tax invoice-receipt carries no VAT; the customer's ID or company number must be included.",
+      "source_url": "https://support.cardcom.solutions/api/v2/help_center/he/articles/19522038057362.json",
+      "raw_snippet": "להזין את אותו מספר ח.פ או עוסק מורשה בשני הצדדים",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00",
+      "source_note": "Same article: 'חובה לכלול תעודת זהות (ת\"ז) או ח.פ. של הלקוח' and 'במידה ובחשבונית מס קבלה לא יצא מע\"מ - המסמך בכלל לא יהיה זכאי למספר הקצאה'."
+    },
+    {
+      "id": "81",
+      "claim": "The allocation number is printed on the invoice under the heading 'מספר הקצאה:'.",
+      "source_url": "https://support.cardcom.solutions/api/v2/help_center/he/articles/27351210830738.json",
+      "raw_snippet": "יודפס על גבי החשבונית תחת הכותרת",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00"
+    },
+    {
+      "id": "82",
+      "claim": "After generating the code, the 'בדיקת קבלת מספר הקצאה' button confirms numbers are issued.",
+      "source_url": "https://support.cardcom.solutions/api/v2/help_center/he/articles/27351210830738.json",
+      "raw_snippet": "לחצו על כפתור 'בדיקת קבלת מספר הקצאה'",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00"
+    },
+    {
+      "id": "83",
+      "claim": "DocumentBase.IsSendByEmail defaults to true, so leaving it unset still emails the document.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"IsSendByEmail\": { \"type\": \"boolean\" \"description\": \"Send the document by email\" \"default\": true",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00"
+    },
+    {
+      "id": "84",
+      "claim": "VAT Law s.47(a2)(1) applies only to a tax invoice for a transaction whose tax is not at the zero rate.",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%9E%D7%A1_%D7%A2%D7%A8%D7%9A_%D7%9E%D7%95%D7%A1%D7%A3",
+      "raw_snippet": "הוראות סעיף קטן זה יחולו לעניין חשבונית מס שהוצאה בשל עסקה שהמס שחל לגביה אינו בשיעור אפס",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00"
+    },
+    {
+      "id": "85",
+      "claim": "Transactions/GetTransactionInfoById returns a JSON array of ExtShvaParams records, not a ResponseCode object.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"type\": \"array\" \"items\": { \"$ref\": \"#/components/schemas/ExtShvaParams\" }",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00"
+    },
+    {
+      "id": "86",
+      "claim": "RecuringPayments GetRecurringPayment / GetRecurringPaymentHistory / GetMuhlafimByDate / IsBankNumberValid authenticate with apiUserName / apiPassword (lowercase a), not ApiName.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"apiUserName\": { \"type\": \"string\" \"description\": \"API User Name\"",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:44:42.304923+00:00",
+      "source_note": "Other families: GetTransactionInfoById uses UserName/UserPassword; CompanyOperations writes use SupplierUserName/SupplierPassword/Secret (parsed 2026-10-12)."
+    },
+    {
+      "id": "87",
+      "claim": "The V11 paths cited in the skill and its checklist exist in the live spec: POST /api/v11/LowProfile/Create, POST /api/v11/LowProfile/GetLpResult, POST /api/v11/Transactions/Transaction, POST /api/v11/Transactions/RefundByTransactionId, POST /api/v11/Transactions/ListTransactions, POST /api/v11/Transactions/GetTransactionInfoById, POST /api/v11/Documents/CreateDocument, POST /api/v11/Documents/CancelDoc, POST /api/v11/Documents/CreateDocumentUrl, POST /api/v11/Documents/GetReport.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"/api/v11/Documents/CreateDocumentUrl\": {",
+      "where_in_skill": "references/domain-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T18:45:51.817088+00:00",
+      "source_note": "All ten paths present in the 62-path spec, each with a post operation (parsed 2026-10-12)."
+    },
+    {
+      "id": "88",
+      "claim": "Token charging needs Cardcom's tokens module and a terminal that does not require CVV.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26960101857298.json",
+      "raw_snippet": "לחיוב אסימון חייב להיות מסוף ללא חובה ל-CVV בחברות האשראי",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00",
+      "source_note": "Article title: 'חיוב/ זיכוי אסימון (דרוש מודול אסימונים) - [שלב 3]' (updated 2025-12-24)."
+    },
+    {
+      "id": "89",
+      "claim": "Without the tokens / standing-order module Cardcom keeps a token for only 6 months, for future refunds; with it, until the card expires.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26960101857298.json",
+      "raw_snippet": "אנו שומרים את האסימון ל 6 חודשים בלבד לצורכי זיכויים עתידיים",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00",
+      "source_note": "Same article: 'אנו שומרים את האסימון עד סיום תוקף הכרטיס' (with the module)."
+    },
+    {
+      "id": "90",
+      "claim": "IsAutoRecurringPayment is for a terminal set up as a standing-order terminal and is not sent on a regular or phone terminal without CVV; V11 AdvancedTran has IsAutoRecurringPayment.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26960101857298.json",
+      "raw_snippet": "אם המסוף מוגדר טלפוני/ רגיל ללא CVV",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00",
+      "source_note": "Legacy parameter TokenToCharge.IsAutoRecurringPayment; V11 equivalent AdvancedTran.IsAutoRecurringPayment (boolean, default false) per the spec."
+    },
+    {
+      "id": "91",
+      "claim": "A J5 approval number may be used only once.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26960101857298.json",
+      "raw_snippet": "יש להשתמש במספר אישור רק פעם אחת",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00"
+    },
+    {
+      "id": "92",
+      "claim": "The invoice lines must total exactly the charged amount.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26955677133074.json",
+      "raw_snippet": "יש לדאוג שסה\"כ שורות החשבונית שווה לסכום החיוב בבקשה לחיוב",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00"
+    },
+    {
+      "id": "93",
+      "claim": "Cardcom releases a J5 hold with MTI=420 plus the Cardcom deal number of the hold as ApprovalNumber (legacy token-charge call); the test terminal cannot run J5; a hold lasts 3 days to two weeks, sometimes a month.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/26984210838034.json",
+      "raw_snippet": "במסוף טסטים שלנו לא ניתן לבצע תפיסת מסגרת J5",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00",
+      "source_note": "Same article: 'TokenToCharge.MTI=420' and 'המסגרת נתפסת ל 3 ימים עד שבועיים , ולפעמים חודש'. V11 AdvancedTran has MTI (no description in the spec) and ApprovalNumber. Short article; snippet confirmed by grep on the fetched JSON on 2026-10-12.",
+      "verified_via": "live-fetch",
+      "verified_at": "2026-10-12"
+    },
+    {
+      "id": "94",
+      "claim": "A Low Profile page times out 20 minutes after it is opened, and the page code expires 24 hours after creation.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27007108827922.json",
+      "raw_snippet": "מרגע בקשת המתכנת מול השרתים של קארדקום הוא 24 שעות",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00",
+      "source_note": "Same article: 'TIMEOUT של 20 דקות דף עסקה של פרופיל נמוך מרגע פתיחת הדף בפועל'. Short article; snippet confirmed by grep on the fetched JSON on 2026-10-12.",
+      "verified_via": "live-fetch",
+      "verified_at": "2026-10-12"
+    },
+    {
+      "id": "95",
+      "claim": "In the legacy interface Cardcom calls the notify (indicator) URL before redirecting the cardholder to the success/failure page.",
+      "source_url": "https://cardcomapinametovalue.zendesk.com/api/v2/help_center/he/articles/27008964534162.json",
+      "raw_snippet": "The system calls this page before the customer is taken to the Success / Failure page",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00"
+    },
+    {
+      "id": "96",
+      "claim": "RefundByTransactionId.AllowMultipleRefunds defaults to false.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"AllowMultipleRefunds\": { \"type\": \"boolean\" \"description\": \"Allow Multiple Refunds on the same transaction\" \"default\": false",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00"
+    },
+    {
+      "id": "97",
+      "claim": "Transactions/Transaction requires only TerminalNumber, ApiName and Amount, so ApiName plus a token can charge a saved card.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"required\": [ \"TerminalNumber\" \"ApiName\" \"Amount\" ]",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00",
+      "source_note": "TransactionReq.required; the same required array also appears on other schemas, so this was confirmed by parsing TransactionReq on 2026-10-12."
+    },
+    {
+      "id": "98",
+      "claim": "The documents search result (InvHeadLineDto) carries ExternalId, so Document.ExternalId can be used to find a document before re-issuing.",
+      "source_url": "https://secure.cardcom.solutions/swagger/v11/swagger.json",
+      "raw_snippet": "\"InvHeadLineDto\": {",
+      "where_in_skill": "SKILL.md, SKILL_HE.md, references/production-checklist.md",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T19:00:37.066906+00:00",
+      "source_note": "InvHeadLineDto has an ExternalId property (parsed 2026-10-12); DocumentSearchResponse.Documents is array<InvHeadLineDto>."
     }
   ],
-  "generated_at": "2026-08-27T17:30:25.718675+00:00"
+  "generated_at": "2026-10-12T18:25:44.213393+00:00"
 }

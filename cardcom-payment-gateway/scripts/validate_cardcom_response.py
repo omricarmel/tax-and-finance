@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate a Cardcom V11 API response.
+"""Validate a Cardcom V11 API response (a LowProfileResult or a flat Transaction, CreateDocument or RefundByTransactionId response).
 
 Cardcom V11 responses carry a top-level ``ResponseCode`` (0 = success) and a
 ``Description`` string. This script checks ``ResponseCode``, surfaces
@@ -40,8 +40,35 @@ else:
 _allow_validation_only = False
 _expect = None
 _expect_amount = None
+_expect_return_value = None
+_with_document = False
 SUCCESS_CODES = {0}
 VALIDATION_ONLY_CODES = {700, 701}
+DUPLICATE_CODE = 608
+
+# A LowProfileResult nests the operation results; every other V11 response is flat.
+_LP_NESTED = ("TranzactionInfo", "TokenInfo", "DocumentInfo", "SuspendedInfo")
+
+# DealType values that are not a charge to the cardholder.
+_NOT_A_CHARGE = {"refund", "cancel"}
+_NO_MONEY_DEALTYPES = {"information", "balancequery"}
+
+
+_SENSITIVE = {"token", "cardowneridentitynumber", "cardownerphone", "cardowneremail", "cvv2", "cardnumber"}
+
+
+def _redact(value):
+    """Mask charge credentials and personal identifiers before printing."""
+    if isinstance(value, dict):
+        return {k: ("***" + str(v)[-4:] if k.lower() in _SENSITIVE and v else _redact(v))
+                for k, v in value.items()}
+    if isinstance(value, list):
+        return [_redact(v) for v in value]
+    return value
+
+
+def _is_low_profile(data: dict) -> bool:
+    return "LowProfileId" in data or any(k in data for k in _LP_NESTED)
 
 
 def parse_response(raw: str) -> dict:
@@ -96,6 +123,13 @@ def _check_response_code(data: dict, label: str, errors: list, info: list):
                 "or a refund, it did NOT complete. Re-run with --validation-only if you "
                 "genuinely issued a J2/J5 check."
             )
+    elif code == DUPLICATE_CODE:
+        errors.append(
+            f"{label}: ResponseCode=608 -- an earlier call with this ExternalUniqTranId already "
+            "got a valid card answer (a charge, or a J2/J5 check), so this DUPLICATE was blocked. "
+            "Do not re-charge under a new id: call Transactions/GetTransactionByExternalUniqTran "
+            "and branch on THAT record's ResponseCode (0 = charged, 700/701 = only checked or held)."
+        )
     else:
         desc = description or "(no Description returned)"
         errors.append(f"{label}: ResponseCode={code} -- {desc}")
@@ -103,7 +137,7 @@ def _check_response_code(data: dict, label: str, errors: list, info: list):
 
 
 def validate_response(data: dict) -> tuple:
-    """Validate a Cardcom V11 API response.
+    """Validate a Cardcom V11 API response (a LowProfileResult or a flat Transaction, CreateDocument or RefundByTransactionId response).
 
     Args:
         data: Parsed response dictionary.
@@ -139,7 +173,7 @@ def validate_response(data: dict) -> tuple:
 
     token = data.get("Token")
     if token:
-        info.append(f"Token: {token}")
+        info.append(f"Token: present (***{str(token)[-4:]})")
 
     # --- Refund response ---
     new_transaction_id = data.get("NewTranzactionId")
@@ -157,6 +191,20 @@ def validate_response(data: dict) -> tuple:
     # --- A refund must not be mistaken for a charge ---
     # TransactionInfo carries IsRefund and DealType. A response with ResponseCode 0
     # and IsRefund true is a successful REFUND, not a successful charge.
+    if _expect == "refund":
+        scopes = [s for s in (data, data.get("TranzactionInfo")) if isinstance(s, dict)]
+        is_refund_shape = "NewTranzactionId" in data  # RefundByTransactionIdResp
+        marked = any(s.get("IsRefund") is True
+                     or str(s.get("DealType", "")).lower() in ("refund", "cancel")
+                     for s in scopes)
+        carries_flag = any("IsRefund" in s or "DealType" in s for s in scopes)
+        if not is_refund_shape and carries_flag and not marked:
+            errors.append(
+                "--expect refund was requested but the transaction is NOT marked as a refund "
+                "(IsRefund false / DealType not Refund or Cancel). This looks like a CHARGE: "
+                "the cardholder may have been charged again. Do not record the refund as done."
+            )
+
     for scope in (data, data.get("TranzactionInfo") or {}):
         if not isinstance(scope, dict):
             continue
@@ -173,6 +221,17 @@ def validate_response(data: dict) -> tuple:
                     "Response is a REFUND (IsRefund/DealType true). Pass --expect refund "
                     "to assert that, or --expect charge to reject it."
                 )
+        deal_type = str(scope.get("DealType", "")).lower()
+        if _expect == "charge" and deal_type in _NOT_A_CHARGE - {"refund"}:
+            errors.append(
+                f"DealType is '{scope.get('DealType')}', which is not a charge. "
+                "Do not record this as money received."
+            )
+        elif _expect == "charge" and deal_type in _NO_MONEY_DEALTYPES:
+            errors.append(
+                f"DealType is '{scope.get('DealType')}': no money was taken. "
+                "Do not record this as a charge."
+            )
 
     # --- Amount reconciliation ---
     if _expect_amount is not None:
@@ -181,10 +240,20 @@ def validate_response(data: dict) -> tuple:
             nested_tx = data.get("TranzactionInfo")
             if isinstance(nested_tx, dict):
                 actual = nested_tx.get("Amount")
-        if actual is None:
+        if actual is None and "NewTranzactionId" in data:
+            warnings.append(
+                "RefundByTransactionIdResp carries no Amount, so --amount cannot be reconciled "
+                "here. Confirm the refunded sum by looking up NewTranzactionId."
+            )
+        elif actual is None:
             errors.append(
                 f"--amount {_expect_amount} was given but the response carries no Amount "
                 "to reconcile against. Do not fulfil on an unreconciled response."
+            )
+        elif isinstance(actual, bool) or not isinstance(actual, (int, float)):
+            errors.append(
+                f"Amount in the response is not a number ({actual!r}); cannot reconcile. "
+                "Do not fulfil."
             )
         elif abs(float(actual) - _expect_amount) > 0.001:
             errors.append(
@@ -200,37 +269,116 @@ def validate_response(data: dict) -> tuple:
     # TranzactionInfo, which the spec says is non-null only for ChargeOnly and
     # ChargeAndCreateToken. A null TranzactionInfo means no money moved, and a null
     # DocumentInfo after a charge means the tax invoice was never issued.
-    _REQUIRED_FOR = {
-        "charge": ("TranzactionInfo",),
-        "token": ("TokenInfo",),
-        "document": ("DocumentInfo",),
-        "refund": ("TranzactionInfo",),
-    }
-    for key in _REQUIRED_FOR.get(_expect or "", ()):
-        if not isinstance(data.get(key), dict) or not data.get(key):
-            errors.append(
-                f"--expect {_expect} was requested but '{key}' is null or absent. "
-                "On a LowProfile result that means the operation did NOT complete "
-                "(an abandoned page, or a document that was never created). "
-                "Fail closed: do not fulfil."
+    # --- ReturnValue reconciliation (your own order id) ---
+    if _expect_return_value is not None:
+        if return_value is None and not _is_low_profile(data):
+            warnings.append(
+                "This response shape (TransactionInfo / DocumentInfo) has no ReturnValue field, "
+                "so --return-value cannot be checked here; match on your ExternalUniqTranId instead."
             )
+        elif return_value is None:
+            errors.append(
+                f"--return-value {_expect_return_value!r} was given but the response has no "
+                "ReturnValue. Do not fulfil an order you cannot match."
+            )
+        elif str(return_value) != _expect_return_value:
+            errors.append(
+                f"ReturnValue mismatch: response says {return_value!r}, expected "
+                f"{_expect_return_value!r}. This result belongs to a different order."
+            )
+
+    if _is_low_profile(data):
+        _REQUIRED_FOR = {
+            "charge": ("TranzactionInfo",),
+            "token": ("TokenInfo",),
+            "document": ("DocumentInfo",),
+            "refund": ("TranzactionInfo",),
+        }
+        required = list(_REQUIRED_FOR.get(_expect or "", ()))
+        if _with_document and "DocumentInfo" not in required:
+            required.append("DocumentInfo")
+        for key in required:
+            if not isinstance(data.get(key), dict) or not data.get(key):
+                errors.append(
+                    f"'{key}' is null or absent on this LowProfile result, so the "
+                    f"{'document' if key == 'DocumentInfo' else _expect} did NOT complete "
+                    "(an abandoned page, or a tax invoice that was never issued). "
+                    "Fail closed: do not fulfil."
+                )
+            elif key == "TokenInfo" and not data[key].get("Token"):
+                errors.append("TokenInfo has no Token: nothing usable was saved. Do not store it.")
+            elif key == "DocumentInfo" and not data[key].get("DocumentNumber"):
+                errors.append("DocumentInfo has no DocumentNumber: the tax document was not issued.")
+        if _expect == "validation":
+            tx = data.get("TranzactionInfo")
+            if isinstance(tx, dict) and tx and tx.get("ResponseCode") not in VALIDATION_ONLY_CODES:
+                errors.append(
+                    "--expect validation was requested but TranzactionInfo carries ResponseCode "
+                    f"{tx.get('ResponseCode')!r}, not a J2/J5 answer (700/701): if it is 0 the "
+                    "cardholder was CHARGED. Do not record this as a card check."
+                )
+            elif not any(isinstance(data.get(k), dict) and data.get(k)
+                         for k in ("TokenInfo", "SuspendedInfo", "TranzactionInfo")):
+                errors.append(
+                    "--expect validation was requested but the LowProfile result has no "
+                    "TokenInfo, SuspendedInfo or TranzactionInfo: the page was abandoned."
+                )
+    else:
+        # Flat responses: Transaction / CreateDocument / RefundByTransactionId / lookups.
+        if _expect == "validation" and data.get("ResponseCode") not in VALIDATION_ONLY_CODES:
+            errors.append(
+                "--expect validation was requested but this response is not a J2/J5 answer "
+                f"(ResponseCode {data.get('ResponseCode')!r}, expected 700 or 701): nothing shows "
+                "a card check took place, and 0 would mean the card was CHARGED."
+            )
+        _FLAT_REQUIRED = {
+            "charge": ("TranzactionId",),
+            "token": ("Token",),
+            "document": ("DocumentNumber",),
+            "refund": ("NewTranzactionId",),
+        }
+        required = list(_FLAT_REQUIRED.get(_expect or "", ()))
+        if _with_document and "DocumentNumber" not in required:
+            required.append("DocumentNumber")
+        if _expect == "refund" and data.get("IsRefund") is True and data.get("TranzactionId"):
+            # A refund done through Transactions/Transaction with Advanced.IsRefund.
+            required = [k for k in required if k != "NewTranzactionId"]
+        for key in required:
+            if data.get(key) in (None, "", 0):
+                errors.append(
+                    f"--expect {_expect} was requested but '{key}' is missing. "
+                    + ("The card may have been charged while the tax invoice was NOT issued; "
+                       "issue it with Documents/CreateDocument, do not re-charge."
+                       if key == "DocumentNumber" and _expect == "charge" else
+                       "The operation did not produce its result. Fail closed.")
+                )
 
     for key in ("TranzactionInfo", "TokenInfo", "DocumentInfo", "SuspendedInfo"):
         nested = data.get(key)
         if key in data and nested is None:
             warnings.append(
                 f"'{key}' is present but null. On a LowProfile result that means the "
-                "corresponding operation did not complete."
+                "corresponding operation did not complete, or was not part of the requested Operation."
             )
         if isinstance(nested, dict) and nested:
             # TokenInfo and SuspendedInfo do not carry ResponseCode;
             # TranzactionInfo and DocumentInfo do.
             if "ResponseCode" in nested:
                 _check_response_code(nested, key, errors, info)
+            elif key in ("TranzactionInfo", "DocumentInfo"):
+                # Both schemas define ResponseCode. Without it the result cannot be
+                # confirmed, so this is an error when the object is relied on, else a warning.
+                relied_on = (
+                    (key == "TranzactionInfo" and _expect in ("charge", "refund"))
+                    or (key == "DocumentInfo" and (_expect == "document" or _with_document))
+                )
+                msg = (f"{key} has no ResponseCode, so its result cannot be confirmed. "
+                       "Do not treat it as a success.")
+                (errors if relied_on else warnings).append(msg)
             else:
                 info.append(f"{key}: present")
             if key == "TokenInfo" and nested.get("Token"):
-                info.append(f"  TokenInfo.Token: {nested['Token']}")
+                info.append(f"  TokenInfo.Token: present (***{str(nested['Token'])[-4:]})")
             if key == "SuspendedInfo" and nested.get("SuspendedDealId"):
                 info.append(
                     f"  SuspendedInfo.SuspendedDealId: "
@@ -273,7 +421,7 @@ def generate_example() -> dict:
         "TranzactionId": 219282004,
         "Token": "84cc1f4f-c089-410b-9f93-6437ac9abba6",
         "DocumentNumber": 10042,
-        "DocumentUrl": "https://secure.cardcom.solutions/doc/10042",
+        "DocumentUrl": "https://example.com/doc/10042",
         "ReturnValue": "order-2026-0042",
     }
 
@@ -311,6 +459,15 @@ examples:
         help="Expected charge amount, reconciled against the response Amount.",
     )
     parser.add_argument(
+        "--return-value",
+        help="Your own order id; must equal the response ReturnValue.",
+    )
+    parser.add_argument(
+        "--with-document",
+        action="store_true",
+        help="A tax document was requested with this charge; fail if it was not issued.",
+    )
+    parser.add_argument(
         "--validation-only",
         action="store_true",
         help="Accept ResponseCode 700/701 as success. Use ONLY when the call really was a "
@@ -327,11 +484,13 @@ examples:
 
     args = parser.parse_args()
 
-    global _allow_validation_only, _expect, _expect_amount
+    global _allow_validation_only, _expect, _expect_amount, _expect_return_value, _with_document
 
     _allow_validation_only = args.validation_only or args.expect == "validation"
     _expect = args.expect
     _expect_amount = args.amount
+    _expect_return_value = args.return_value
+    _with_document = args.with_document
 
     if args.example:
         example = generate_example()
@@ -378,7 +537,7 @@ examples:
     print("=" * 40)
     print()
     print("Parsed fields:")
-    for k, v in data.items():
+    for k, v in _redact(data).items():
         print(f"  {k} = {v}")
     print()
     print("Validation results:")
