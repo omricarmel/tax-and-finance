@@ -1129,6 +1129,19 @@
       "appears_in": [
         "references/israeli-tax-regimes.md"
       ]
+    },
+    {
+      "claim_id": "beit-hosen-para18-judgment",
+      "claim": "ע\"א 9308/20, Ronen J. (majority): the dividend taxed is the company funds used for the buyback multiplied by the remaining shareholders' holding percentage just before the transaction; the result is consistent with the first alternative in Circular 2/2018",
+      "claim_type": "legal_reference",
+      "source_url": "https://www.capitax.co.il/Attachments/9308-20.pdf",
+      "raw_snippet": "בשיעור אחזקותיהם של בעלי המניות הנותרים ערב העסקה",
+      "confidence": "high",
+      "fetched_at": "2026-10-12T20:00:00Z",
+      "appears_in": [
+        "references/transaction-and-sale.md",
+        "references/transaction-and-sale-he.md"
+      ]
     }
   ]
 }
