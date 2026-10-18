@@ -4,31 +4,29 @@
 
 3D Secure V2 (3DS2) adds a cardholder authentication step between your server and the card issuer. It shifts fraud liability from the merchant to the issuer for authenticated transactions. Tranzila implements 3DS2 via a **redirect flow** -- the customer is redirected to their bank's authentication page, then returned to your site.
 
-## Flow Diagram
+## Flow (API V2)
 
 ```
 1. Customer submits payment on your site
-2. Your server sends transaction to Tranzila with 3DS parameters
-3. Tranzila returns a redirect URL (if 3DS is required)
-4. Customer is redirected to bank authentication page
-5. Customer completes authentication (password, OTP, biometric)
-6. Bank redirects customer back to your notify_url
-7. Tranzila POSTs final result to your server
-8. Your server checks Response and 3DS authentication status
+2. Your server calls POST /v1/transaction/credit_card/create with activate_3ds="Y"
+   and a 3ds_settings object (browser data, force_txn_on_3ds_fail, force_challenge,
+   auth_3ds_redirect)
+3. Either the card authorises frictionlessly (result returned now, flow finished),
+   or the response carries a challengeUrl
+4. Open challengeUrl in the customer's browser (OTP, app approval, biometric)
+5. The challenge result is redirected to the auth_3ds_redirect URL you sent in step 2
+6. Your server calls POST /v1/transaction/credit_card/3ds/complete with
+   {track_id, terminal_name}
+7. Read transaction_result.processor_response_code, error_code and t3ds_data
 ```
 
 ## Enabling 3DS
 
-Add these parameters to your standard transaction request:
+**On the API** it is per transaction: send `activate_3ds: "Y"` plus `3ds_settings`, whose `browser` object carries `user_agent`, `accept_header`, `ip`, `language`, `color_depth`, `screen_height`, `screen_width`, `time_zone`, `java_enabled` and `window_size`. Collect these from the customer's browser at checkout; they feed the issuer's risk decision.
 
-| Parameter | Value | Description |
-|-----------|-------|-------------|
-| `TranzilaTK` or `ccno` | Card details | Standard card/token parameters |
-| `notify_url` | Your callback URL | Where Tranzila sends the final result (must be HTTPS) |
+**On Hosted Fields** the optional 3DS keys go inside `fields.charge()`. Note that `force_txn_on_3ds_fail` defaults to `Y` there, so a failed or unsupported 3DS still charges, without liability shift, unless you send `N`.
 
-3DS enrollment is typically configured at the terminal level by Tranzila. Contact Tranzila support (073-222-4444) to enable 3DS on your terminal. Once enabled, eligible transactions are automatically routed through the 3DS flow.
-
-For iframe integrations, 3DS is handled within the iframe -- no additional server-side parameters are needed.
+**On the iframe**, 3DS is handled inside the iframe once Tranzila has enabled it on the terminal; contact Tranzila support (073-222-4444) to enable it.
 
 ## Response Fields for 3DS
 
@@ -95,7 +93,7 @@ Not all transactions will go through 3DS. Handle these cases:
 - No action needed -- the transaction completes normally
 
 **Customer abandons authentication:**
-- No callback is received at `notify_url`
+- Nothing comes back to your `auth_3ds_redirect` URL, so `3ds/complete` is never called
 - Implement a timeout on your side for a challenge the customer never completes, and decide in advance whether an abandoned challenge is a failed sale or a retry
 - Display a "payment not completed" message and allow retry
 

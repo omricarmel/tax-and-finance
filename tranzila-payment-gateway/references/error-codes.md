@@ -59,3 +59,7 @@
 - **PayPal-specific**: 950s.
 
 When you hit a non-000 code, look it up by exact number in the official Transaction Response Codes page rather than inferring its meaning. Build error handling to fall back to a generic "payment could not be completed, please try another card or contact your bank" message for any code you have not explicitly mapped.
+
+## Audit trail: codes that are not in the vendor table
+
+The 2026 audit of this skill found that seven codes previously listed here and in the bundled script (033, 036, 037, 039, 091, 125, 200) **do not exist in the vendor's table at all**, and that another seven (014, 057, 061, 065, 075, 107, 111) had invented meanings: in the real table the 051-089 range is "missing vector / parameter file", the 101-152 range is "missing entry in vector N", and 300-354 are acquirer and issuer PERMISSION errors, not issuer refusals. Issuer refusals live in 001-017. Look every code up by exact number.

@@ -148,15 +148,16 @@ def describe_code(code):
             )
     return None
 
-# Fields commonly returned by Tranzila in a successful legacy CGI transaction.
-# Note "ccno" is a REQUEST parameter, not a response field: the CGI returns
-# masked card data as DBFcard / cardtype, and API V2 returns card_mask / last_4.
+# Fields commonly returned by Tranzila in a successful transaction. The
+# DirectNG iframe response documents Response, sum, currency, index,
+# transaction_id, ccno (the LAST 4 digits only, on the response), cardtype,
+# cardissuer, cardacquirer and TranzilaTK; it does not list ConfirmationCode or
+# expdate, so their absence is not treated as a defect. API V2 returns
+# card_mask / last_4 or credit_card_last_4_digits instead.
 COMMON_FIELDS = [
     "Response",
-    "ConfirmationCode",
     "index",
     "sum",
-    "expdate",
 ]
 
 # Fields that indicate a token was used or created
@@ -210,23 +211,37 @@ def validate_response(data: dict) -> tuple:
     # --- Normalise an API V2 JSON body to the legacy field names ---
     # API V2 returns {"error_code":0,"transaction_result":{"processor_response_code":"000",...}}
     # while the legacy CGI returns Response=000&... Handle both.
-    if "Response" not in data and isinstance(data.get("transaction_result"), dict):
-        txn = data["transaction_result"]
+    # The transaction API (credit_card/create, 3DS complete) nests the result
+    # under "transaction_result"; Hosted Fields nests it under
+    # "transaction_response". Accept either.
+    txn_key = next(
+        (k for k in ("transaction_result", "transaction_response")
+         if isinstance(data.get(k), dict)),
+        None,
+    )
+    if "Response" not in data and txn_key:
+        txn = data[txn_key]
         data = dict(data)
         data["Response"] = txn.get("processor_response_code")
         for src, dst in (
             ("transaction_id", "index"),
             ("auth_number", "ConfirmationCode"),
             ("token", "TranzilaTK"),
+            ("amount", "sum"),
         ):
             if txn.get(src) is not None and dst not in data:
                 data[dst] = txn[src]
-        app_error = data.get("error_code")
-        if app_error not in (None, 0, "0"):
-            info.append(
-                f"API V2 application error_code {app_error} "
-                f"({describe_code(str(app_error)) or 'see the vendor response-code page'})"
-            )
+
+    # An API V2 application error (e.g. 22101 "Empty authorization number")
+    # can arrive with or without a transaction_result; always surface it.
+    app_error = data.get("error_code")
+    if app_error not in (None, 0, "0"):
+        msg = data.get("message")
+        errors.append(
+            f"API V2 application error_code {app_error}"
+            + (f": {msg}" if msg else "")
+            + " -- an application-level failure beside the SHVA result; look the code up in the vendor docs for that endpoint"
+        )
 
     # --- Check Response code ---
     response_code = data.get("Response")
@@ -258,16 +273,29 @@ def validate_response(data: dict) -> tuple:
                 f"Transaction failed: Response={response_code} ({meaning})"
             )
 
-    # --- On success, check for ConfirmationCode ---
+    # --- On success, check that there is a reference to store ---
+    # The legacy CGI returns ConfirmationCode; the DirectNG iframe documents
+    # transaction_id / index instead. An approved response with none of them
+    # cannot be refunded or reconciled, so that alone is a failure.
     if response_code == "000":
         confirmation = data.get("ConfirmationCode")
-        if not confirmation:
-            errors.append(
-                "Missing 'ConfirmationCode' on approved transaction -- "
-                "store this value for refund and reconciliation"
-            )
-        else:
+        reference = data.get("transaction_id") or data.get("index")
+        if confirmation:
             info.append(f"ConfirmationCode: {confirmation}")
+        if reference:
+            info.append(f"Transaction reference (transaction_id/index): {reference}")
+        if not confirmation and not reference:
+            errors.append(
+                "Approved transaction carries no ConfirmationCode, transaction_id "
+                "or index -- nothing to store for refund and reconciliation"
+            )
+
+    # --- Integrity: a response_hash must be verified, not just present ---
+    if data.get("response_hash"):
+        warnings.append(
+            "response_hash present: recompute it with your Tranzila secret per the "
+            "vendor's Response Hash section before trusting this response"
+        )
 
     # --- Validate token format if present ---
     token = data.get("TranzilaTK")

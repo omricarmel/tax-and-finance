@@ -43,6 +43,21 @@
         "Could not fully verify (flagged as plausible-unverified): 3DS success-field names (eci/xid/cavv) in 3ds-flow.md, and the ITA-approved-digital-signature wording for Tranzila's Invoicing API (skill already hedges 'confirm with Tranzila support').",
         "Round-2 correction: a verification subagent (cross-checking the active_merchant_tranzila gem, which the skill cites) caught that the first research agent's error-code corrections were themselves wrong, expired is 036 (not 015; 015 is a strip-mismatch), and installment-sum mismatch is 037 (not 406; 406 is not a SHVA code, and 111 is 'cancel not allowed', not 'installments not authorized'). Re-corrected the table to 000/004/036/037/900 and dropped the contested codes. Also fixed X-tranzila-api-request-time units: SECONDS (per tranzilajs), not milliseconds (would break the HMAC). Lesson: do not trust a single agent's specific API-code claims; cross-check against a real client implementation."
       ]
+    },
+    {
+      "version": "1.5.0",
+      "date": "2026-10-18",
+      "lessons": [
+        "STALE fixed: docs.tranzila.com was restructured. The iframe host is directng.tranzila.com; direct.tranzila.com is 'Legacy Deprecated' and the old iframe page says official support ends 1 January 2027. Next cycle after that date: drop the legacy host entirely.",
+        "BUG fixed: Hosted Fields was described as tokenise-in-browser then charge from the server. fields.charge() performs the charge with a server-issued Handshake V2 thtk (mandatory for Hosted Fields); token only with tokenize:true; notify_url must be set.",
+        "BUG fixed: Handshake V2 was presented as a callback-signature mechanism. It is an amount lock (912791 on mismatch, thtk 20 minutes, Token Module, /v1/handshake/create deprecated). response_hash is documented for Hosted Fields only.",
+        "BUG fixed (expert round 1): API V2 amounts are an items array (no sum); credit/cancel/reversal require authorization_number (22101); allocation-number business ID goes in user_defined_fields on API V2 and as card_holder_id_number + business_id on Hosted Fields; iframe Notify must be confirmed server-side via the Transactions / Reports API. Detail lives in references/api-v2-flows.md.",
+        "Script fixed: validate_tranzila_response.py failed the vendor's own DirectNG and Hosted Fields success samples (required ConfirmationCode; ignored transaction_response). Now accepts transaction_id/index, both result keys, and surfaces top-level API error_code.",
+        "Word cap: SKILL.md sits at ~4,970 words after moving the statute text (references/allocation-number.md), the code-table audit trail (references/error-codes.md) and API V2 contracts (references/api-v2-flows.md). Any next addition must move something else out first.",
+        "Deferred: metadata.json display_description.he is one line vs a four-sentence EN (Hebrew depth gap); not changed this cycle to avoid a description edit and the holdout gate. Fix next cycle with the Phase 5.7 eval.",
+        "Deferred (expert minor): My Billing sends an automatic token-correction email to end customers by default, and the STO notification endpoint is configured in my.tranzila, not per request; Handshake V2 request_params (order ID echoed back) and hidesum/opensum iframe options are not described.",
+        "Unverified, left hedged: the exact response_hash concatenation (vendor describes it only in prose); which iframe notify field, if any, carries the approval number and expiry (DirectNG sample lists neither)."
+      ]
     }
   ]
 }

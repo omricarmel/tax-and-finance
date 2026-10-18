@@ -9,12 +9,15 @@
 | `tranzila36a.cgi` | `https://secure5.tranzila.com/cgi-bin/tranzila36a.cgi` | Multi-currency (EUR, GBP, etc.) |
 | `tranzila31tk.cgi` | `https://secure5.tranzila.com/cgi-bin/tranzila31tk.cgi` | Token-based charges |
 
-All legacy endpoints accept `POST` with `Content-Type: application/x-www-form-urlencoded`.
+All legacy endpoints accept `POST` with `Content-Type: application/x-www-form-urlencoded`. **None of the three is described on docs.tranzila.com any more (checked 2026-10-18).** A live probe shows they still answer, and that an unregistered caller is refused with "Transactions are not allowed from this location". Prefer API V2 for new work.
 
 ### Iframe Endpoint
 ```
-https://direct.tranzila.com/{supplier}/iframenew.php?sum=100&currency=1&cred_type=1
+https://directng.tranzila.com/{supplier}/iframenew.php
 ```
+- Send the parameters by POST (the vendor recommends POST over GET). The old host `direct.tranzila.com` is marked "Legacy Deprecated" and its page says official support ends on 1 January 2027.
+- `business_id` (an Additional Field you define in my.tranzila) carries the customer's registered business ID so the invoice module can obtain an ITA allocation number when `myid` is not that ID.
+- `thtk` carries a Handshake V2 token (see below). Once Handshake is enabled on an iframe terminal, every transaction must carry a valid one.
 - Mode is selected with `tranmode`: `A` standard charge (the documented standard mode), `V` verification (J5), `N` verification (J2), `J` standing-order initiation, `K` create a token without charging, and the token variants `AK` / `VK` / `NK`.
 - There is no `J4` mode, and the iframe does not silently create a token: ask for one with `K`, `AK` or `VK`.
 
@@ -28,6 +31,12 @@ X-tranzila-api-nonce: {~40-byte random nonce}
 X-tranzila-api-access-token: {hmac_sha256(secret + request_time + nonce, app_key)}
 Content-Type: application/json
 ```
+### Handshake V2 (amount lock)
+`POST https://api.tranzila.com/v2/handshake/create` with `terminal_name` and `sum`, using the same four headers, returns a `thtk` valid for 20 minutes. Pass it to the iframe or to the Hosted Fields `charge()` call. If the checkout amount differs from the handshake amount the transaction is refused with "Illegal Operation 912791". It requires the Token Module, and `/v1/handshake/create` is deprecated. It does not sign callbacks; that is what `response_hash` is for.
+
+### Token charge on API V2
+`POST https://api.tranzila.com/v1/transaction/credit_card/create` with the token in `card_number`, the expiry in `expire_month` / `expire_year`, and the amount as an `items` array (there is no `sum` field). A token replaces only the card number. Full contract in `api-v2-flows.md`.
+
 You enrol in API V2 to get a public app key and a secret key; the access-token is the HMAC-SHA256 of the app key, keyed with the secret concatenated with the request-time and nonce. A request with only `X-tranzila-api-app-key` is rejected. These headers replace `supplier` + `TranzilaPW`. Confirm the exact concatenation order on the Authentication page at docs.tranzila.com before shipping.
 
 ## Common Parameters
@@ -58,10 +67,10 @@ You enrol in API V2 to get a public app key and a secret key; the access-token i
 | Value | Type | Notes |
 |-------|------|-------|
 | `1` | Credit card, regular single charge | The default payment type |
-| `6` | Credit (kredit) | The card company's own credit plan |
+| `6` | Credit installments (kredit) | Customer needs credit authorisation from the issuer; send `npay` only, minimum 3 |
 | `8` | Installments (tashlumim) | Requires `npay`, `fpay`, `spay` |
 
-The vendor's iframe parameter table publishes exactly these three values. `2`, `3`, `5` and `9` were listed in earlier versions of this file and are not documented anywhere; sending one returns code 017 (unauthorized credit type for this transaction).
+The vendor's iframe parameter table publishes exactly these three values. `2`, `3`, `5` and `9` were listed in earlier versions of this file and are not documented anywhere, so do not send them.
 
 ### Installment Parameters (when cred_type=8)
 | Parameter | Description |
@@ -86,7 +95,7 @@ sum=300&cred_type=8&npay=2&fpay=100&spay=100
 | `J` | Standing-order initiation | Starts a standing order |
 | `K` | Token only | Create a token without checking the card |
 | `AK` / `VK` / `NK` | Mode + token | Add `K` to the mode to also create a token |
-| `C{index}` | Cancel/Refund | Refund the transaction at `index`. Documented against `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi`, and it also needs `CreditPass` and `authnr` |
+| `C{index}` | Cancel/Refund (legacy CGI) | Refund the transaction at `index` against `https://secure5.tranzila.com/cgi-bin/tranzila71u.cgi`, also needing `CreditPass` and `authnr`. Sourced from the tranzilajs client constants, not from the current vendor docs; on API V2 use `txn_type=credit` with `reference_txn_id` |
 
 Earlier versions of this table carried an `F` (Force/Capture) mode and an empty-string default. Neither is published by the vendor: the documented standard mode is `A`.
 
@@ -111,5 +120,6 @@ Earlier versions of this table carried an `F` (Force/Capture) mode and an empty-
 | `ConfirmationCode` | Authorization number from the card network |
 | `index` | Transaction index in the current batch |
 | `TranzilaTK` | Token (returned when tokenization is requested) |
-| `card_mask` / `last_4` (API V2) or `DBFcard` / `cardtype` (legacy CGI) | Masked card data. `ccno` is a REQUEST parameter, not a response field |
+| `card_mask` / `last_4` (API V2) or `ccno` / `cardtype` (iframe) | Masked card data. On the DirectNG iframe response `ccno` holds only the LAST 4 digits; `cardtype`, `cardissuer` and `cardacquirer` identify brand, issuer and acquirer |
+| `transaction_id` | Iframe and API V2: the transaction's ID in Tranzila. The DirectNG response documents it alongside `index`, and does not list `ConfirmationCode` |
 | `expdate` | Card expiry as sent |
