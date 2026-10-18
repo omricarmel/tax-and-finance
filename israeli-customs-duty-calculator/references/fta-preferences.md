@@ -4,7 +4,6 @@ Israel has signed free-trade agreements with most of its major trading partners.
 
 ## US-Israel Free Trade Agreement (1985)
 
-- First US bilateral FTA.
 - Origin rule: sum of US materials cost and direct US processing costs must be at least 35 percent of the appraised value.
 - Origin proof: US Origin Invoice Declaration stated on the commercial invoice (or shipping list / proforma). The Green Form (Form A) is no longer used; **the January 10, 2018 discontinuation date previously stated here is not on the cited page and has been withdrawn.**
 - Signature: the US exporter or manufacturer must sign. Verification may be requested by Israeli Customs.
@@ -25,18 +24,15 @@ So, as things stand:
 - Israel signed it on **10 October 2013** and has ratified it.
 - The transitional period in which two alternative rule sets ran side by side **ended on 31 December 2025**. From **1 January 2026 the revised PEM Convention is the only set of rules applying.** Any origin analysis this skill's users inherited from before that date needs redoing under the revised rules.
 - Origin proof: EUR.1 movement certificate, stamped by the exporter's customs authority. Wet-ink signature required; Israel does not accept electronic signatures.
-- An invoice declaration is available to a non-approved exporter only up to a value ceiling, and to an approved exporter at any value. **The ceiling is not verified in this file.** A figure of 6,000 euros is widely quoted and was previously stated here as fact with no source; treat it as a lead and confirm it with the exporter's customs authority.
+- An origin declaration on the invoice or another commercial document may be made out by ANY exporter for a consignment worth up to EUR 6,000. Above EUR 6,000 the exporter must hold approved-exporter status and quote its authorisation number on the declaration. Sourced (v1.5.0) to the French customs FAQ on the modernised PEM Convention: "Pour les envois d'une valeur inférieure ou égale à 6 000€ ... tout exportateur est en mesure d'émettre une déclaration d'origine sur facture ou tout autre document commercial sans devoir être titulaire de l'autorisation d'exportateur agréé (EA). Pour les envois dont la valeur excède 6 000 €, l'exportateur doit être titulaire du statut d'exportateur agréé". The French page describes the EU side; under the Convention the same ceiling governs the declaration an EU exporter makes out for goods going to Israel.
 - Whether EUR-MED certificates now have a role under the revised regime is likewise not settled here. Do not repeat the old "not needed" line.
 
-Sources: https://policy.trade.ec.europa.eu/eu-trade-relationships-country-and-region/countries-and-regions/israel_en and https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-revised-pan-euro-mediterranean-convention
-
-Source: https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-revised-pan-euro-mediterranean-convention
+Sources: https://policy.trade.ec.europa.eu/eu-trade-relationships-country-and-region/countries-and-regions/israel_en , https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-revised-pan-euro-mediterranean-convention , and for the EUR 6,000 ceiling https://www.douane.gouv.fr/faq-origine-preferentielle-convention-pan-euro-mediterraneenne-modernisee
 
 ## UK-Israel Trade and Partnership Agreement (2019)
 
 - Signed post-Brexit, mirrors the EU agreement rules.
 - Origin proof: EUR.1 or an invoice declaration under a value ceiling that is not verified in this file.
-- Approved-exporter status is available for frequent exporters.
 
 Source: https://www.gov.uk/guidance/summary-of-the-uk-israel-trade-and-partnership-agreement
 
@@ -70,7 +66,7 @@ Source: https://policy.trade.ec.europa.eu/eu-trade-relationships-country-and-reg
 
 ## Common pitfalls
 
-- Invoice declaration above the value ceiling without approved-exporter status: rejected. Know the ceiling before choosing that proof.
+- Invoice declaration on an EU consignment above EUR 6,000 without approved-exporter status: rejected. The UK ceiling is not verified in this file.
 - EUR.1 signed electronically: rejected by Israeli Customs.
 - Non-originating components exceed the de minimis tolerance: product loses origin.
 - Wrong origin rule applied (textile rules are different from general industrial rules).

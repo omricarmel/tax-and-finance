@@ -7,7 +7,7 @@
       "claim": "As of July 2026 the personal-import exemption threshold is USD 75. No new order has been signed since the USD 130 window ended on 1 June 2026.",
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
       "raw_snippet": "הפטור ממס על קניות בייבוא אישי ניתן עד סכום של 75 דולר",
-      "fetched_at": "2026-07-26T00:00:00Z"
+      "fetched_at": "2026-10-18T10:00:00Z"
     },
     {
       "claim_id": "threshold-history-150-rescinded",
@@ -37,16 +37,19 @@
       "raw_snippet": "The 2025 current rate of VAT is 18%"
     },
     {
-      "claim_id": "vat-rate-knesset-2024",
-      "claim": "The VAT rate increase from 17% to 18% was approved by the Knesset plenum and entered into force on 1 January 2025.",
-      "source_url": "https://main.knesset.gov.il/EN/News/PressReleases/Pages/press12324w.aspx",
-      "raw_snippet": "Knesset Plenum approves order raising VAT rate from 17% to 18%"
+      "claim_id": "vat-rate-18-from-2025-imports",
+      "claim": "Israeli VAT rose from 17% to 18% effective 1 January 2025, and 18% applies to goods cleared through customs from that date",
+      "source_url": "https://www.vatupdate.com/2024/12/30/israels-vat-rate-to-increase-to-18-starting-january-2025/",
+      "raw_snippet": "Imports: 18% applies to goods cleared through customs after January 1, 2025",
+      "fetched_at": "2026-10-18T10:00:00Z",
+      "source_note": "Replaced the Knesset press release (main.knesset.gov.il), which returns HTTP 247 bot-block to curl and an empty page to a headless browser, so it could no longer be checked."
     },
     {
       "claim_id": "tier-75-to-500",
       "claim": "Personal imports valued between USD 75 and USD 500 owe VAT 18% only; customs duty is waived under the personal-import regime.",
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
-      "raw_snippet": "משלוח עם מוצרים שערכם הכולל מעל 75 דולר ולא יותר מ-500 דולר פטור מתשלום מכס בלבד, וחייב בתשלום מע\"מ (18%)"
+      "raw_snippet": "משלוח עם מוצרים שערכם הכולל מעל 75 דולר ולא יותר מ-500 דולר פטור מתשלום מכס בלבד, וחייב בתשלום מע\"מ (18%)",
+      "fetched_at": "2026-10-18T10:00:00Z"
     },
     {
       "claim_id": "tier-1000-commercial",
@@ -72,14 +75,14 @@
     },
     {
       "claim_id": "hs-code-8-digit-structure",
-      "claim": "The Israeli Customs and Purchase Tax Tariff, published at Shaar Olami, is the instrument that classifies goods and determines their tax rates and import conditions. Only the classification on that tariff governs; a foreign HTS or CN code does not. That the Harmonized System is international to six digits with further national digits appended is standard nomenclature practice and is not itself a sourced figure here.",
+      "claim": "The Customs and Purchase Tax Tariff is the instrument used for classifying goods and determining tax rates and import conditions",
       "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/Doubt",
       "raw_snippet": "The Customs and Purchase Tax Tariff is the main instrument used for the classification of goods The correct classification of goods is the key to determining tax rates, as well as obtaining various authorizations, permits and licenses",
       "fetched_at": "2026-08-27T15:57:43.240324+00:00"
     },
     {
       "claim_id": "us-israel-fta-35-percent-rule",
-      "claim": "The US-Israel FTA (signed 1985, first US bilateral FTA) requires US content to be at least 35% of the appraised value to qualify for preferential duty.",
+      "claim": "The US-Israel FTA (in effect since 1985) requires US content to be at least 35% of the appraised value to qualify for preferential duty.",
       "source_url": "https://www.trade.gov/us-israel-free-trade-agreement",
       "raw_snippet": "the direct costs of processing operations performed in the exporting Party is not less than 35 percent of the appraised value of the article at the time it is entered into the other Party.",
       "fetched_at": "2026-07-26T00:00:00Z"
@@ -135,9 +138,15 @@
     },
     {
       "claim_id": "hs-chapter-assignments",
-      "claim": "The example HS chapter labels follow the standard WCO Harmonized System nomenclature that Israel adopts at the 6-digit level: Chapter 61 (apparel), Chapter 64 (footwear), Chapter 84 (machinery), Chapter 85 (electrical machinery and electronics), Chapter 87 (vehicles), Chapter 90 (optical and medical instruments), Chapter 94 (furniture), Chapter 95 (toys and games).",
-      "source_url": "https://www.wcotradetools.org/en/harmonized-system",
-      "raw_snippet": "MACHINERY AND MECHANICAL APPLIANCES; ELECTRICAL EQUIPMENT; PARTS THEREOF; SOUND RECORDERS AND REPRODUCERS, TELEVISION IMAGE AND SOUND RECORDERS AND REPRODUCERS, AND PARTS AND ACCESSORIES OF SUCH ARTICLES"
+      "claim": "Chapter 85 is titled 'Electrical machinery and equipment and parts thereof' in the Israeli tariff",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=19405",
+      "raw_snippet": "Electrical machinery and equipment and parts thereof",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hs-codes-guide.md"
+      ]
     },
     {
       "claim_id": "gov-il-personal-import-tax-calculator",
@@ -156,7 +165,7 @@
       "claim": "The USD 130 exemption applied between 25 February 2026 and 1 June 2026; outside that window the threshold is USD 75.",
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
       "raw_snippet": "בין 25.02.2026 ל-01.06.2026 הפטור ניתן עד 130 דולר",
-      "fetched_at": "2026-07-26T00:00:00Z",
+      "fetched_at": "2026-10-18T10:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
@@ -178,7 +187,7 @@
       "claim": "Two or more parcels sent from the same supplier to the same customer within 72 hours are treated as a single split shipment and import taxes are computed on their combined value.",
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
       "raw_snippet": "שתי חבילות או יותר שיישלחו מאותו ספק לאותו לקוח בהפרש של עד 72 שעות, ייחשבו כמשלוח אחד שפוצל",
-      "fetched_at": "2026-07-26T00:00:00Z",
+      "fetched_at": "2026-10-18T10:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
@@ -188,8 +197,8 @@
       "claim_id": "band-75-500-vat-only",
       "claim": "Between USD 75 and USD 500 the shipment is exempt from customs duty only, and owes VAT at 18 percent plus purchase tax where the product carries it.",
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
-      "raw_snippet": "פטור מתשלום מכס בלבד, וחייב בתשלום מע\"מ (18%) ו מס קניה",
-      "fetched_at": "2026-07-26T00:00:00Z",
+      "raw_snippet": "פטור מתשלום מכס בלבד, וחייב בתשלום מע\"מ (18%) ומס קניה",
+      "fetched_at": "2026-10-18T10:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
@@ -211,7 +220,7 @@
       "claim": "Customs converts foreign-currency import prices at the Bank of Israel representative rate plus 0.5%.",
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
       "raw_snippet": "למוצרי יבוא שמחירם קבוע במטבע חוץ, שער המטבע יחושב לפי השער היציג של בנק ישראל בתוספת 0.5%.",
-      "fetched_at": "2026-08-27T15:31:18.050343+00:00",
+      "fetched_at": "2026-10-18T10:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -227,7 +236,10 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-18",
+      "source_note": "The product class and the competent authority sit in separate table cells, so the joined snippet is not a contiguous text run. Both cells read in a Playwright render on 2026-10-18 (card layout: class, then \"הרשות המוסמכת\" + authority)."
     },
     {
       "claim_id": "import-approval-helmets-standards",
@@ -238,7 +250,10 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-18",
+      "source_note": "The product class and the competent authority sit in separate table cells, so the joined snippet is not a contiguous text run. Both cells read in a Playwright render on 2026-10-18 (card layout: class, then \"הרשות המוסמכת\" + authority)."
     },
     {
       "claim_id": "refund-conditions-6-months",
@@ -451,7 +466,208 @@
         "SKILL_HE.md",
         "references/fta-preferences.md"
       ]
+    },
+    {
+      "claim_id": "threshold-130-revoked-knesset-june-2026",
+      "claim": "The Knesset revoked the USD 130 order at the start of June 2026 by 59 votes to 23, returning the personal-import exemption to USD 75",
+      "source_url": "https://www.knesset.tv/main-articles/61384/92765/",
+      "raw_snippet": "ברוב של 59 מתנגדים מול 23 תומכים, ביטלה מליאת הכנסת את הצו שעליו חתם שר האוצר בצלאל סמוטריץ' , שקבע כי מוצרים ביבוא אישי בשווי של עד 130 דולר יהיו פטורים ממע\"מ. בעקבות ההצבעה, חזרה תקרת הפטור לרף המוכר והקבוע בחוק - 75 דולר בלבד.",
+      "fetched_at": "2026-10-18T10:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/duty-rates-by-category.md",
+        "scripts/calculate_duty.py"
+      ]
+    },
+    {
+      "claim_id": "pem-origin-declaration-6000-eur",
+      "claim": "Under the revised PEM Convention any exporter may make out an origin declaration for a consignment worth up to EUR 6,000; above EUR 6,000 the exporter must hold approved-exporter status and quote its number",
+      "source_url": "https://www.douane.gouv.fr/faq-origine-preferentielle-convention-pan-euro-mediterraneenne-modernisee",
+      "raw_snippet": "Pour les envois d'une valeur inférieure ou égale à 6 000€, lorsque la marchandise est d’origine préférentielle UE, tout exportateur est en mesure d’émettre une déclaration d'origine sur facture ou tout autre document commercial sans devoir être titulaire de l’autorisation d’exportateur agréé (EA). Pour les envois dont la valeur excède 6 000 €, l’exportateur doit être titulaire du statut d'exportateur agréé, et donc détenir un numéro d’EA qu'il indiquera sur la déclaration d'origine.",
+      "fetched_at": "2026-10-18T10:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/fta-preferences.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "calculator-rate-all-in-car-accessory",
+      "claim": "The Tax Authority calculator's percentage is all-in and applied once to goods plus shipping: car accessory USD 520 + USD 20 shipping at 40.66% is 40.66% of USD 540",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
+      "raw_snippet": "סכום המס שיש לשלם יחושב מתוך הסכום הכולל של עלות המוצר + המשלוח (40.66% מ-540 דולר).",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "calculator-rate-18-regular-item",
+      "claim": "For a regular personal-import item the tax percentage is 18% applied to product plus shipping",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
+      "raw_snippet": "סכום המס שיש לשלם יחושב מהסכום הכולל של המוצר + המשלוח (18% מ-540 דולר).",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "postal-payment-cash-or-app",
+      "claim": "Israel Post parcels: tax paid at the branch in cash only, or beforehand by credit card in the parcel-tax app",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
+      "raw_snippet": "ניתן לשלם את המס על חבילות הנשלחות בדואר רגיל, בסניף הדואר בעת קבלת החבילה במזומן בלבד.",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "courier-collects-tax-at-delivery",
+      "claim": "EMS and courier parcels: the courier pays the tax and collects it from the buyer at delivery; in exceptional cases the recipient releases at the customs house",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
+      "raw_snippet": "מס על חבילות הנשלחות בדואר מהיר (EMS) או באמצעות חברות בלדרות משולמות על ידי חברת הבלדרות, והמסים נגבים מהמזמין בעת מסירת החבילה בבית הלקוח, על ידי השליח.",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "relief-populations",
+      "claim": "Lone soldiers and officers, new immigrants, and returning students or residents may be entitled to personal-import relief",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
+      "raw_snippet": "האוכלוסיות הבאות עשויות להיות זכאיות להקלות בייבוא אישי: חיילים או קצינים בודדים עולים חדשים סטודנטים חוזרים או תושבים חוזרים",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "eilat-vat-refund-documents",
+      "claim": "Eilat VAT refund documents: ID or valid Eilat resident certificate, cheque copy or bank confirmation, the import declaration or its number, computerised form, authorised signatory confirmation",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
+      "raw_snippet": "צילום תעודת זהות או תעודת תושב אילת בתוקף. צילום צ'ק או אישור ניהול חשבון בנק. הצהרת היבוא של הסחורה או המספר שלהם. טופס בקשה ממוחשב ומלא בפרטים הנדרשים. אישור ממורשה חתימה או מייצג.",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "purchase-tax-whisky-2026",
+      "claim": "Shaar Olami item 2208300000/4 (whiskies) carries purchase tax of 100.24 NIS per litre of alcohol",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=5090",
+      "raw_snippet": "100.24 ₪ per litre alchohol",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "source_note": "The rate row on the same page carries the validity \"01/01/2026 31/12/2069\"."
+    },
+    {
+      "claim_id": "purchase-tax-cigarettes-2026",
+      "claim": "Shaar Olami item 2402200000/4 (cigarettes) carries purchase tax of 270% + 555.28 NIS per 1,000 but no less than 984.57 NIS per 1,000",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=26650",
+      "raw_snippet": "270% + 555.28 ₪ per 1000 Cig but no less than 984.57 ₪ per 1000 Cig",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "source_note": "The rate row on the same page carries the validity \"01/01/2026 31/12/2069\"."
+    },
+    {
+      "claim_id": "tariff-item-10-digit-display",
+      "claim": "Shaar Olami displays tariff items as a 10-digit code plus a check digit after a slash, e.g. 8708999000/3",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=21999",
+      "raw_snippet": "8708999000/3 ---OTHERS",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "threshold-150-december-2025",
+      "claim": "The threshold rose from USD 75 to USD 150 in December 2025",
+      "source_url": "https://www.mako.co.il/finances-consumer/Article-9af02f71fe78e91027.htm",
+      "raw_snippet": "בדצמבר 2025 עלתה תקרת הפטור מ-75 דולר ל-150 דולר, בפברואר היא ירדה ל-130 דולר",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-18",
+      "source_note": "JS-rendered or bot-blocked page; read in a Playwright render on 2026-10-18. Snippet joins table cells with \"...\"."
+    },
+    {
+      "claim_id": "tariff-item-whisky-code",
+      "claim": "Shaar Olami shows whiskies as item 2208300000/4",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=5090",
+      "raw_snippet": "2208300000/4 - Whiskies",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hs-codes-guide.md"
+      ]
+    },
+    {
+      "claim_id": "tariff-item-cigarettes-code",
+      "claim": "Shaar Olami shows cigarettes containing tobacco as item 2402200000/4",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=26650",
+      "raw_snippet": "2402200000/4 - Cigarettes containing tobacco",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hs-codes-guide.md"
+      ]
+    },
+    {
+      "claim_id": "hs-chapter-22-title",
+      "claim": "Chapter 22 is titled 'Beverages, spirits and vinegar' in the Israeli tariff",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=5090",
+      "raw_snippet": "Beverages, spirits and vinegar",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hs-codes-guide.md"
+      ]
+    },
+    {
+      "claim_id": "tariff-item-page-free-import-order",
+      "claim": "Shaar Olami item pages list legal requirements including the Free Import Order and personal import order annexes",
+      "source_url": "https://shaarolami-query.customs.mof.gov.il/CustomspilotWeb/en/CustomsBook/Import/ImportCustomsItemDetails?customsItemId=19405",
+      "raw_snippet": "Annex 2 to personal import order",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hs-codes-guide.md"
+      ]
+    },
+    {
+      "claim_id": "tax-percentage-set-by-goods-value",
+      "claim": "The tax percentage is set by the value of the goods, and the amount is computed on goods plus shipping and insurance",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_(חבילות_מחו\"ל)",
+      "raw_snippet": "אם נקבע כי יש לשלם מס, האחוז לתשלום ייקבע לפי ערך הסחורה או המוצר, אבל הסכום לתשלום ייקבע לפי ערך הסחורה, בתוספת דמי המשלוח לארץ והביטוח (אם יש).",
+      "fetched_at": "2026-10-18T13:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "scripts/calculate_duty.py"
+      ]
     }
   ],
-  "generated_at": "2026-08-27T15:49:30.562677+00:00"
+  "generated_at": "2026-10-18T10:00:00Z"
 }

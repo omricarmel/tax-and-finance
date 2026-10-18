@@ -11,10 +11,11 @@ Anchor for the Expert Review. Every row states what the skill must cover, what i
 | The two different bases: threshold tested on goods value alone, tax computed on goods plus shipping plus insurance | Same source. Conflating them was a real defect in v1.1.0 |
 | FX conversion at the Bank of Israel representative rate **plus 0.5 percent** | Same source, verbatim. Omitting it understates every landed cost |
 | The cascading order CIF, duty, purchase tax, VAT | Statutory computation order |
+| That the Tax Authority calculator's percentage is ALL-IN (VAT included) and is applied once to goods plus shipping | Kol Zchut worked example (car accessory, 40.66 percent of USD 540). Feeding it into the cascade as a purchase-tax rate double-counts VAT; found by the v1.5.0 Expert Review |
 | That purchase tax is levied on a reconstructed wholesale price, not on CIF plus duty | Purchase Tax (Goods and Services) Law 1952. Without this the script's purchase-tax line reads as final when it is a floor |
 | The 72-hour anti-splitting rule | Same source. It is the workaround every consumer tries |
 | Tobacco and alcohol carve-out from the exemption, and that their tariff is specific or compound rather than ad valorem | Same source plus the tariff's own structure. The skill cannot price them and must say so |
-| 8-digit Israeli HS structure and that digits 7 to 8 are Israel-specific | Shaar Olami |
+| Israeli tariff item structure: 6 international HS digits, then Israeli subdivisions, displayed as 10 digits plus a check digit | Shaar Olami item pages. v1.4.0 and earlier called it an 8-digit code with Israeli positions 7 to 8; Shaar Olami displays items as a 10-digit code plus a check digit, e.g. 8708999000/3 and 2208300000/4 |
 | Items conditional on a competent authority's approval, with the authority named | Same source. A parcel that cannot be released has no landed cost |
 | Refund on returned or exchanged goods: the four conditions, the 6-month limit, the USD 250 export-form threshold | Same source. A live entitlement that lapses by inaction |
 | The appeal route against the assessment, and that it is distinct from an objection to the carrier's commission | Same source. Naming an appeal without naming its route is worse than silence |
@@ -27,9 +28,10 @@ Anchor for the Expert Review. Every row states what the skill must cover, what i
 
 | Item | Why |
 |---|---|
-| Courier versus postal clearance and who bears the commission | Fees routinely exceed the tax on a small parcel |
-| The Eilat resident VAT-refund route | Free-zone entitlement, same personal-area filing route |
-| Origin proofs per agreement and their signature requirements | EUR.1 wet-ink is a recurring rejection cause |
+| Courier versus postal payment of the tax, and the carrier's own clearance commission | Kol Zchut payment section; the commission is charged on top of shipping and is disputed with the carrier, not customs |
+| The Eilat resident VAT-refund route and its documents | Free-zone entitlement, same personal-area filing route; Step 9 now lists the documents |
+| Populations Kol Zchut names as possibly entitled to personal-import relief (lone soldiers and officers, olim, returning students or residents) | A routing line at minimum; Step 2 now carries one |
+| Origin proofs per agreement and their signature requirements, including the EUR 6,000 any-exporter ceiling on an EU origin declaration | EUR.1 wet-ink is a recurring rejection cause; the ceiling decides which proof a commercial shipment needs |
 | The EU settlement-origin exclusion and the 2004 Technical Arrangement | The most litigated origin rule on that agreement, even though it bites on export |
 | Checking the order confirmation for tax already collected at checkout | Prevents quoting a second bill on money already paid |
 
@@ -37,12 +39,13 @@ Anchor for the Expert Review. Every row states what the skill must cover, what i
 
 | Item | Rationale |
 |---|---|
-| Temporary import under an ATA carnet or a customs deposit | A distinct regime with its own base, guarantee and re-export deadline. This skill computes an ad-valorem landed cost and would overstate the charge. Step 1 now warns and routes to a broker. Re-open if a sourced carnet procedure becomes available |
+| Temporary import under an ATA carnet or a customs deposit | Re-litigated 2026-10-18, unchanged. A distinct regime with its own base, guarantee and re-export deadline. This skill computes an ad-valorem landed cost and would overstate the charge. Step 1 now warns and routes to a broker. Re-open if a sourced carnet procedure becomes available |
 | Goods exported for repair or warranty service and re-imported | Duty attaches to the repair value, not the article value, so the skill's cascade is the wrong model entirely. Same warning and routing |
-| Oleh chadash and toshav chozer personal-effects exemption | A large, form-driven entitlement with its own eligibility window. It deserves its own skill rather than a cell in a table; the routing note points users out |
+| Oleh chadash and toshav chozer personal-effects exemption | A large, form-driven entitlement with its own eligibility window. Re-litigated 2026-10-18: users plausibly ask, and the catalog now has `israeli-aliyah-customs-shipment-planner` for an oleh's duty-free shipments, so Step 1 routes there by name instead of only to a broker. Toshav chozer still routes to a broker |
 | Diplomatic and international-organisation exemption | Narrow population, separate statutory basis |
 | Specific and compound tariff rates (NIS per kg, per litre, per unit) | Neither the prose nor the script can express them. Stated as an explicit scope limit rather than silently mispriced |
-| The TAMA wholesale-price uplift rates | Not published in a form this skill could consume. Its absence is disclosed wherever the purchase-tax line appears: SKILL.md Step 6, the Hebrew mirror, the calculation block in `duty-rates-by-category.md`, the script docstring, the `--purchase-tax-rate` help text and the script's own output. Re-open when a rate table is sourced |
+| The TAMA wholesale-price uplift rates | Re-litigated 2026-10-18 (fourth cycle): users with a purchase-tax item do ask, but a search of the Tax Authority and Kol Zchut again found no consumable rate table, and the personal-import calculator already applies it. Kept out of scope; the skill routes those users to the calculator rather than printing a number it cannot source. Not published in a form this skill could consume. Its absence is disclosed wherever the purchase-tax line appears: SKILL.md Step 6, the Hebrew mirror, the calculation block in `duty-rates-by-category.md`, the script docstring, the `--purchase-tax-rate` help text and the script's own output. Re-open when a rate table is sourced |
+| Full commercial clearance procedure: filing the import declaration, the customs agent, commercial documents, Free Import Order approvals for commercial goods, resale labelling | Added 2026-10-18 after the Expert flagged it. Users with a commercial shipment do ask, and this skill now says so explicitly in Example 3 and points to the Shaar Olami item page, which lists each item's import conditions. The procedure itself is not sourced here; re-open when it is |
 | Export documentation | `israeli-export-shipping-kit` |
 | Domestic VAT reporting | `israeli-vat-reporting` |
 

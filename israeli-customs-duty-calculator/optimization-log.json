@@ -60,6 +60,40 @@
           "how do I file my monthly VAT report in Israel (negative, correctly not routed)"
         ]
       }
+    },
+    {
+      "version": "1.5.0",
+      "date": "2026-10-18",
+      "holdout_before": 1.0,
+      "holdout_after": 1.0,
+      "buckets": {
+        "improved": [],
+        "regressed": [],
+        "persistent_fail": [],
+        "stable_success": [
+          "מה פרט המכס הישראלי לשעון חכם וכמה מסים יש עליו?",
+          "How much will a $900 espresso machine shipped from Germany cost me after Israeli taxes?",
+          "I export dates to France, what documents do I need for EU customs? (negative, correctly not routed)"
+        ]
+      },
+      "lessons": [
+        "THRESHOLD RE-VERIFIED at USD 75 on 18 October 2026 (Kol Zchut, last edited 16 Aug 2026; no newer order found). The USD 130 window did not lapse: the Knesset revoked that order at the start of June 2026 (59 to 23, knesset.tv). The skill had described it as a window that 'ran to 1 June'.",
+        "CRITICAL FOUND BY EXPERT: the Tax Authority personal-import calculator shows ONE all-in percentage (VAT included). The skill sent purchase-tax users to that rate without saying so, and the script then added 18% VAT on top: about +62% on Kol Zchut's car-accessory example. Fixed with --combined-rate and explicit prose. The calculator rate also depends on goods value (Kol Zchut), and in the 75-500 band any duty share should not apply; the script now flags that band.",
+        "ARITHMETIC: the landed total converted the goods themselves at the customs rate (rep x 1.005), contradicting the exempt branch. The uplift belongs to the tax base only. Step 5's 'understates every landed cost by half a percent of CIF' was wrong too: the effect is 0.5% of the tax, about 0.09% of CIF on a VAT-only parcel. Two cycles of reviewers had passed both.",
+        "HS STRUCTURE: Shaar Olami displays items as 10 digits plus a check digit (2208300000/4). The '8-digit, positions 7-8 Israeli' framing was never sourced; replaced, including the description. I then made a digit-counting error of my own in the evidence (claimed 8708999000 has a non-zero 9th digit); the judge caught it. Count digits by index, not by eye.",
+        "CARRY CLOSED: EUR 6,000 any-exporter ceiling sourced to French customs FAQ on the revised PEM Convention. The EC Access2Markets explain-term pages return an error page to a headless browser.",
+        "CARRY CLOSED: alcohol and tobacco specific/compound rates now sourced from Shaar Olami item pages (whisky 100.24 NIS per litre of alcohol; cigarettes 270% + 555.28 NIS per 1,000, minimum 984.57), which are plain-text fetchable by item id.",
+        "CARRY (fourth cycle, kept explicitly out of scope): TAMA wholesale-price uplift rates still unsourced; Shaar Olami item pages show no TAMA column. The combined-rate route now sidesteps it for personal imports.",
+        "DEFERRED (Expert minors): bundled-shipping input in the script, conflicting --usd-value on a USD invoice, a note above USD 1,000, which date's threshold applies (release vs order, unsourced), EUR.1 wet-ink rule rests on a secondary source, traveller duty-free allowance routing, osek patur import VAT as a real cost.",
+        "PROCESS: a Python one-liner that opened a file for write and read it in the same expression truncated references/hs-codes-guide.md to zero bytes; restored from git. Never open(p,'w').write(open(p).read()).",
+        "VALUE-ADD GATE: first run with=0.71 because the EU case grader used a JS-invalid '(?i)' flag (then a YAML escape error) and the refund case never fired the skill: the description had no returns/refund trigger. Added 'getting import tax back on a returned or defective item' to the description (holdout re-scored 1.0, no regression). Final: with=0.92 without=0.42 delta=+0.50 PASS. Residual: the threshold case scored 0.67 with the skill."
+      ],
+      "value_add": {
+        "with": 0.92,
+        "without": 0.42,
+        "delta": 0.5,
+        "verdict": "PASS"
+      }
     }
   ]
 }
