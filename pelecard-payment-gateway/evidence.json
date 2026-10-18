@@ -1,14 +1,14 @@
 {
   "schemaVersion": "1.0",
   "skill": "pelecard-payment-gateway",
-  "generated_at": "2026-08-27T04:25:34Z",
+  "generated_at": "2026-10-18T09:00:00Z",
   "claims": [
     {
       "claim_id": "hosts",
-      "claim": "gateway21.pelecard.biz and gateway20.pelecard.biz serve the same Pelecard API; the hostname is not an environment switch. gateway21 is the current gateway generation, gateway20 the older one, and gateway20.pelecard.biz/sandbox is a sandbox UI page rather than a separate API host. Both answer PaymentGW/init, PaymentGW/GetTransaction and PaymentGW/ValidateByUniqueKey identically; whether a call is a test or a live charge is decided by the terminal number and credentials sent.",
+      "claim": "gateway21.pelecard.biz and gateway20.pelecard.biz serve the same Pelecard API; the hostname is not an environment switch. gateway21 is the current gateway generation, gateway20 the older one, and gateway20.pelecard.biz/sandbox is a sandbox UI page rather than a separate API host. Both answer PaymentGW/init, PaymentGW/GetTransaction and PaymentGW/ValidateByUniqueKey identically; whether a call is a test or a live charge is decided by the terminal number and credentials sent. Re-probed 2026-10-18 on both hosts with identical responses; a fabricated control path 302s to gateway20 /Errors/Http404 on both.",
       "source_url": "https://gateway21.pelecard.biz/PaymentGW/init",
       "raw_snippet": "{\"URL\":\"\",\"ConfirmationKey\":\"\",\"Error\":{\"ErrCode\":501,\"ErrMsg\":\"Login for user x failed\"}}",
-      "fetched_at": "2026-08-27T04:25:34Z",
+      "fetched_at": "2026-10-18T09:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -16,101 +16,93 @@
         "references/domain-checklist.md"
       ],
       "verified_via": "api",
-      "verified_at": "2026-08-27T04:25:34Z"
+      "verified_at": "2026-10-18T09:00:00Z"
     },
     {
       "claim_id": "endpoints",
-      "claim": "Only three /PaymentGW paths exist on the Pelecard gateway hosts: PaymentGW/init (create session), PaymentGW/GetTransaction (lookup) and PaymentGW/ValidateByUniqueKey (credential-free validation). Every other /PaymentGW path, including DebitRegular, DebitRegularCancel, Refund, ConfirmDebit, CancelTransaction and GetToken, 302-redirects to an Http404 error page exactly as a deliberately fabricated control path does. There is therefore no refund endpoint under /PaymentGW.",
+      "claim": "Only three /PaymentGW paths exist on the Pelecard gateway hosts: PaymentGW/init (create session), PaymentGW/GetTransaction (lookup) and PaymentGW/ValidateByUniqueKey (credential-free validation). Every other /PaymentGW path, including DebitRegular, DebitRegularCancel, Refund, ConfirmDebit, CancelTransaction and GetToken, 302-redirects to an Http404 error page exactly as a deliberately fabricated control path does. There is therefore no refund endpoint under /PaymentGW. Re-probed 2026-10-18: init/GetTransaction/ValidateByUniqueKey answer, PaymentGW/Refund and a fabricated control both 302 to Http404.",
       "source_url": "https://gateway21.pelecard.biz/PaymentGW/GetTransaction",
       "raw_snippet": "{\"StatusCode\":\"501\",\"ErrorMessage\":\"Login for user x failed\",\"ResultData\":{",
-      "fetched_at": "2026-08-27T04:25:34Z",
+      "fetched_at": "2026-10-18T09:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/api-endpoints.md"
       ],
       "verified_via": "api",
-      "verified_at": "2026-08-27T04:25:34Z"
+      "verified_at": "2026-10-18T09:00:00Z"
     },
     {
       "claim_id": "actiontype-money-currency",
       "claim": "ActionType values: J4 = standard sale (default, money moves), J2 = card validation/registration only (no charge), J5 = authorize now / charge later, J5h = enhanced J5. Money fields use minor units (agorot): Total 9900 = NIS 99.00; the dofinity wrapper documents FirstPayment as in agorot/cents. Currency 1 = ILS (dofinity default $Currency = 1).",
-      "source_url": "https://github.com/dofinity/pelecard/blob/master/src/Pelecard/PaymentRequest.php",
-      "raw_snippet": "pelecard/src/Pelecard/PaymentRequest.php at master · dofinity/pelecard · GitHub",
-      "fetched_at": "2026-08-19",
+      "source_url": "https://raw.githubusercontent.com/dofinity/pelecard/master/src/Pelecard/PaymentRequest.php",
+      "raw_snippet": "$this->ActionType = $ActionType;",
+      "fetched_at": "2026-10-18T09:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/payment-parameters.md"
-      ],
-      "verified_via": "claim about the source itself; snippet is the cited page's own title, fetched to confirm the page exists and is what the claim says it is",
-      "verified_at": "2026-08-19"
+      ]
     },
     {
       "claim_id": "validation-flow",
-      "claim": "Pelecard does NOT HMAC-sign IPN deliveries. The browser-side ConfirmationKey can be forged, so the server-to-server lookup is the only authoritative source. Validation: match the callback ConfirmationKey byte-for-byte to the stored Phase-1 value, then re-call GetTransaction and confirm DebitTotal (the authoritative debited amount, in agorot) and PelecardTransactionId. GetTransaction returns the transaction record (DebitTotal, DebitApproveNumber, Token, TotalPayments, masked card, etc.), not the ConfirmationKey. Dedupe IPNs on PelecardTransactionId (not ParamX). Also covers: 50.00 ₪",
-      "source_url": "https://github.com/dofinity/pelecard/blob/master/src/Pelecard/PaymentResponse.php",
-      "raw_snippet": "56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117 118 119 120 121 122 123 124 125 126 127 128 129 130 131 132 133 134 135 136 137 <?php /** * @file PaymentResponse class - defines the structure and defaults for Pelecard payment response.",
-      "fetched_at": "2026-08-18",
+      "claim": "Callback validation: the dofinity wrapper reads ConfirmationKey from the callback (its README shows $ConfirmationKey = $_GET['ConfirmationKey']) and validates it server-side; no published Pelecard source documents an HMAC or other signature on IPN deliveries, so the skill treats the callback as forgeable and requires matching the stored ConfirmationKey and re-calling PaymentGW/GetTransaction (which Pelecard's own plugin also calls) to read the debited amount from ResultData. Dedupe IPNs on PelecardTransactionId (not ParamX).",
+      "source_url": "https://raw.githubusercontent.com/dofinity/pelecard/master/README.md",
+      "raw_snippet": "$ConfirmationKey = $_GET['ConfirmationKey'];",
+      "fetched_at": "2026-10-18T11:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/api-endpoints.md",
         "scripts/validate_pelecard_response.py"
-      ],
-      "verified_via": "cited page fetched and confirmed to contain \"100\"; snippet replaced with the page's own wording around it",
-      "verified_at": "2026-08-18"
+      ]
     },
     {
       "claim_id": "bit-constraints",
-      "claim": "Bit wallet constraints: single payment only (no installments), ILS only (Currency 1), per-transaction cap commonly 5,000 NIS (operator-tier-set; higher-tier merchants cleared above), plus a per-merchant monthly cap (~20,000 NIS) and a 10-minute customer time window. Apple Pay is via Pelecard's ClientSecure.js.",
+      "claim": "Another Israeli PSP's published Bit terms (allpay.co.il, not Pelecard's): payment via Bit cannot exceed 5,000 shekels; all payments per month cannot exceed 20,000 shekels; ILS only; no installments; no saved card (no subscriptions); the charge is made from the card linked to Bit; 10 minutes to pay. Pelecard does not publish its own Bit limits. (In the skill: 5,000 ₪ per payment, 20,000 ₪ a month.)",
       "source_url": "https://www.allpay.co.il/en/help/bit",
-      "raw_snippet": "The corresponding switch can be found in the module settings. Restrictions Up to 5000 ILS. Payment via Bit cannot exceed 5,000 shekels. The sum of all payments per month from all customers cannot exceed 20,000 shekels. ILS. Bit only supports payments in shekels. No installments. You can only pay with Bit in one payment. No subscriptions. Bit does not allow you to save your customer card for future charges, so we hide the Bit button for “Subscription” payment links. No payment from Bit balance.",
-      "fetched_at": "2026-08-18",
+      "raw_snippet": "Payment via Bit cannot exceed 5,000 shekels.",
+      "fetched_at": "2026-10-18T11:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ],
-      "verified_via": "cited page fetched and confirmed to contain \"5,000\"; snippet replaced with the page's own wording around it",
-      "verified_at": "2026-08-18"
+      ]
     },
     {
       "claim_id": "consumer-protection-refund",
       "claim": "Israeli Consumer Protection Law (חוק הגנת הצרכן, sections 14C-14E) distance-selling refunds: the consumer may cancel within 14 days, the merchant must refund within 14 days of the cancellation notice, and the cancellation fee is capped at 5% of the order value or NIS 100, whichever is lower. Pelecard handles the money; the tax document (credit note / חשבונית זיכוי) is generated by the invoice provider. In addition, customers who are people with disabilities, aged 65 or over, or new immigrants may cancel within 4 months where a conversation took place during the sale, and certain service categories carry shorter windows, so 14 days is not the complete rule.",
       "source_url": "https://www.kolzchut.org.il/he/%D7%91%D7%99%D7%98%D7%95%D7%9C_%D7%A2%D7%A1%D7%A7%D7%94_%D7%A9%D7%A0%D7%A2%D7%A9%D7%AA%D7%94_%D7%91%D7%90%D7%99%D7%A0%D7%98%D7%A8%D7%A0%D7%98_%D7%90%D7%95_%D7%91%D7%98%D7%9C%D7%A4%D7%95%D7%9F",
       "raw_snippet": "לקוחות שהם אנשים עם מוגבלות או שמלאו להם 65 שנים או שהם עולים חדשים - יכולים לבטל את העסקה בתוך 4 חודשים",
-      "fetched_at": "2026-08-13T00:00:00Z",
+      "fetched_at": "2026-10-18T01:57:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/api-endpoints.md"
       ],
-      "verified_via": "browser",
-      "verified_at": "2026-08-27T04:54:44Z"
+      "verified_via": "browser (Playwright, location.href asserted; curl gets a Cloudflare challenge)",
+      "verified_at": "2026-10-18T01:57:00Z"
     },
     {
       "claim_id": "reference-urls-and-examples",
-      "claim": "Reference URLs and illustrative example figures. Example amounts (Total 9900 = NIS 99, FirstPayment 5000 = NIS 50, Bit cap 5,000 NIS, 1 NIS test charge) are illustrative or operator-set, not fixed API constants. The Match API (match-api.pelecard.biz/docs/index) docs page rendered empty during research; treat as the modern path and verify with the vendor. Covers these references: https://www.postman.com/peleteam/pelecard-public/overview https://gateway20.pelecard.biz/sandbox https://gateway21.pelecard.biz/PaymentGW/GetTransaction https://gateway21.pelecard.biz/PaymentGW/init https://github.com/dofinity/pelecard https://github.com/dofinity/pelecard/blob/master/src/Pelecard/PaymentRequest.php https://match-api.pelecard.biz/docs/index https://wordpress.org/plugins/woo-pelecard-gateway/ https://www.allpay.co.il/en/help/bit https://www.shva.co.il/ https://example.com/pay/success https://example.com/pay/error https://example.com/pay/cancel https://example.com/api/pelecard/ipn-success https://example.com/api/pelecard/ipn-error",
+      "claim": "Reference URLs and illustrative example figures. Example amounts (Total 9900 = NIS 99, FirstPayment 5000 = NIS 50, 1 NIS test charge) are illustrative or operator-set, not fixed API constants. Covers these references: https://www.postman.com/peleteam/pelecard-public/overview https://gateway20.pelecard.biz/sandbox https://gateway21.pelecard.biz/PaymentGW/GetTransaction https://gateway21.pelecard.biz/PaymentGW/init https://github.com/dofinity/pelecard https://github.com/dofinity/pelecard/blob/master/src/Pelecard/PaymentRequest.php https://match-api.pelecard.biz/swagger/docs/v2 https://wordpress.org/plugins/woo-pelecard-gateway/ https://www.allpay.co.il/en/help/bit https://www.shva.co.il/ https://example.com/pay/success https://example.com/pay/error https://example.com/pay/cancel https://example.com/api/pelecard/ipn-success https://example.com/api/pelecard/ipn-error Also covers: FirstPayment 5000 = 50.00 ₪.",
       "source_url": "https://gateway20.pelecard.biz/sandbox",
-      "raw_snippet": "Pelecard Gateway Testing Presets: None Minimum Payment Authorize Authorization(Hide) Registry Registry - Swipe Parameters List --> /// Parameters list ● Caution!",
-      "fetched_at": "2026-08-18",
+      "raw_snippet": "ActionType J4 (default) J2 (for registration only) J5 J5h",
+      "fetched_at": "2026-10-18T11:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/api-endpoints.md",
         "scripts/validate_pelecard_response.py"
-      ],
-      "verified_via": "reference-coverage entry; snippet quoted from one of the covered sources",
-      "verified_at": "2026-08-18"
+      ]
     },
     {
       "claim_id": "services-surface",
       "claim": "Pelecard publishes a live public request builder at gateway21.pelecard.biz/services (ServicesRequestBuilder) listing its server-to-server service operations, including Debit Regular Type (J4), the Authorize (J5) family, the Pending (J9) family, token operations, Delete/Reversal operations, ParamX lookups, Broadcast, 3DS initiation and the error-message lookups.",
       "source_url": "https://gateway21.pelecard.biz/services",
       "raw_snippet": "<option value=\"DRT\">Debit Regular Type (J4)</option>",
-      "fetched_at": "2026-08-27T04:25:34Z",
+      "fetched_at": "2026-10-18T09:00:00Z",
       "verified_via": "api",
-      "verified_at": "2026-08-27T04:25:34Z",
+      "verified_at": "2026-10-18T09:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -121,12 +113,10 @@
     },
     {
       "claim_id": "services-endpoint-paths",
-      "claim": "Pelecard's own public request builder script defines the service URLs for its endpoints, confirming the real paths. Verified paths: /services/DebitRegularType, /services/DebitPaymentsType, /services/DebitCreditType, /services/DebitIsracreditType, /services/AuthorizeCreditCard, /services/AuthorizeCreditType, /services/AuthorizePaymentsType, /services/AuthorizeIsracreditCard, /services/PendingRegularType, /services/PendingCreditType, /services/PendingPaymentsType, /services/PendingIsracreditType, /services/ClearPendingByUserKey, /services/ClearPendingByRecordId, /services/ConvertToToken, /services/RetrieveToken, /services/UpdateToken, /services/CheckCreditCardForToken, /services/DeleteTran, /services/DeleteIshur, /services/EmvReversal, /services/EmvFinishDebit, /services/TrxLookUp, /services/CheckGoodParamX, /services/CheckGoodParamXList, /services/CheckGoodParamXEmv, /services/GetTransData, /services/GetCompleteTransData, /services/GetTransDataBeforeBc, /services/GetTransReportDataBeforeBc, /services/Broadcast, /services/GetBroadcast, /services/GetBroadcastsByDate, /services/GetErrorMessageEn, /services/GetErrorMessageHe, /services/GetTerminalName, /services/ResetUserPassword, /services/CreateInvoice, /services/CreateICountInvoice, /services/CreateEZCountInvoice, /Services/Initiate3DSAuthenticationProcess, /Services/InitiateBankTransfer, /PaymentGW/init, /PaymentGW/GetTransaction, /PaymentGW/ValidateByUniqueKey. The corresponding full URLs on the gateway host (for example https://gateway21.pelecard.biz/services/DebitRegularType and https://gateway21.pelecard.biz/services/GetErrorMessageHe) resolve on both gateway hosts. The builder script itself is served at /Scripts/Services/Sandbox.js. All of these are POST endpoints, i.e. POST /PaymentGW/init, POST /PaymentGW/GetTransaction, POST /PaymentGW/ValidateByUniqueKey, POST /Services/Initiate3DSAuthenticationProcess, POST /services/CheckGoodParamX, POST /services/GetTerminalName and POST /services/TrxLookUp. The script defines 57 distinct service URLs in total: 54 under /services/, plus /PaymentGW/GetTransaction, /PaymentGW/ValidateByUniqueKey and /PaymentEnquiry/CreateLink.",
+      "claim": "Pelecard's own public request builder script defines the service URLs for its endpoints, confirming the real paths. Verified paths: /services/DebitRegularType, /services/DebitPaymentsType, /services/DebitCreditType, /services/DebitIsracreditType, /services/AuthorizeCreditCard, /services/AuthorizeCreditType, /services/AuthorizePaymentsType, /services/AuthorizeIsracreditCard, /services/PendingRegularType, /services/PendingCreditType, /services/PendingPaymentsType, /services/PendingIsracreditType, /services/ClearPendingByUserKey, /services/ClearPendingByRecordId, /services/ConvertToToken, /services/RetrieveToken, /services/UpdateToken, /services/CheckCreditCardForToken, /services/DeleteTran, /services/DeleteIshur, /services/EmvReversal, /services/EmvFinishDebit, /services/TrxLookUp, /services/CheckGoodParamX, /services/CheckGoodParamXList, /services/CheckGoodParamXEmv, /services/GetTransData, /services/GetCompleteTransData, /services/GetTransDataBeforeBc, /services/GetTransReportDataBeforeBc, /services/Broadcast, /services/GetBroadcast, /services/GetBroadcastsByDate, /services/GetErrorMessageEn, /services/GetErrorMessageHe, /services/GetTerminalName, /services/ResetUserPassword, /services/CreateInvoice, /services/CreateICountInvoice, /services/CreateEZCountInvoice, /Services/Initiate3DSAuthenticationProcess, /Services/InitiateBankTransfer, /PaymentGW/GetTransaction, /PaymentGW/ValidateByUniqueKey (PaymentGW/init is not in the script; it is verified by live probe, see the hosts claim). The corresponding full URLs on the gateway host (for example https://gateway21.pelecard.biz/services/DebitRegularType and https://gateway21.pelecard.biz/services/GetErrorMessageHe) resolve on both gateway hosts. The builder script itself is served at /Scripts/Services/Sandbox.js. All of these are POST endpoints, i.e. POST /PaymentGW/init, POST /PaymentGW/GetTransaction, POST /PaymentGW/ValidateByUniqueKey, POST /Services/Initiate3DSAuthenticationProcess, POST /services/CheckGoodParamX, POST /services/GetTerminalName and POST /services/TrxLookUp. The script defines 57 distinct service URLs in total: 54 under /services/, plus /PaymentGW/GetTransaction, /PaymentGW/ValidateByUniqueKey and /PaymentEnquiry/CreateLink.",
       "source_url": "https://gateway21.pelecard.biz/Scripts/Services/Sandbox.js",
       "raw_snippet": "DefaultDomainName + \"/services/DeleteTran\"",
-      "fetched_at": "2026-08-27T04:25:34Z",
-      "verified_via": "api",
-      "verified_at": "2026-08-27T04:25:34Z",
+      "fetched_at": "2026-10-18T11:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -138,9 +128,7 @@
       "claim": "The /services surface uses different parameter casing from /PaymentGW: terminalNumber, user, password, shopNumber, creditCard, creditCardDateMmYy, token, total, currency, cvv2, id, authorizationNumber, paramX, userKey, plus eci/xid/cavv for carrying a 3DS2 result into the debit. /PaymentGW uses terminal, Total, Currency, ParamX, ShopNo and TransactionId.",
       "source_url": "https://gateway21.pelecard.biz/Scripts/Services/Sandbox.js",
       "raw_snippet": "\"terminalNumber\": \"0962210\"",
-      "fetched_at": "2026-08-27T04:25:34Z",
-      "verified_via": "api",
-      "verified_at": "2026-08-27T04:25:34Z",
+      "fetched_at": "2026-10-18T09:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -153,9 +141,7 @@
       "claim": "Money fields are in minor units (agorot). Pelecard's own builder sends the same single shekel as total \"100\" on /services/DebitRegularType and as TotalX100 \"100\" on PaymentGW/ValidateByUniqueKey, TotalX100 meaning the amount multiplied by 100. This corroborates the agorot convention independently of the dofinity wrapper.",
       "source_url": "https://gateway21.pelecard.biz/Scripts/Services/Sandbox.js",
       "raw_snippet": "\"TotalX100\": \"100\"",
-      "fetched_at": "2026-08-27T04:25:34Z",
-      "verified_via": "api",
-      "verified_at": "2026-08-27T04:25:34Z",
+      "fetched_at": "2026-10-18T09:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
@@ -165,17 +151,182 @@
     },
     {
       "claim_id": "error-code-lookup",
-      "claim": "Pelecard publishes the official bilingual message for every status code through /services/GetErrorMessageEn and /services/GetErrorMessageHe, which take only {\"ErrorCode\":\"NNN\"} and require NO credentials. A sweep of codes 000-999 on 2026-08-27 returned 254 assigned codes; the rest return the placeholder UnkownError (English) or שגיאה לא ידועה (Hebrew). Verified examples: 000 operation success / עסקה תקינה., 033 invalid credit card. / כרטיס לא תקין., 036 card is expired. / כרטיס פג תוקף., 308 Duplicated transaction. / עסקה כפולה., 425 Double entry / רשומה כפולה., 501 User name and/or password not correct. Please call support team., 502 User password has expired., 506 Token number abnormal. / מספר טוקן לא תקין., 650 3DS process failed / אימות 3ds נכשל, 302 Debit was successful but merchant is not responding / התשלום בוצע אך אתר העסק לא זמין, 301 Session to Pelecard Timed Out, 303 Merchant is not responding, 011 No Approoval From The Clearing Company For This ISO Currency., 012 This ISO Currency is not Allowed for This Credit Card., 401 Number of payments is greater than the maximum number of payments, 402 Number of payments is smaller than a minimum number of payments, 403 Transaction amount is smaller than the minimum amount, 404 Terminal number does not exist., 503 Locked user., 505 Blocked terminal., 507 User is not authorized in this terminal., 508 Expiration date structure invalid. Use MMYY structure only., 620 This card cannot be used for this transaction., 999 Necessary values are missing to complete installments transaction. Codes 660-680 are ISO 20022 bank-transfer statuses (ACCC, ACSC, ACSP, ACTC, ACWC, RCVD, RJCT, PATC, PENDING, ERROR, CAPTCHA fail, ACFC, CANC, INIT), several of which are successes.",
+      "claim": "Pelecard publishes the official bilingual message for every status code through /services/GetErrorMessageEn and /services/GetErrorMessageHe, which take only {\"ErrorCode\":\"NNN\"} and require NO credentials. A sweep of codes 000-999 on 2026-08-27 returned 254 assigned codes; the rest return the placeholder UnkownError (English) or שגיאה לא ידועה (Hebrew). Verified examples: 000 operation success / עסקה תקינה., 033 invalid credit card. / כרטיס לא תקין., 036 card is expired. / כרטיס פג תוקף., 308 Duplicated transaction. / עסקה כפולה., 425 Double entry / רשומה כפולה., 501 User name and/or password not correct. Please call support team., 502 User password has expired., 506 Token number abnormal. / מספר טוקן לא תקין., 650 3DS process failed / אימות 3ds נכשל, 302 Debit was successful but merchant is not responding / התשלום בוצע אך אתר העסק לא זמין, 301 Session to Pelecard Timed Out, 303 Merchant is not responding, 011 No Approoval From The Clearing Company For This ISO Currency., 012 This ISO Currency is not Allowed for This Credit Card., 401 Number of payments is greater than the maximum number of payments, 402 Number of payments is smaller than a minimum number of payments, 403 Transaction amount is smaller than the minimum amount, 404 Terminal number does not exist., 503 Locked user., 505 Blocked terminal., 507 User is not authorized in this terminal., 508 Expiration date structure invalid. Use MMYY structure only., 620 This card cannot be used for this transaction., 999 Necessary values are missing to complete installments transaction. Codes 660-680 are ISO 20022 bank-transfer statuses (ACCC, ACSC, ACSP, ACTC, ACWC, RCVD, RJCT, PATC, PENDING, ERROR, CAPTCHA fail, ACFC, CANC, INIT), several of which are successes. Re-swept (English) 2026-10-18: the same 254 codes with identical wording.",
       "source_url": "https://gateway21.pelecard.biz/services/GetErrorMessageEn",
       "raw_snippet": "invalid credit card.",
-      "fetched_at": "2026-08-27T04:25:34Z",
+      "fetched_at": "2026-10-18T09:00:00Z",
       "verified_via": "api",
-      "verified_at": "2026-08-27T04:25:34Z",
+      "verified_at": "2026-10-18T09:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
         "references/error-codes.md",
         "scripts/validate_pelecard_response.py"
+      ]
+    },
+    {
+      "claim_id": "reverse-transaction-refund",
+      "claim": "Refund endpoint: POST https://gateway21.pelecard.biz/services/ReverseTransaction (path /services/ReverseTransaction). Pelecard's own WooCommerce plugin (v1.5.3.1) refunds through POST services/ReverseTransaction with terminalNumber, user, password, UID (empty), NewAmount (refund in agorot, amount*100), NewParamX (empty), NewPaymentNo (empty) and debitTrxId (the original PelecardTransactionId). It must run on the terminal that owns the original debit, else Pelecard returns 507. The plugin reads StatusCode '000' as success and stores the top-level DebitTrxId as the refund leg id, falling back to PelecardTransactionId. It also uses it to release an uncaptured J5. The endpoint is not in the public builder; live probe 2026-10-18 returned a JSON StatusCode 501 auth error where a fabricated /services path 302s to Http404.",
+      "source_url": "https://plugins.svn.wordpress.org/woo-pelecard-gateway/tags/1.5.3.1/includes/Api.php",
+      "raw_snippet": "$response = self::request( 'services/ReverseTransaction', $args );",
+      "fetched_at": "2026-10-18T09:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/api-endpoints.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "reverse-transaction-changelog",
+      "claim": "Plugin changelog v1.5.3: refund flow moved from DebitRegularType to ReverseTransaction. v1.5.3.1 fixed refunds on two-terminal setups to use the terminal that performed the original charge, resolving gateway error 507.",
+      "source_url": "https://plugins.svn.wordpress.org/woo-pelecard-gateway/tags/1.5.3.1/readme.txt",
+      "raw_snippet": "Refactored refund flow from DebitRegularType to ReverseTransaction (no longer requires saved card token)",
+      "fetched_at": "2026-10-18T09:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/api-endpoints.md"
+      ]
+    },
+    {
+      "claim_id": "j5-capture-same-terminal",
+      "claim": "Pelecard's plugin captures a J5 by posting services/DebitRegularType with the saved token and authorizationNumber, and its v1.5.3 changelog fixed a capture routed to a different terminal from the authorization, which left the hold open alongside a separate charge. The plugin also sends UserKey on DebitRegularType.",
+      "source_url": "https://plugins.svn.wordpress.org/woo-pelecard-gateway/tags/1.5.3.1/readme.txt",
+      "raw_snippet": "capture now uses the same terminal as the original auth, preventing held-funds left open on the main terminal alongside a separate charge on the sub terminal",
+      "fetched_at": "2026-10-18T09:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/api-endpoints.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "error-507",
+      "claim": "Status 507 is 'User is not authorized in this terminal.' (Hebrew: משתמש לא רשאי לבצע פעולות במסוף זה.), from Pelecard's credential-free lookup.",
+      "source_url": "https://gateway21.pelecard.biz/services/GetErrorMessageEn",
+      "raw_snippet": "User is not authorized in this terminal.",
+      "verified_via": "api",
+      "verified_at": "2026-10-18T09:00:00Z",
+      "fetched_at": "2026-10-18T09:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/api-endpoints.md",
+        "references/error-codes.md"
+      ]
+    },
+    {
+      "claim_id": "match-api-reconciliation",
+      "claim": "match-api.pelecard.biz is a settlement-reconciliation API, not a payment surface. Its Swagger spec at /swagger/docs/v2 (title 'Match API Sandbox') lists MatchApi/GetMatchingLinesBetweenTransactionDates, GetDenyAndCancellationLines, GetBalanceLines, GetClearingCompanyUnmatchedData, ParamX/ArnToParamX and Reports/FlowSummary (future deposits). Requests carry user/password, some also terminal. The /docs/index page is a Swashbuckle UI that loads the spec from swagger/docs/v2.",
+      "source_url": "https://match-api.pelecard.biz/swagger/docs/v2",
+      "raw_snippet": "Returns a summary of all future deposits, with deposit due between the specified range",
+      "fetched_at": "2026-10-18T09:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/api-endpoints.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "sandbox-currency-codes",
+      "claim": "Pelecard's iframe sandbox lists Currency 1 = ILS, 2 = USD, 978 = EUR, 826 = GBP.",
+      "source_url": "https://gateway20.pelecard.biz/sandbox",
+      "raw_snippet": "Currency 1 - ₪ 2 - $ 978 - € 826 - £",
+      "fetched_at": "2026-10-18T09:00:00Z",
+      "appears_in": [
+        "references/payment-parameters.md"
+      ]
+    },
+    {
+      "claim_id": "dofinity-firstpayment-agorot",
+      "claim": "The dofinity wrapper documents FirstPayment with the comment 'the amount is in agorot/cents'.",
+      "source_url": "https://raw.githubusercontent.com/dofinity/pelecard/master/src/Pelecard/PaymentRequest.php",
+      "raw_snippet": "protected $FirstPayment; // the amount is in agorot/cents",
+      "verified_via": "curl of the raw file, line 61 (the verifier's tag filter strips it because the file opens with <?php)",
+      "verified_at": "2026-10-18T09:30:00Z",
+      "fetched_at": "2026-10-18T09:30:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/payment-parameters.md"
+      ]
+    },
+    {
+      "claim_id": "userkey-uniquekey",
+      "claim": "Pelecard's plugin (v1.5.3.1) sends UserKey on PaymentGW/init and calls PaymentGW/ValidateByUniqueKey with ConfirmationKey, TotalX100 (the DebitTotal) and UniqueKey set to the same order key, so UserKey on init becomes the UniqueKey.",
+      "source_url": "https://plugins.svn.wordpress.org/woo-pelecard-gateway/tags/1.5.3.1/includes/Api.php",
+      "raw_snippet": "'UniqueKey' => $unique_key,",
+      "fetched_at": "2026-10-18T11:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/api-endpoints.md",
+        "references/payment-parameters.md"
+      ]
+    },
+    {
+      "claim_id": "legacy-negative-total-refund",
+      "claim": "Up to v1.5.2 Pelecard's plugin refunded by posting a negative total with the saved token to services/DebitRegularType; v1.5.3.1 still recognises negative DebitTotal from those old refunds.",
+      "source_url": "https://plugins.svn.wordpress.org/woo-pelecard-gateway/tags/1.5.3.1/includes/Transaction.php",
+      "raw_snippet": "// Legacy: negative DebitTotal from old DebitRegularType refunds",
+      "fetched_at": "2026-10-18T11:00:00Z",
+      "appears_in": [
+        "references/refunds-and-billing.md"
+      ]
+    },
+    {
+      "claim_id": "installment-capture",
+      "claim": "Pelecard's plugin captures/charges an installment order with services/DebitPaymentsType or services/DebitCreditType and paymentsNumber, still carrying token and authorizationNumber.",
+      "source_url": "https://plugins.svn.wordpress.org/woo-pelecard-gateway/tags/1.5.3.1/includes/Api.php",
+      "raw_snippet": "$args['paymentsNumber'] = $total_payments;",
+      "fetched_at": "2026-10-18T11:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/api-endpoints.md"
+      ]
+    },
+    {
+      "claim_id": "consumer-law-13d-ongoing",
+      "claim": "Consumer Protection Law section 13D(c): a contract in an ongoing transaction ends within three business days of the cancellation notice given under section 14I (six business days if sent by registered mail), unless the consumer named a later date; from then the merchant stops supplying and may not charge for goods or services given after it. (Hebrew: סעיף 13ד(ג), סעיף 13ד, סעיף 14ט.)",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%92%D7%A0%D7%AA_%D7%94%D7%A6%D7%A8%D7%9B%D7%9F",
+      "raw_snippet": "חוזה בעסקה מתמשכת יסתיים בתוך שלושה ימי עסקים מיום שנמסרה הודעת ביטול",
+      "fetched_at": "2026-10-18T11:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/refunds-and-billing.md",
+        "references/domain-checklist.md"
+      ]
+    },
+    {
+      "claim_id": "refund-decline-codes",
+      "claim": "Pelecard codes whose Hebrew text names a refund/credit transaction (עסקת זכות): 129 terminal not allowed credit above ceiling, 146 immediate-debit card not allowed a credit transaction, 161 zero ceiling for credit transactions, 169 credit transaction only with regular credit terms (לא ניתן לבצע עסקת זכות עם אשראי שונה מ-רגיל). 150, 151, 155, 156 concern credit-terms (אשראי/קרדיט) purchases, not refunds. From the credential-free lookup (full table in error-codes.md).",
+      "source_url": "https://gateway21.pelecard.biz/services/GetErrorMessageEn",
+      "raw_snippet": "credit transaction cannot be executed with credit different from usual.",
+      "verified_via": "api",
+      "verified_at": "2026-10-18T11:00:00Z",
+      "fetched_at": "2026-10-18T11:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/refunds-and-billing.md",
+        "references/error-codes.md"
+      ]
+    },
+    {
+      "claim_id": "consumer-law-14i-channels",
+      "claim": "Consumer Protection Law section 14I(a) lists the channels through which the merchant must accept a cancellation notice: orally (phone or at the place of business), registered mail, email, fax if the merchant has one, and online for a transaction that can be made online; s.14I(b) requires a site that transacts online to place a dedicated, prominent cancellation link on its home page. (Hebrew: סעיף 14ט, סעיף 14ט(ב).)",
+      "source_url": "https://he.wikisource.org/wiki/%D7%97%D7%95%D7%A7_%D7%94%D7%92%D7%A0%D7%AA_%D7%94%D7%A6%D7%A8%D7%9B%D7%9F",
+      "raw_snippet": "ייצור עוסק בדף הראשי של אתר האינטרנט שלו קישור ייעודי שבאמצעותו ניתן לשלוח הודעת ביטול",
+      "fetched_at": "2026-10-18T12:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/refunds-and-billing.md"
       ]
     }
   ]

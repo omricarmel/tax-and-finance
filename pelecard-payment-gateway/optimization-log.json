@@ -1,6 +1,21 @@
 {
   "cycles": [
     {
+      "version": "1.2.0",
+      "date": "2026-10-18",
+      "lessons": [
+        "RESOLVED CARRY: the post-broadcast refund path is /services/ReverseTransaction, found in Pelecard's own WooCommerce plugin source (v1.5.3 changelog 'Refactored refund flow from DebitRegularType to ReverseTransaction'). It is NOT in the public /services builder, so a builder-only sweep will never find it. Live probe: JSON 501 auth error vs fabricated control 302->Http404. Lesson: read the vendor's own plugin SOURCE (plugins.svn.wordpress.org tags/<ver>), not just its changelog listing.",
+        "Match API (match-api.pelecard.biz) was mis-framed for three cycles as a 'modern payment REST surface' because /docs/index renders empty in curl. It is a Swashbuckle UI; the spec at /swagger/docs/v2 shows a settlement-reconciliation API. A JS-empty docs page means find the spec URL in the page source, not 'docs unavailable'.",
+        "v1.1.0 'never send a negative total, likely a second charge' was unsupported: Pelecard's own plugin refunded exactly that way (negative total + token on DebitRegularType) up to v1.5.2. A confident warning needs a source as much as a fact does.",
+        "v1.1.0 'no init parameter sets UniqueKey' was wrong: the plugin sends UserKey on init and validates with it as UniqueKey.",
+        "English 'credit' in Pelecard's error table is ambiguous; the Hebrew decides: עסקת זכות = refund/credit transaction (129/146/161/169), אשראי/קרדיט = credit-terms purchase (150/151/155/156). Always read the Hebrew column before grouping codes.",
+        "Bit limits in the skill were another PSP's (allpay) terms presented as Bit rules; now framed as illustrative. Pelecard publishes none.",
+        "Validator bugs found by running it: lookup conflated 'unreachable' with 'unassigned' (python.org macOS has no CA bundle -> every lookup failed silently), and 302 (debit succeeded) was reported as FAILED. Added certifi fallback, distinct exit codes, 30x handling, --self-test.",
+        "Judge 3 rounds, Expert 3 rounds, both PASS in round 3. Subagent channel failed silently on first dispatch of all four agents; recovered by asking each to write its verdict to a file.",
+        "DEFERRED (minor): refund invoice should be issued from the reversing terminal with the refund DebitTrxId (plugin does this); Consumer Protection Law 14-day start date and excluded goods; s.14I(e) cancellation info on invoices; parameter-casing value-add case; J5h semantics; what NewParamX/NewPaymentNo do; whether ReverseTransaction voids pre-broadcast. Rehearsal on a real test terminal would settle the ReverseTransaction unknowns."
+      ]
+    },
+    {
       "version": "1.1.0",
       "date": "2026-08-27",
       "lessons": [

@@ -26,18 +26,18 @@ The Pelecard sandbox lists ActionType options as: "J4 (default) J2 (for registra
 | `J4` | Standard sale. **Default.** | Yes |
 | `J2` | Card validation / registration only. | No |
 | `J5` | Authorize now, charge later. | No (auth only) |
-| `J5h` | Enhanced J5. | No (auth only) |
+| `J5h` | A J5 variant listed in the sandbox; semantics not published. | No (auth only) |
 
 The dofinity `PaymentRequest` constructor sets the default to `'J4'`. Picking the wrong value is the most common Pelecard integration bug -- `J2` looks identical to `J4` in the merchant UI but does not move money.
 
 ## Currency
 
-The dofinity wrapper documents `Currency` with the comment `1 = ILS`. Pelecard's currency-code mapping is not consistently documented across Gateway20, Gateway21, and the Match API; only `1 = ILS` is reliably confirmed across surfaces.
+The dofinity wrapper documents `Currency` with the comment `1 = ILS`. Pelecard's own iframe sandbox (`gateway20.pelecard.biz/sandbox`) lists `1 - ₪`, `2 - $`, `978 - €`, `826 - £` for the iframe `Currency` field. Whether your terminal is approved for a foreign currency is a terminal setting.
 
 | Code | Currency | Note |
 |------|----------|------|
 | `1` | ILS (Israeli shekel) | Default. Confirmed via the dofinity wrapper. Required for Bit. |
-| Other | USD / EUR / GBP / etc. | Pelecard's currency-code mapping is not consistently documented across its API surfaces. **Verify the exact integer for your terminal in the live request builder at `https://gateway21.pelecard.biz/services` before sending non-ILS amounts.** Codes `011` ("No Approoval From The Clearing Company For This ISO Currency.") and `012` ("This ISO Currency is not Allowed for This Credit Card.") are what you get when the currency is wrong or unapproved for the terminal or card. |
+| `2` / `978` / `826` | USD / EUR / GBP | As listed in the iframe sandbox. The `/services` surface may differ, so **check the preset in `https://gateway21.pelecard.biz/services` before sending non-ILS amounts there.** Codes `011` ("No Approoval From The Clearing Company For This ISO Currency.") and `012` ("This ISO Currency is not Allowed for This Credit Card.") are what you get when the currency is wrong or unapproved for the terminal or card. |
 
 ## Tashlumim (Installments)
 
@@ -103,9 +103,9 @@ Per the dofinity `PaymentRequest`:
 | `ServerSideGoodFeedbackURL` | Server-to-server IPN on success. |
 | `ServerSideErrorFeedbackURL` | Server-to-server IPN on error. |
 
-The server-side URLs fire only when the transaction reaches a terminal state. If the customer closes the browser before submitting the card form, no IPN fires; and of the merchant-unreachable codes only `302` states the debit succeeded, while `301` and `303` leave the outcome unknown (see `error-codes.md`). **`PaymentGW/init` does not return a transaction id** (its response is `URL` + `ConfirmationKey`, or those two blank plus an `Error` object), so a reconciliation job keyed on a transaction id stored at session-create time cannot be built. Reconcile on a key you own instead: `POST /services/CheckGoodParamX` or `/services/TrxLookUp` with your `paramX`. (`PaymentGW/ValidateByUniqueKey` keys on a `UniqueKey`, and this skill has NOT established which `init` parameter sets one, so do not build the safety net on it.) See SKILL.md Step 4.
+The server-side URLs fire only when the transaction reaches a terminal state. If the customer closes the browser before submitting the card form, no IPN fires; and of the merchant-unreachable codes only `302` states the debit succeeded, while `301` and `303` leave the outcome unknown (see `error-codes.md`). **`PaymentGW/init` does not return a transaction id** (its response is `URL` + `ConfirmationKey`, or those two blank plus an `Error` object), so a reconciliation job keyed on a transaction id stored at session-create time cannot be built. Reconcile on a key you own instead: `POST /services/CheckGoodParamX` or `/services/TrxLookUp` with your `paramX`. (`PaymentGW/ValidateByUniqueKey` validates with the `UserKey` you sent on `init` as its `UniqueKey`, per Pelecard's plugin; it checks a known transaction and cannot find a lost one.) See SKILL.md Step 4.
 
-Pelecard does NOT sign IPN deliveries with HMAC, so authenticity is established by re-fetching the transaction via `PaymentGW/GetTransaction` (with optional outbound IP allowlisting and TLS 1.2+ on your endpoints).
+Pelecard documents no signature (HMAC or otherwise) on IPN deliveries, so authenticity is established by re-fetching the transaction via `PaymentGW/GetTransaction` (plus IP allowlisting if Pelecard gives you its outbound IPs, and TLS 1.2+ on your endpoints).
 
 ## Custom Passthrough
 
@@ -115,7 +115,7 @@ Per the dofinity `PaymentRequest`:
 |-------|-------|
 | `ParamX` | Free-form pass-through, echoed on lookup. Use as the merchant's order correlation ID. NOT an idempotency / dedupe key (Pelecard may deliver the same IPN twice on retry, both with the same `ParamX`); dedupe IPNs on `PelecardTransactionId` instead. |
 | `ShopNo` | Shop / branch identifier. |
-| `UserKey` | User identifier. |
+| `UserKey` | User identifier. Pelecard's plugin sends its order key here and reuses it as the `UniqueKey` for `ValidateByUniqueKey`. |
 | `UserData` (and `UserData1`-`UserData15` per Postman) | Up to 15 free-form fields. |
 
 Use these to correlate Pelecard transactions back to your internal order ID without storing card data.
@@ -134,7 +134,7 @@ Configure 3DS as mandatory for new merchants in line with Bank of Israel SCA exp
 
 ## Bit Wallet
 
-The Pelecard sandbox exposes a Bit toggle ("Enable bit: True False") plus UI text parameters. Bit's wallet-side limits (per allpay.co.il/en/help/bit):
+The Pelecard sandbox exposes a Bit toggle ("Enable bit: True False") plus UI text parameters. Pelecard does not publish its Bit limits. The table below is another Israeli PSP's published Bit terms (allpay.co.il/en/help/bit); they show the shape, and your own figures come from your Pelecard agreement:
 
 | Constraint | Value |
 |------------|-------|

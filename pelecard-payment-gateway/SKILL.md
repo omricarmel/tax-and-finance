@@ -3,7 +3,7 @@ name: pelecard-payment-gateway
 description: "Integrate Pelecard payment processing into Israeli web and mobile apps -- covers the iframe payment flow on gateway21.pelecard.biz, ActionType selection (J2/J4/J5/J5h), tashlumim (installments), tokenization, ConfirmationKey server-side validation via PaymentGW/GetTransaction, refunds, 3D Secure 2, Bit wallet, and Apple Pay via ClientSecure.js. Use when user asks to accept payments via Pelecard, set up slikat ashrai with Pelecard, validate a Pelecard callback, charge a saved Pelecard token, or mentions Pelecard, gateway21, PelecardStatusCode, or ConfirmationKey. Do NOT use for Cardcom (use cardcom-payment-gateway), Tranzila (use tranzila-payment-gateway), Grow/Meshulam (use grow-payment-gateway), multi-gateway orchestration (use israeli-payment-orchestrator), or invoice generation (use green-invoice)."
 license: MIT
 compatibility: Requires network access for Pelecard API calls. Works with Claude Code, Cursor, Claude Desktop, OpenAI Codex, and GitHub Copilot.
-version: 1.1.0
+version: 1.2.0
 ---
 
 # Pelecard Payment Gateway
@@ -20,13 +20,14 @@ Pelecard's dominant integration is an iframe payment page: your server posts a c
 
 Pelecard has **two** server-to-server surfaces with different parameter-naming conventions.
 `/PaymentGW/*` is the iframe surface and has exactly three endpoints. `/services/*` is where every
-other operation lives: charges on a saved token, authorizations, voids, tokens, lookups, settlement,
+other operation lives: charges on a saved token, authorizations, voids, refunds, tokens, lookups, settlement,
 3DS, invoices. Pelecard publishes a live request builder for them at
 https://gateway21.pelecard.biz/services with a preset body for each; that page is the authoritative
 endpoint reference, ahead of any third-party wrapper.
 
-The newer "Match API" at `match-api.pelecard.biz` exists, but its docs page still returns an empty
-client-side shell (HTTP 200, ~37 characters of text as of 2026-08-27). Verify with Pelecard first.
+A third host, `match-api.pelecard.biz` ("Match API"), is **not** a payment surface. Its Swagger spec
+(`/swagger/docs/v2`) shows a settlement-reconciliation API: acquirer records, deny/cancellation lines,
+balances, future deposits, `ArnToParamX`. Use it to reconcile deposits, never to charge.
 
 ## Instructions
 
@@ -37,9 +38,8 @@ client-side shell (HTTP 200, ~37 characters of text as of 2026-08-27). Verify wi
 | **Iframe / hosted page** | Pelecard hosts the card-entry page | Most integrations; smallest PCI scope |
 | **Charge stored token** (`/services`) | Token only, no raw card data | Recurring billing, hora'ot keva, one-click |
 | **Apple Pay via ClientSecure.js** | Apple Pay handles card data | iOS/Safari customers |
-| **Bit wallet** | A2A push, no card data | Single-payment, ILS only, 5,000 ₪ design ceiling |
+| **Bit wallet** | Customer pays in the Bit app | Single payment, ILS only; caps set by your agreement |
 | **Server-to-server** (`/services/*`) | Token, or a PAN you handle | Authorizations, voids, reconciliation. A PAN raises your PCI scope. |
-| **Match API** | Modern REST surface | Verify with vendor; doc page still renders empty |
 
 ### Step 2: Set Up Authentication
 
@@ -68,7 +68,7 @@ from a hostname: a build pointed at `gateway20` with live credentials is a live 
 
 Build the request body from your credentials, `Total`, `Currency`, `ActionType` and the feedback URLs.
 
-**Money fields use minor units (agorot).** Send `Total: 9900` for ₪99.00. Two independent confirmations: the dofinity wrapper documents `FirstPayment` as "the amount is in agorot/cents", and Pelecard's own builder sends the same 1 shekel as `total: "100"` on `/services/DebitRegularType` and as `TotalX100: "100"` on `ValidateByUniqueKey`. Still do a 1 ₪ test charge before going live.
+**Money fields use minor units (agorot).** Send `Total: 9900` for ₪99.00. The dofinity wrapper documents `FirstPayment` as "the amount is in agorot/cents", and Pelecard's builder sends 1 shekel as `total: "100"` and `TotalX100: "100"`. Still do a 1 ₪ test charge.
 
 The create-session path is `PaymentGW/init`, verified live on both gateway hosts.
 
@@ -119,7 +119,7 @@ correlate on the `ParamX` you sent, not on an id you do not have.
 | `J4` | Standard sale (default). Money moves now. |
 | `J2` | Card validation / registration only. No charge. |
 | `J5` | Authorize now, charge later. |
-| `J5h` | Enhanced J5. |
+| `J5h` | A J5 variant listed in Pelecard's sandbox; its semantics are not published, ask Pelecard. |
 
 ### Step 4: Validate the Callback Server-Side
 
@@ -129,7 +129,7 @@ When the customer finishes paying, Pelecard hits your `ServerSideGoodFeedbackURL
 2. Re-call `PaymentGW/GetTransaction` with `terminal/user/password/TransactionId` (the callback's `PelecardTransactionId`).
 3. Confirm the debited amount matches the order's expected price and the transaction id matches the callback. `GetTransaction` does not return the `ConfirmationKey`, so this amount/id match is what authenticates the lookup.
 
-**Pelecard does NOT sign IPN deliveries with HMAC.** A browser-side `ConfirmationKey` can be forged, so the only authoritative source is the server-to-server `GetTransaction` lookup.
+**Pelecard documents no signature (HMAC or otherwise) on IPN deliveries, so treat them as unsigned.** A browser-side `ConfirmationKey` can be forged, so the only authoritative source is the server-to-server `GetTransaction` lookup.
 
 The lookup call is the credentials triple plus the `TransactionId`:
 
@@ -170,11 +170,9 @@ key you own:
   actually paid?" directly. `/services/CheckGoodParamXList` does it in a batch.
 - `POST /services/TrxLookUp` with `paramX` returns the transaction.
 
-`PaymentGW/ValidateByUniqueKey` also validates without credentials, but it keys on a `UniqueKey` and
-this skill has **not** established which `init` parameter sets one (the documented passthrough fields
-are `ParamX`, `ShopNo`, `UserKey`, `UserData1`-`15`). Don't build a safety net on it unless Pelecard
-confirms how your terminal accepts a merchant-supplied `UniqueKey`. `paramX` is the key this skill can
-actually show you how to send.
+`PaymentGW/ValidateByUniqueKey` (no credentials) is a second check, not a lookup: Pelecard's plugin
+sends its order key as `UserKey` on `init`, then validates with that value as `UniqueKey` plus the
+`ConfirmationKey` and `TotalX100`. For finding a lost transaction, `paramX` is still the key.
 
 Run a lookup on a schedule for every session with no IPN inside your timeout window. **Never re-charge
 to resolve an unknown outcome; look it up first.**
@@ -182,9 +180,9 @@ to resolve an unknown outcome; look it up first.**
 **Outbound idempotency (the double-charge you will otherwise ship).** All of the above is *inbound*
 dedupe. When a token charge times out at the socket you do not know whether it landed, so `paramX` has
 to do double duty: make it `<order-id>-<attempt-n>` and reconcile with a prefix match on `<order-id>`,
-so `CheckGoodParamX` can still answer "was this order paid". (`userKey` is **not** available on the
-debit endpoints; in Pelecard's builder it appears only on the `Pending*Type` family and
-`ClearPendingByUserKey`.) Look the attempt up before retrying. Pelecard rejects some repeats with `308`
+so `CheckGoodParamX` can still answer "was this order paid". (Pelecard's builder shows `userKey` only on
+the `Pending*Type` family; its WooCommerce plugin also sends `UserKey` on `DebitRegularType`, but no
+lookup by it is documented, so do not rely on it.) Look the attempt up before retrying. Pelecard rejects some repeats with `308`
 "Duplicated transaction." or `425` "Double entry" -- proof your retry fired twice, not a transient
 error to retry again.
 
@@ -218,34 +216,49 @@ Note the casing: `terminalNumber` / `total` / `currency` / `paramX` on `/service
 means the stored token is no longer chargeable: re-tokenize or `UpdateToken`, never retry it. The Pelecard WordPress plugin has shipped "Saved payment
 methods (tokenization)" since v1.2.0 and "WooCommerce Subscriptions support" since v1.4.
 
-**Recurring charges + 3DS (MIT exemption).** Under EMV 3DS 2.x, repeat charges on a stored token can qualify for the MIT (Merchant Initiated Transaction) exemption, meaning Shva will not step the customer up for a 3DS challenge on each renewal. Pelecard's plugin changelog references this pattern (v1.4.8: "Add 3D-Secure params to J4 after J5 requests"). Confirm the exact MIT-flag parameter for your terminal with Pelecard support before relying on the exemption; without it, recurring charges may intermittently fail with 3DS rejection errors.
+**Recurring charges + 3DS (MIT exemption).** Under EMV 3DS 2.x, repeat charges on a stored token can qualify for the MIT (Merchant Initiated Transaction) exemption, so the customer is not challenged on each renewal. No Pelecard parameter for it is published; ask Pelecard which one your terminal uses before relying on it.
+
+**Cancellation is a legal duty, not a feature.** A monthly token charge is an ongoing transaction: under Consumer Protection Law section 13D(c) the contract ends within three business days of the customer's cancellation notice, and you may not charge after that. Gate every renewal on subscription status, and accept cancellation online through a dedicated link on your home page (s.14I(b)). Dunning and the rest are in `references/refunds-and-billing.md`.
 
 ### Step 6: Process Refunds
 
-**There is no single "refund" endpoint, and there is no refund endpoint under `/PaymentGW` at all.**
-Which primitive applies depends on whether the transaction has already been broadcast to Shva
-(see Step 6b). This is the ביטול / זיכוי distinction, and getting it wrong is the most expensive
-routine mistake in Israeli card integration.
+**There is no refund endpoint under `/PaymentGW`.** Refunds are a `/services` call, and the one
+Pelecard's own WooCommerce plugin uses (v1.5.3 onward: "Refactored refund flow from DebitRegularType
+to ReverseTransaction") is `/services/ReverseTransaction`. It is absent from the public builder, but
+answers live with a JSON auth error where a fabricated path redirects to a 404 page.
 
-| Situation | Operation | Endpoint | What the customer sees |
-|---|---|---|---|
-| Not yet broadcast (still in the open batch) | **Void / ביטול** -- delete the transaction | `/services/DeleteTran` (by `debitTrxId`, `uid`, or `voucherId` + `creditCard` + `total`) | The transaction never settles. A pending line may already have appeared in their card app at authorization time and can take days to drop off, so do not promise them they will see nothing. |
-| An authorization you will not capture | **Release the hold** | `/services/DeleteIshur` (by `debitTrxId`) | Their credit line is freed |
-| Already broadcast | **Credit / זיכוי** -- a new, opposite transaction | **not documented here, see the warning below** | A second line on their statement, settling on the issuer's own cycle |
+```
+POST https://gateway21.pelecard.biz/services/ReverseTransaction
+{
+  "terminalNumber": "<terminal>", "user": "<user>", "password": "<password>",
+  "debitTrxId": "<original PelecardTransactionId>", "NewAmount": "4900",
+  "UID": "", "NewParamX": "", "NewPaymentNo": ""
+}
+```
 
-Prefer the void whenever it is still available. A void never settles, so you pay no clearing fee; a
-זיכוי is itself a cleared transaction, so you pay a fee on the credit leg and generally do not get the
-original charge's fee back, meaning a sloppy charge-then-refund is paid for twice. The void is normally
-only available while the batch is open, on most terminals the same business day, so timing is the whole
-game. `/services/GetTransDataBeforeBc` shows what is still voidable.
+The plugin passes the refund amount in agorot as `NewAmount`, partial refunds included, and leaves the
+other three empty. Pelecard publishes none of these semantics, so rehearse full, partial and repeat
+refunds on your test terminal first (`references/refunds-and-billing.md`). Success is `StatusCode` `"000"`, and the top-level `DebitTrxId` is the
+refund leg's own id (fall back to `PelecardTransactionId`); store it against the order. **Send it from
+the terminal that made the original charge**: anything else fails with `507` "User is not authorized in
+this terminal." The plugin also uses it to release an uncaptured J5 hold.
 
-**The post-broadcast credit path is NOT documented in this skill, and you must not guess it.** No
-`/services` endpoint in Pelecard's public builder is a card-not-present credit operation
-(`DebitCreditType` is a *tashlumim kredit* sale; `EmvReversal` is card-present hardware), and no
-preset exposes a negative `total` or a credit flag. Get the credit path for your terminal from
-Pelecard **before you accept your first payment**, because the Consumer Protection Law clock below
-starts without waiting for you. Never try a negative `total` on a debit endpoint: if the terminal
-accepts it at all, the likely result is a second charge.
+| Situation | Endpoint |
+|---|---|
+| Refund, full or partial | `/services/ReverseTransaction` |
+| Void while still in the open batch (ביטול) | `/services/DeleteTran` (by `debitTrxId`, `uid`, or `voucherId` + `creditCard` + `total`) |
+| Release an authorization you will not capture | `/services/DeleteIshur` (by `debitTrxId`) |
+
+Pelecard does not publish whether `ReverseTransaction` voids an un-broadcast transaction or always
+issues a credit (זיכוי). The difference is money: a void never settles, so no clearing fee; a זיכוי is
+itself cleared, so you pay on the credit leg too. Run both cases on your test terminal, checking
+`/services/GetTransDataBeforeBc` (Step 6b), before relying on either. A pending line may linger in the
+customer's card app even after a void.
+
+**A refund retry is a double refund.** Write a refund-intent row before calling, refuse any refund that
+would take the total refunded past the original charge, and on a timeout look the refund leg up before
+trying again; never auto-retry. Installment refunds and cards that refuse a credit (`129`, `146`,
+`161`, `169`) are covered in `references/refunds-and-billing.md`.
 
 **Israeli consumer protection law (חוק הגנת הצרכן, סעיפים 14ג-14ה)** governs distance-selling refunds: consumers may cancel within 14 days, the merchant must refund within 14 days of the cancellation notice, and cancellation fees are capped at 5% of the order value or 100 ₪, whichever is lower. **Do not hard-code 14 days as the whole rule:** customers who are people with disabilities, aged 65 or over, or new immigrants may cancel within **4 months** where a conversation took place during the sale, and some service categories have their own shorter windows. Treat the above as a summary, not the full statute. A זיכוי settles on the issuer's cycle, so the money can reach the customer well after you issue it; the 14-day duty is on your issuing it. (Source: kolzchut, Consumer Protection Law remote-sales chapter.)
 
@@ -259,9 +272,8 @@ then it is not settled and still voidable.
 `GetBroadcastsByDate` report status, `/services/GetTransDataBeforeBc` lists what has not gone yet.
 
 Terminals differ on whether broadcast is automatic or merchant-triggered. **Find out which yours is.**
-A terminal that quietly stops broadcasting accumulates approved-but-unsettled transactions while your
-database says "paid", surfacing only when you reconcile against bank deposits. Alert on anything in
-`GetTransDataBeforeBc` older than one broadcast cycle.
+A terminal that quietly stops broadcasting piles up approved-but-unsettled transactions while your
+database says "paid". Alert on anything in `GetTransDataBeforeBc` older than one broadcast cycle.
 
 ### Step 7: Configure 3D Secure 2 and Bit
 
@@ -269,27 +281,23 @@ database says "paid", surfacing only when you reconcile against bank deposits. A
 `AskForChallenge` toggles (each: `None` default, `False`, `True`), and Pelecard runs the
 authentication for you.
 
-On the server-to-server surface 3DS2 is an **ordered sequence**, not a flag:
-
-1. `POST /Services/Initiate3DSAuthenticationProcess` with the amount, currency, card or `Token`,
-   cardholder details, your `RedirectUrl`, and the browser fingerprint fields listed in
-   `references/api-endpoints.md`.
-2. The customer is either authenticated without interaction (frictionless) or challenged at your
-   `RedirectUrl`.
-3. Submit the debit **carrying the authentication result**: `/services/DebitRegularType` takes
-   `eci`, `xid` and `cavv` for exactly this purpose.
-
-Skipping step 3 wastes the authentication and forfeits the liability shift. Status `650` is
+Server-to-server, 3DS2 is an **ordered sequence**: `POST /Services/Initiate3DSAuthenticationProcess`
+(fields in `references/api-endpoints.md`), the customer is authenticated frictionlessly or challenged
+at your `RedirectUrl`, then the debit **carries the result** in `eci`, `xid` and `cavv`. Skipping the
+last step wastes the authentication and forfeits the liability shift. Status `650` is
 "3DS process failed". The Pelecard plugin v1.4.19 changelog notes "Added Emv errors in order notes.
 ShvaResultEmv parameter" -- log `ShvaResultEmv` whenever it appears.
 
-**Bit wallet.** Bit is a Bank-of-Israel-approved A2A wallet. Constraints to bake into the UX:
+**Bit wallet.** Pelecard does not publish its Bit limits; your Bit terms come from your agreement. The
+closest public statement is another Israeli PSP's (allpay.co.il) Bit page, which shows the shape:
 
-- **Single payment only.** From allpay.co.il: "No installments. You can only pay with Bit in one payment." Hide the tashlumim selector when Bit is the chosen method.
-- **ILS only.** Bit only accepts shekels. Send `Currency: 1` for any Bit transaction; non-ILS Bit transactions fail with no helpful error.
-- **Per-transaction cap is operator-set.** The commonly-cited limit is 5,000 ₪ (allpay.co.il: "Payment via Bit cannot exceed 5,000 shekels"), but higher-tier merchants are cleared above it. Treat 5,000 ₪ as the design ceiling unless you have written approval otherwise.
-- **Bit is A2A, so the void/credit machinery in Step 6 does not apply the same way.** Confirm the Bit refund and reconciliation path with Pelecard before enabling it.
-- Bit also imposes a 20,000 ₪ per-merchant monthly cap and a 10-minute customer window (allpay.co.il).
+- **No installments** ("You can only pay with Bit in one payment"): hide the tashlumim selector.
+- **Shekels only**: send `Currency: 1`.
+- **No saved card**, so Bit cannot carry a subscription. Use a card token for recurring billing.
+- **Caps**: allpay's are 5,000 ₪ per payment and 20,000 ₪ a month across all customers, with a
+  10-minute window. Treat them as a design starting point and get your own figures from Pelecard.
+- The charge is made from the card linked to Bit, so card declines still apply. Confirm the Bit
+  refund and reconciliation path with Pelecard before enabling it.
 
 **Apple Pay.** Pelecard hosts the SDK at `ClientSecure.js`, loaded into your own checkout page (see Step 9 on PCI scope). The plugin lists it as "optional, disabled by default".
 
@@ -307,12 +315,11 @@ POST https://gateway21.pelecard.biz/services/GetErrorMessageHe
 {"ErrorCode": "033"}      ->  invalid credit card.  /  כרטיס לא תקין.
 ```
 
-Because `GetErrorMessageHe` is credential-free, wire it directly into your failure path to show the
-customer a real Hebrew decline message instead of a number. Cache the responses; the table is
-stable.
+Wire `GetErrorMessageHe` into your failure path to show the customer a real Hebrew decline message,
+and cache the responses.
 
 `references/error-codes.md` carries the full enumerated table (254 assigned codes, both languages,
-swept 2026-08-27) plus a retry policy, including the merchant-unreachable codes `301` / `302` / `303`
+swept 2026-08-27, re-swept unchanged 2026-10-18) plus a retry policy, including the merchant-unreachable codes `301` / `302` / `303`
 and which of them actually means money moved. EMV / 3DS results ride alongside in
 `ShvaResultEmv`, a separate code space.
 
@@ -327,9 +334,8 @@ here. Two things in this skill quietly move that line, so decide deliberately:
   redirect/iframe merchant is normally SAQ A; a merchant page hosting a payment script is normally
   SAQ A-EP. Your acquirer decides; those names are the shape of the question to ask them.
 
-Two logging rules follow from the rest of this skill. **Do not log `ConfirmationKey`** -- Step 4's
-entire verification scheme rests on an attacker not knowing it, and a log aggregator is not a secret
-store; log a hash if you need to correlate. **Do not log `CardHolderID`** (te'udat zehut) in
+**Do not log `ConfirmationKey`**: Step 4's verification rests on an attacker not knowing it, so log
+a hash if you need to correlate. **Do not log `CardHolderID`** (te'udat zehut) in
 plaintext; it is personal data under the Privacy Protection Law (Amendment 13) and carries retention
 duties your log pipeline probably does not meet.
 
@@ -350,14 +356,14 @@ Actions:
 1. First payment: iframe POST with `CreateToken: true` and `Total: 9900` (agorot). Save the token, last-4 and expiry.
 2. Monthly cron: POST `/services/DebitRegularType` with `token`, `total`, `currency` and a `paramX` of `<order>-<attempt>`.
 3. Verify each charge, dedupe inbound IPNs on `PelecardTransactionId`, and on any timeout look the attempt up before retrying.
-4. Handle declines via the code table, and refresh reissued cards with `/services/UpdateToken`. Ask Pelecard about MIT-flag parameters so Shva does not challenge each cycle.
+4. Gate each run on subscription status so nobody is charged after a cancellation takes effect (Step 5). Handle declines via the code table, and refresh reissued cards with `/services/UpdateToken`.
 Result: Recurring billing without storing a single PAN on your servers.
 
 ### Example 3: Add Bit as a Checkout Option
 User says: "Most of my Israeli customers want Bit, can I add it?"
 Actions:
 1. Enable Bit on the Pelecard terminal (vendor-side configuration).
-2. Send `Currency: 1` and gate Bit to `Total <= 5,000 ₪` unless your Bit agreement clears you higher.
+2. Send `Currency: 1` and gate Bit to the per-payment cap in your Pelecard agreement (5,000 ₪ is a common figure; get yours).
 3. Hide the tashlumim selector when Bit is chosen; Bit is single-payment only.
 4. Same callback flow. Settle the Bit refund path with Pelecard before launch, not after.
 Result: Bit added cleanly, no failed charges from wallet-side constraints.
@@ -373,34 +379,32 @@ Result: Quick local check before hitting the Pelecard API.
 ### Example 5: Authorize Now, Charge on Shipment (J5)
 User says: "I want to authorize the customer's card at order time but only charge when I ship -- like Amazon."
 Actions:
-1. **Before writing any of this, get the capture contract from Pelecard.** This skill verified that
-   `authorizationNumber` is a parameter on every `/services` debit type, but did **not** verify that
-   posting a debit with it captures the prior hold rather than starting a fresh authorization and
-   charge. If your terminal is not provisioned for the pairing, the customer is charged twice.
-2. First call: `ActionType: J5` **with `CreateToken: true`**. `/services/DebitRegularType` requires a
-   `creditCard` or a `token`, and an iframe J5 without `CreateToken` leaves you with neither, so the
-   hold becomes uncapturable. Persist the token, and the authorization number from the IPN /
-   `GetTransaction` `ResultData` (it is not in the `init` response).
-3. On shipment, post `/services/DebitRegularType` with the saved `token`, the amount, and the
-   `authorizationNumber`, per the contract you confirmed in step 1.
-4. If you decide NOT to ship, release the hold with `/services/DeleteIshur` so the customer's credit
-   line is freed. An abandoned hold is a support ticket.
-5. Verify the captured transaction via `PaymentGW/GetTransaction`, and confirm it broadcasts.
+1. First call: `ActionType: J5` **with `CreateToken: true`**. The capture needs a `token` (or a
+   `creditCard`), and an iframe J5 without `CreateToken` leaves you with neither. Persist the token and
+   the authorization number from the IPN / `GetTransaction` `ResultData` (it is not in the `init` response).
+2. On shipment, post `/services/DebitRegularType` (or `DebitPaymentsType` / `DebitCreditType` with
+   `paymentsNumber` if the authorization was in installments) with the saved `token`, the amount and the
+   `authorizationNumber`. This is how Pelecard's own WooCommerce plugin captures a J5, and it sends the
+   capture **from the terminal that holds the authorization**: its v1.5.3 changelog fixed a capture
+   routed to another terminal, which left the hold open alongside a separate charge. Rehearse on your
+   test terminal before going live.
+3. If you decide NOT to ship, release the hold with `/services/DeleteIshur` and check on the test
+   terminal that the hold is really freed. An abandoned hold is a support ticket.
+4. Verify the captured transaction via `PaymentGW/GetTransaction`, and confirm it broadcasts.
 Result: Auth-then-capture pattern compatible with Israeli e-commerce flows.
 
 ### Example 6: Refund a Failed Order
 User says: "Customer disputed order #5678, I need to refund."
 Actions:
-1. Pull the original `PelecardTransactionId` from your order record (you stored it from Phase 1 / IPN).
-2. Check whether it has been broadcast (`/services/GetTransDataBeforeBc`). If it is still in the
-   open batch, **void** it with `/services/DeleteTran`: it never settles, so no clearing fee. A
-   pending line may still be visible in the customer's card app for a while, so don't promise
-   otherwise. If it has already been broadcast you need a **credit**, and the credit path is not
-   documented here (Step 6) -- get it from Pelecard rather than guessing.
-3. Persist the identifier of the void or credit leg against the original order.
-4. Honor the Israeli Consumer Protection Law deadlines: 14 days to refund from the cancellation notice, fee capped at 5% or 100 ₪ (whichever is lower).
+1. Pull the original `PelecardTransactionId` from your order record (stored from the IPN / `GetTransaction`).
+2. Write a refund-intent row and check the total refunded stays within the original charge. Then post
+   `/services/ReverseTransaction` with it as `debitTrxId` and the refund in agorot as `NewAmount`, from
+   the terminal that made the charge. Check `StatusCode` `"000"`; a `507` means the wrong terminal; a
+   timeout means look it up, not retry.
+3. Persist the refund leg's `DebitTrxId` against the original order.
+4. Honor the Israeli Consumer Protection Law deadlines in Step 6, including the 4-month window for some customers. If the card refuses the credit, refund another way within the deadline.
 5. Issue the credit note (חשבונית זיכוי) via your invoice provider, or via Pelecard's own `/services/CreateInvoice` family.
-Result: Refund processed within the legal window.
+Result: One refund, issued once, with a credit note.
 
 ## Bundled Resources
 
@@ -408,9 +412,10 @@ Result: Refund processed within the legal window.
 - `references/api-endpoints.md` -- The verified endpoint catalogue: host model, the three `/PaymentGW` endpoints with their real response envelopes, and the `/services` surface (charge, authorize, void, tokens, lookup, broadcast, 3DS, invoices) with parameter names.
 - `references/payment-parameters.md` -- The iframe (`PaymentGW/init`) parameter reference: ActionType, Currency, tashlumim, tokenization, BIN controls, UI customization, feedback URLs, passthrough fields.
 - `references/error-codes.md` -- The full status-code table (254 assigned codes, English + Hebrew, swept from Pelecard's credential-free lookup), plus a retry policy and the EMV/Shva note.
+- `references/refunds-and-billing.md` -- What `ReverseTransaction` is known (and not known) to do, refund idempotency, installment refunds, cards that refuse a credit, subscription cancellation under Consumer Protection Law s.13D, dunning.
 
 ### Scripts
-- `scripts/validate_pelecard_response.py` -- Shape-checks a Pelecard callback JSON and, with `--resolve-codes`, resolves a failing status code to Pelecard's own bilingual message. `--explain <code>` looks one up directly. Run `--help`.
+- `scripts/validate_pelecard_response.py` -- Shape-checks a Pelecard callback JSON and, with `--resolve-codes`, resolves a failing status code to Pelecard's own bilingual message. `--explain <code>` looks one up directly; `--self-test` checks the 000/302/301/303 handling offline.
 
 ## Recommended MCP Servers
 
@@ -423,25 +428,25 @@ No Pelecard MCP exists yet. Pair with the `green-invoice` skill for the Israeli 
 | https://gateway21.pelecard.biz/services | **Primary reference.** Pelecard's live public request builder: 54 `/services` endpoints plus the `/PaymentGW` lookups, each with a preset request body. Use this instead of guessing parameter names. |
 | https://www.postman.com/peleteam/pelecard-public/overview | Pelecard's official Postman workspace ("Gateway21" collection). |
 | https://gateway20.pelecard.biz/sandbox | Official Pelecard sandbox + parameter reference. ActionType, currency, 3DS, Bit/Apple Pay/Google Pay toggles. |
-| https://wordpress.org/plugins/woo-pelecard-gateway/ | Pelecard-authored WooCommerce plugin. Confirms `gateway21.pelecard.biz` host, refunds, subscriptions, tokenization, Apple Pay via ClientSecure.js. |
+| https://wordpress.org/plugins/woo-pelecard-gateway/ | Pelecard-authored WooCommerce plugin; its source (plugins.svn.wordpress.org) shows the real refund (`ReverseTransaction`) and J5 capture calls. |
 | https://github.com/dofinity/pelecard | Third-party PHP wrapper. Documents the full `PaymentRequest` parameter set, the `ConfirmationKey` validation flow, and `PaymentGW/GetTransaction`. |
 | https://gateway21.pelecard.biz/services/GetErrorMessageEn | Credential-free official status-code lookup (`{"ErrorCode":"033"}`). `GetErrorMessageHe` for Hebrew. |
-| https://match-api.pelecard.biz/docs/index | Pelecard "Match" REST sandbox. Docs page still renders empty; verify with vendor. |
-| https://www.allpay.co.il/en/help/bit | Bit wallet constraints: 5,000 ILS per-transaction cap, no installments, single-payment only, 10-minute customer window. |
+| https://match-api.pelecard.biz/swagger/docs/v2 | Swagger spec of the "Match" settlement-reconciliation API (not a payment surface). |
+| https://www.allpay.co.il/en/help/bit | Another PSP's published Bit terms (5,000 ₪ per payment, 20,000 ₪ a month, no installments, 10 minutes). Illustrative, not Pelecard's. |
 
 ## Gotchas
 
 - **The hostname is not an environment switch.** `gateway20` and `gateway21` serve the same API; both answer `PaymentGW/init`, `GetTransaction` and `ValidateByUniqueKey` identically, and `gateway20.pelecard.biz/sandbox` is a UI page, not a separate API host. Test-versus-live is decided by the terminal and credentials. Keep host + terminal + credentials in one config object and swap them as a unit; never let code infer safety from a hostname.
-- **There is no refund endpoint under `/PaymentGW`, and no credit endpoint anywhere in the public builder.** Voids before broadcast are `/services/DeleteTran`; the post-broadcast credit path must come from Pelecard. Do not improvise one with a negative `total`.
+- **Refunds go through `/services/ReverseTransaction`, which the public builder does not list.** There is no refund endpoint under `/PaymentGW`. Send it from the terminal that made the charge (else `507`), record the intent first, and never auto-retry a timed-out refund.
 - **An approval number is not money.** A transaction settles only after the terminal broadcasts to Shva. Alert on anything sitting in `/services/GetTransDataBeforeBc` longer than one broadcast cycle.
 - **`302` means the debit succeeded; `301` and `303` mean the outcome is unknown.** Only `302` says money moved. Resolve the other two by lookup before touching the order.
 - **The two surfaces use different parameter casing.** `/PaymentGW` takes `terminal` / `Total` / `Currency` / `ParamX`; `/services` takes `terminalNumber` / `total` / `currency` / `paramX`, and a couple of token endpoints use PascalCase credentials. Copy the preset from https://gateway21.pelecard.biz/services rather than guessing.
 - **A failed `init` returns HTTP 200 with a blank `URL`.** Check `Error.ErrCode`, not the HTTP status.
 - **Wrong `ActionType` silently changes whether money moves.** `J2` is registration-only and does not charge, but the merchant UI looks identical to `J4`. Default to `J4`. Plugin v1.4.7: "Bypass validation for J2 transactions."
-- **A J5 taken without `CreateToken` may be uncapturable.** The `/services` debit types need a `creditCard` or a `token`, and an iframe J5 gives you neither by default.
-- **Pelecard does NOT sign IPN deliveries with HMAC.** Protections: re-verify every callback via `PaymentGW/GetTransaction`, restrict your feedback URLs to Pelecard's outbound IP allowlist, enforce TLS 1.2+. Never trust a payload just because its `ConfirmationKey` looks familiar.
+- **A J5 taken without `CreateToken` may be uncapturable,** and a capture sent from a different terminal than the authorization leaves the hold open beside a new charge.
+- **Pelecard documents no IPN signature (no HMAC).** Protections: re-verify every callback via `PaymentGW/GetTransaction`, ask Pelecard whether it publishes outbound IPs you can allowlist, enforce TLS 1.2+. Never trust a payload just because its `ConfirmationKey` looks familiar.
 - **`PelecardTransactionId` is your inbound dedupe key, not `ParamX`.** Pelecard may deliver one IPN twice (timeout retry). `ParamX` is your order id and repeats; `PelecardTransactionId` is unique per attempt.
-- **Bit's no-installments rule is absolute, the 5,000 ₪ cap is operator-tier-set.** From allpay.co.il: "No installments. You can only pay with Bit in one payment." Hide the tashlumim selector, gate to your agreed cap, and send `Currency: 1`.
+- **Bit is one payment, shekels only, and no saved card.** Hide the tashlumim selector, gate to the cap in your own agreement (public figures such as 5,000 ₪ are another PSP's), and send `Currency: 1`.
 - **The credentials triple is server-side only,** and money fields are agorot (`Total: 9900` = ₪99.00). Do a 1 ₪ test charge before going live.
 
 ## Troubleshooting
@@ -454,8 +459,12 @@ Solution: Confirm the terminal number and credentials match the transaction. `PO
 Cause: The customer abandoned mid-flow, or the request was tampered with.
 Solution: Treat the order as unpaid. Do NOT mark it paid even if `PelecardStatusCode` looks like success; resolve it with a `paramX` lookup instead.
 
+### Error: Refund returns `507` "User is not authorized in this terminal."
+Cause: `ReverseTransaction` was sent with the credentials of a different terminal from the one that made the original charge (typical on two-terminal setups). Pelecard's plugin v1.5.3.1 fixed exactly this.
+Solution: Store which terminal performed each charge and send the refund with that terminal's credentials.
+
 ### Error: Bit payment fails for amounts above 5,000 ₪
-Cause: Bit's per-transaction cap is set by the merchant's Bit agreement and operator risk tier; 5,000 ₪ is the commonly-cited default.
+Cause: the per-payment cap in your Bit terms. 5,000 ₪ is the figure another Israeli PSP publishes; Pelecard does not publish one, so ask for yours.
 Solution: Gate the Bit option to the cap your agreement allows, surface a "Bit limited to <your cap>" message, offer card as the alternative, and confirm `Currency: 1`.
 
 ### Error: 3DS challenge appears in sandbox but transaction is rejected
@@ -464,4 +473,4 @@ Solution: Ask Pelecard which test cards and challenge codes work against your te
 
 ### Error: Token charge succeeds but customer claims no payment
 Cause: J5 (authorize) was used instead of J4 (sale), and capture was never triggered.
-Solution: Verify the `ActionType` on the original transaction via `PaymentGW/GetTransaction`. If it was `J5` or `J5h`, capture it by posting a debit carrying the `authorizationNumber` from the authorization, or release it with `/services/DeleteIshur`. Default to `J4` for one-shot sales. If the ActionType was `J4` and it still has not settled, check `/services/GetTransDataBeforeBc` -- an un-broadcast J4 is approved but not yet money.
+Solution: Verify the `ActionType` on the original transaction via `PaymentGW/GetTransaction`. If it was `J5` or `J5h`, capture it by posting a debit carrying the `authorizationNumber` from the same terminal, or release it with `/services/DeleteIshur`. Default to `J4` for one-shot sales. If the ActionType was `J4` and it still has not settled, check `/services/GetTransDataBeforeBc` -- an un-broadcast J4 is approved but not yet money.

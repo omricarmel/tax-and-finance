@@ -1,11 +1,16 @@
 # Pelecard API Endpoints
 
-Everything below was verified live against `gateway21.pelecard.biz` on 2026-08-27, either by
+Everything below was verified live against `gateway21.pelecard.biz` on 2026-08-27 and re-probed 2026-10-18, either by
 probing the endpoint directly or by reading Pelecard's own public request builder at
 `https://gateway21.pelecard.biz/services` (which ships the service list and a preset request body
 for each one in `/Scripts/Services/Sandbox.js`). That script defines 57 distinct service URLs: 54
 under `/services/`, plus `/PaymentGW/GetTransaction`, `/PaymentGW/ValidateByUniqueKey` and
-`/PaymentEnquiry/CreateLink`.
+`/PaymentEnquiry/CreateLink`. Re-swept 2026-10-18: same 54 `/services/` URLs.
+
+The builder is not exhaustive. Pelecard's own WooCommerce plugin (v1.5.3.1, source at
+`plugins.svn.wordpress.org/woo-pelecard-gateway`) calls two `/services` endpoints the builder does not
+list: `ReverseTransaction` (refunds) and `CreatePayperInvoice`. Both answer live with a JSON auth error
+(`StatusCode` `501`) where a fabricated `/services/` path redirects to a 404 page.
 
 ## Hosts: environment is the TERMINAL, not the hostname
 
@@ -14,7 +19,7 @@ under `/services/`, plus `/PaymentGW/GetTransaction`, `/PaymentGW/ValidateByUniq
 | `gateway21.pelecard.biz` | Current gateway generation. Serves the live API. |
 | `gateway20.pelecard.biz` | Older gateway generation. Serves the **same** API surface. |
 | `gateway20.pelecard.biz/sandbox` | A sandbox **UI page** (a request builder), not a separate API host. |
-| `match-api.pelecard.biz` | Pelecard's newer "Match" REST surface. Its docs page returns HTTP 200 with ~37 characters of text (an empty client-side shell). Confirm the shape with Pelecard before depending on it. |
+| `match-api.pelecard.biz` | The "Match API": settlement **reconciliation**, not payments. Swagger spec at `/swagger/docs/v2` (the `/docs/index` page is a Swashbuckle UI that renders it client-side). Endpoints include `MatchApi/GetMatchingLinesBetweenTransactionDates` (acquirer records), `GetDenyAndCancellationLines`, `GetBalanceLines`, `GetClearingCompanyUnmatchedData`, `ParamX/ArnToParamX` and `Reports/FlowSummary` (future deposits). Requests carry `user` / `password`, some also `terminal`. |
 
 **Do not treat the hostname as an environment switch.** Both `gateway20` and `gateway21` answer
 `PaymentGW/init`, `PaymentGW/GetTransaction` and `PaymentGW/ValidateByUniqueKey` identically, and a
@@ -79,12 +84,12 @@ Do not read amount or approval fields off the top level; they are not there.
 Body: `ConfirmationKey`, `UniqueKey`, `TotalX100`. **No credentials.** Returns a bare numeric
 result.
 
-**Do not build your reconciliation or outbound-idempotency net on this.** `UniqueKey` is an input to
-the validation call, but this skill has NOT established which `PaymentGW/init` parameter sets one:
-the documented passthrough fields are `ParamX`, `ShopNo`, `UserKey` and `UserData1`-`15`, none of
-which is shown to become the `UniqueKey`. Use it only if Pelecard confirms how your terminal accepts
-a merchant-supplied `UniqueKey`. The documented reconciliation route is `paramX` via
-`/services/CheckGoodParamX` or `/services/TrxLookUp` (see SKILL.md Step 4).
+**Where `UniqueKey` comes from.** Pelecard's own plugin (v1.5.3.1) sends `UserKey` on
+`PaymentGW/init` (its WooCommerce order key) and later calls `ValidateByUniqueKey` with that same value
+as `UniqueKey`, the stored `ConfirmationKey`, and the transaction's `DebitTotal` as `TotalX100`. So
+`UserKey` on `init` is what becomes the `UniqueKey`. It is a validation check, not a lookup: to find a
+transaction whose callback never arrived, use `paramX` via `/services/CheckGoodParamX` or
+`/services/TrxLookUp` (see SKILL.md Step 4).
 
 `TotalX100` means "the amount multiplied by 100", i.e. minor units (agorot). This corroborates the
 agorot convention independently of the dofinity wrapper: the builder's preset sends `TotalX100:
@@ -129,21 +134,29 @@ which is the mechanism for capturing a J5 hold.
 | `/services/ClearPendingByRecordId` | Clear a pending request by Pelecard's record id |
 
 To capture a hold, submit a debit carrying the `authorizationNumber` the authorization returned.
-Confirm the exact pairing for your terminal with Pelecard before going live; the parameter is
-present on every debit type, but which authorization types your terminal is provisioned for is a
-terminal setting.
+Pelecard's own plugin does exactly this (`DebitRegularType` with `token` + `authorizationNumber`, or
+`DebitPaymentsType` / `DebitCreditType` with `paymentsNumber` when the order is in installments), and
+sends it from the terminal that holds the authorization: its v1.5.3 changelog fixed a capture routed to
+a second terminal, which left the hold open beside a separate charge. Rehearse on your test terminal.
 
-### Void and refund
+The plugin also sends `UserKey` on `DebitRegularType`. The builder's debit presets do not include it
+and no debit-side lookup by it is documented, so correlate on `paramX`.
+
+### Refund, void and release
 
 | Endpoint | Parameters | Use |
 |----------|-----------|-----|
-| `/services/DeleteTran` | `terminalNumber`, `user`, `password` + one of (`voucherId` + `creditCard` + `total`) / `debitTrxId` / `uid` | Delete a transaction from the open batch |
+| `/services/ReverseTransaction` | `terminalNumber`, `user`, `password`, `debitTrxId` (original `PelecardTransactionId`), `NewAmount` (the plugin passes the refund amount x100), plus `UID`, `NewParamX`, `NewPaymentNo` (sent empty by the plugin) | Refund, full or partial. What Pelecard's plugin uses since v1.5.3; also releases an uncaptured J5. Not in the builder; field semantics are inferred from the plugin, see `refunds-and-billing.md`. |
+| `/services/DeleteTran` | `terminalNumber`, `user`, `password` + one of (`voucherId` + `creditCard` + `total`) / `debitTrxId` / `uid` | Delete a transaction from the open batch (explicit void) |
 | `/services/DeleteIshur` | `terminalNumber`, `user`, `password`, `debitTrxId` | Delete an authorization (release a hold) |
-| `/services/EmvReversal` | `terminalNumber`, `user`, `password`, `Uid` or `DebitTrxId` | EMV reversal |
+| `/services/EmvReversal` | `terminalNumber`, `user`, `password`, `Uid` or `DebitTrxId` | EMV (card-present) reversal |
 | `/services/EmvFinishDebit` | `terminalNumber`, `user`, `password`, `Uid` | Finish an EMV debit |
 
-See the void-vs-refund section in SKILL.md Step 6. There is no single "refund" endpoint; which
-primitive applies depends on whether the transaction has been broadcast.
+`ReverseTransaction` response: `StatusCode` `"000"` is success; the plugin stores the top-level
+`DebitTrxId` as the refund leg's id, falling back to `PelecardTransactionId`. It must run on the
+terminal that owns the original debit, otherwise `507` "User is not authorized in this terminal."
+Whether it voids an un-broadcast transaction or always issues a credit is not published; test both on
+your test terminal (see SKILL.md Step 6).
 
 ### Tokens
 

@@ -41,12 +41,29 @@ ERROR_MESSAGE_URL = (
 )
 
 
+class LookupUnreachable(Exception):
+    """The code lookup could not be reached (network, TLS, timeout)."""
+
+
+def _ssl_context():
+    # python.org builds on macOS ship without a CA bundle until the user runs
+    # "Install Certificates.command", so every HTTPS call fails verification.
+    # Use certifi's bundle when it is installed; otherwise the system default.
+    import ssl
+    try:
+        import certifi
+        return ssl.create_default_context(cafile=certifi.where())
+    except ImportError:
+        return ssl.create_default_context()
+
+
 def lookup_status_message(code: str, lang: str = "En", timeout: float = 8.0):
     """Resolve a Pelecard status code to its official message.
 
     Calls Pelecard's own GetErrorMessageEn / GetErrorMessageHe service, which
-    takes only {"ErrorCode": "NNN"} and needs NO credentials. Returns None on
-    any network problem -- this is an enrichment, never a gate.
+    takes only {"ErrorCode": "NNN"} and needs NO credentials. Returns None for
+    an unassigned code and raises LookupUnreachable when the service cannot be
+    reached, so the two are never confused. An enrichment, never a gate.
     """
     import json as _json
     import urllib.error
@@ -62,10 +79,10 @@ def lookup_status_message(code: str, lang: str = "En", timeout: float = 8.0):
         headers={"Content-Type": "application/json"},
     )
     try:
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=timeout, context=_ssl_context()) as resp:
             text = resp.read().decode("utf-8", "replace").strip()
-    except (urllib.error.URLError, OSError, ValueError):
-        return None
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        raise LookupUnreachable(str(getattr(e, "reason", e)))
     # The service returns a bare JSON string.
     try:
         text = _json.loads(text)
@@ -93,7 +110,7 @@ SECURITY_CRITICAL_FIELDS = [
 
 # Currency reference. Only `1 = ILS` is reliably documented across Pelecard
 # surfaces. Other integers exist (USD/EUR/GBP) but the mapping is not
-# consistently documented across Gateway20, Gateway21, and the Match API --
+# consistently documented across Pelecard's surfaces --
 # verify the exact integer for your terminal in Pelecard's Postman workspace
 # before sending non-ILS amounts.
 KNOWN_CURRENCY_CODES = {
@@ -147,9 +164,17 @@ def validate_response(data: dict, resolve_codes: bool = False) -> tuple:
             errors.append(f"Missing required field: '{field}'")
 
     # --- Security-critical fields ---
+    merchant_unreachable = _normalize_status(data.get("PelecardStatusCode", "")) in ("301", "302", "303")
     for field in SECURITY_CRITICAL_FIELDS:
         value = data.get(field)
-        if value is None or value == "":
+        if (value is None or value == "") and merchant_unreachable and field == "PelecardTransactionId":
+            # 301/302/303 reach you without a transaction id; that is expected,
+            # and the status branch below says how to reconcile.
+            warnings.append(
+                "No PelecardTransactionId, as is normal for 301/302/303: reconcile by "
+                "your paramX via /services/CheckGoodParamX or /services/TrxLookUp."
+            )
+        elif value is None or value == "":
             errors.append(
                 f"Missing security-critical field: '{field}'. "
                 "Do NOT mark the order as paid -- "
@@ -168,6 +193,22 @@ def validate_response(data: dict, resolve_codes: bool = False) -> tuple:
 
         if status == SUCCESS_STATUS:
             info.append("PelecardStatusCode: 000 (Success per Pelecard convention)")
+        elif status == "302":
+            # "Debit was successful but merchant is not responding": money moved.
+            info.append("PelecardStatusCode: 302 (SUCCESS: the debit succeeded; "
+                        "your server was not reachable when Pelecard reported it)")
+            warnings.append(
+                "302 is a successful debit: do NOT re-charge and do NOT cancel the "
+                "order. Confirm via /services/CheckGoodParamX or "
+                "PaymentGW/GetTransaction, then mark it paid."
+            )
+        elif status in ("301", "303"):
+            errors.append(
+                f"PelecardStatusCode={status!r}: outcome UNKNOWN (301 = session to "
+                "Pelecard timed out, 303 = merchant not responding). Neither proves a "
+                "debit or its absence. Do not mark paid and do not re-charge; reconcile "
+                "by paramX via /services/CheckGoodParamX or /services/TrxLookUp first."
+            )
         else:
             try:
                 status_int = int(status)
@@ -188,16 +229,20 @@ def validate_response(data: dict, resolve_codes: bool = False) -> tuple:
                 else:
                     detail = ""
                     if resolve_codes:
-                        msg_en = lookup_status_message(status, "En")
-                        msg_he = lookup_status_message(status, "He")
-                        parts = [m for m in (msg_en, msg_he) if m]
-                        if parts:
-                            detail = " Pelecard says: " + " / ".join(parts)
-                        else:
+                        try:
+                            msg_en = lookup_status_message(status, "En")
+                            msg_he = lookup_status_message(status, "He")
+                            parts = [m for m in (msg_en, msg_he) if m]
                             detail = (
-                                " Could not reach Pelecard's code lookup; resolve "
+                                " Pelecard says: " + " / ".join(parts)
+                                if parts
+                                else " Pelecard has no message for this code (unassigned)."
+                            )
+                        except LookupUnreachable as e:
+                            detail = (
+                                " Could not reach Pelecard's code lookup (%s); resolve "
                                 "manually via POST /services/GetErrorMessageEn "
-                                'with {"ErrorCode": "%s"}.' % status
+                                'with {"ErrorCode": "%s"}.' % (e, status)
                             )
                     errors.append(
                         f"Transaction failed: PelecardStatusCode={status!r}."
@@ -273,7 +318,7 @@ def validate_response(data: dict, resolve_codes: bool = False) -> tuple:
             "Local checks passed. REMINDER: (1) compare ConfirmationKey "
             "byte-for-byte against the value you stored from the create-session "
             "response, (2) re-verify server-to-server via "
-            "PaymentGW/GetTransaction (Pelecard does NOT sign IPNs with HMAC), "
+            "PaymentGW/GetTransaction (Pelecard documents no IPN signature), "
             "(3) compare DebitTotal (not Total) against your order, "
             "(4) dedupe IPNs on PelecardTransactionId, not ParamX."
         )
@@ -299,6 +344,34 @@ def print_results(errors: list, warnings: list, info: list):
         print(f"{BOLD}{GREEN}PASS{RESET} -- callback fields present and well-formed")
         if warnings:
             print(f"  ({len(warnings)} warning(s) -- review recommended)")
+
+
+SELF_TEST_CASES = [
+    # (status, expect_pass, note)
+    ("000", True, "canonical success"),
+    ("302", True, "debit succeeded, merchant unreachable: success, confirm by lookup"),
+    ("301", False, "session timed out: outcome unknown"),
+    ("303", False, "merchant not responding: outcome unknown"),
+    ("033", False, "invalid card: failed"),
+    ("302-noid", True, "302 without PelecardTransactionId: still a success"),
+]
+
+
+def run_self_test() -> int:
+    """Check the status-code handling offline. Returns a process exit code."""
+    failures = 0
+    for status, expect_pass, note in SELF_TEST_CASES:
+        data = {"PelecardStatusCode": status.split("-")[0], "ConfirmationKey": "k",
+                "PelecardTransactionId": "t", "Total": 9900, "Currency": 1}
+        if status.endswith("-noid"):
+            del data["PelecardTransactionId"]
+        errors, _warnings, _info = validate_response(data, resolve_codes=False)
+        ok = (not errors) == expect_pass
+        failures += 0 if ok else 1
+        print(f"{'ok  ' if ok else 'FAIL'} {status}: expected "
+              f"{'PASS' if expect_pass else 'FAIL'} ({note})")
+    print(f"{len(SELF_TEST_CASES) - failures}/{len(SELF_TEST_CASES)} passed")
+    return 1 if failures else 0
 
 
 def generate_example() -> dict:
@@ -360,6 +433,11 @@ examples:
         ),
     )
     parser.add_argument(
+        "--self-test",
+        action="store_true",
+        help="Run the built-in status-code test cases (000, 302, 301, 303, 033) and exit",
+    )
+    parser.add_argument(
         "--explain",
         metavar="CODE",
         help="Print the official Pelecard message for a status code and exit",
@@ -367,13 +445,22 @@ examples:
 
     args = parser.parse_args()
 
+    if args.self_test:
+        sys.exit(run_self_test())
+
     if args.explain:
         code = args.explain.strip()
-        en = lookup_status_message(code, "En")
-        he = lookup_status_message(code, "He")
+        try:
+            en = lookup_status_message(code, "En")
+            he = lookup_status_message(code, "He")
+        except LookupUnreachable as e:
+            print(f"{RED}Could not reach Pelecard's code lookup: {e}{RESET}")
+            if "CERTIFICATE_VERIFY_FAILED" in str(e):
+                print("  Your Python has no CA bundle. Run `pip install certifi`, or on a "
+                      "python.org macOS build run 'Install Certificates.command'.")
+            sys.exit(2)
         if not en and not he:
-            print(f"{RED}No official message for code {code!r} "
-                  f"(unassigned, or the lookup was unreachable).{RESET}")
+            print(f"{RED}No official message for code {code!r} (unassigned).{RESET}")
             sys.exit(1)
         print(f"{BOLD}Pelecard status code {code}{RESET}")
         if en:

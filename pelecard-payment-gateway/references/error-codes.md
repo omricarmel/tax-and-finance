@@ -294,10 +294,17 @@ The table gives the meaning; it does not give you a retry policy. Group the code
 
 - **Retain-card / fraud** (`001`, `002`, `005`) -- do not retry, do not offer the same card again.
 - **Hard decline** (`004`, `033`, `036`, `039`, `034`, `035`) -- ask for a different card. Retrying
-  a hard decline damages your acquirer trust score.
+  will not change the answer.
 - **Issuer-contact** (`003`, `007`) -- the customer must call their issuer. Retrying will not help.
 - **Terminal / configuration** (`101`, `404`, `500`, `503`, `505`, `507`) -- your problem, not the
-  customer's. Alert your team; the checkout is broken for everyone, not just this card.
+  customer's. Alert your team; the checkout is broken for everyone, not just this card. Exception:
+  `507` on a **refund** usually means it was sent from a different terminal than the one that made
+  the charge (see SKILL.md Step 6), not an outage.
+- **Refund declines** (`129`, `146`, `161`, `169`) -- the card or terminal cannot take a credit
+  (עסקת זכות): terminal not approved above a ceiling, immediate-debit card, zero credit ceiling, credit
+  terms other than regular. Not `150` / `151`: their Hebrew shows they concern credit-terms purchases.
+  Retrying will not help, and your legal refund deadline keeps running: refund by another route and
+  record why (see `refunds-and-billing.md`).
 - **Credential** (`501`, `502`) -- wrong or expired API password. `502` in particular is a
   time-bomb: Pelecard user passwords expire, and the failure looks like a total outage.
 - **Installments** (`401`, `402`, `403`, `999`) -- your `MaxPayments`/`MinPayments` window and the
@@ -312,7 +319,8 @@ The table gives the meaning; it does not give you a retry policy. Group the code
   responding") says nothing either way. Treat `301` and `303` as **outcome unknown** and resolve them
   before touching the order. In every case reconcile by `paramX` via `/services/TrxLookUp` or
   `/services/CheckGoodParamX`; never charge again to find out.
-- **3DS** (`650` "3DS process failed", `620`) -- see the 3DS section in SKILL.md.
+- **3DS** (`650` "3DS process failed") -- see the 3DS section in SKILL.md. (`620` is "This card
+  cannot be used for this transaction."; nothing in Pelecard's text ties it to 3DS.)
 - **Token** (`506` "Token number abnormal.") -- the stored token is no longer chargeable. Re-tokenize
   via `/services/ConvertToToken` or refresh with `/services/UpdateToken`.
 - **PINPAD / physical terminal** (`5xx` block `512`-`518`, `550`-`555`, `700`-`703`) -- present-card
@@ -320,8 +328,9 @@ The table gives the meaning; it does not give you a retry policy. Group the code
   provisioned for the wrong transaction type.
 - **Bank transfer / open banking** (`660`-`680`) -- ISO 20022 status words (`ACCC`, `ACSC`, `ACSP`,
   `RJCT`, `PATC`, `PENDING`, `INIT`, `CANC`) for `/Services/InitiateBankTransfer`. These are not
-  card codes; several of them (`660`-`665`, `671`) are *successes*, so do not treat "non-000" as
-  "failed" on a bank-transfer flow.
+  card codes. Only `660` (ACCC) and `661` (ACSC) say the transfer completed; `662`-`664` and `671`
+  are technical acceptance and `665` (RCVD) is, in Pelecard's own Hebrew, "סטטוס ביניים" (intermediate).
+  Do not treat "non-000" as "failed", and do not mark an order paid before `660`/`661`.
 
 ## A note on J-codes in this table
 
