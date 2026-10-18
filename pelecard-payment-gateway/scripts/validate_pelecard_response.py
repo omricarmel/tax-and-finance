@@ -378,7 +378,7 @@ def generate_example() -> dict:
     """Return an example Pelecard callback for demonstration."""
     return {
         "PelecardStatusCode": "000",
-        "ConfirmationKey": "a1b2c3d4e5f60718293a4b5c6d7e8f90",
+        "ConfirmationKey": "example-confirmation-key",
         "PelecardTransactionId": "12345678",
         "Total": 9900,
         "Currency": 1,
