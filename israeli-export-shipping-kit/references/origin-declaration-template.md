@@ -1,6 +1,6 @@
 # Invoice Origin Declaration Templates
 
-Use these exact wordings. Print on the commercial invoice, packing list, or proforma. Sign manually.
+Use the exact wording below for the EU, UK and EFTA invoice declaration. The US statement is a suggested voluntary form, and Canada uses Form B239, not a declaration. Print on the commercial invoice, packing list, or proforma. Sign manually.
 
 ## EU-Israel (and UK-Israel) - Invoice Declaration
 
