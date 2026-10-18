@@ -44,8 +44,8 @@ call, so two successful calls are two refunds. Build it like the outbound charge
    charge. The plugin leaves that cap to WooCommerce; outside WooCommerce, nobody enforces it for you.
 3. On a timeout, mark the intent `unknown` and **do not retry automatically**. Look for the refund leg
    with `/services/GetTransData` or `/services/GetCompleteTransData` over a window that covers the
-   attempt, matching on the original card (last 4 digits), the refund amount and the time, then
-   decide.
+   attempt (both take only a date range), matching on the refund amount and time, plus the card if the
+   response carries it; the output fields are not published. Then decide.
 4. If a refund call ever returns `308` "Duplicated transaction." or `425` "Double entry", do not retry:
    reconcile first. Whether `ReverseTransaction` returns these codes at all is undocumented.
 
