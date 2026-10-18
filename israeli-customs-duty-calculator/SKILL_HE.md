@@ -1,6 +1,6 @@
 ---
 name: israeli-customs-duty-calculator-he
-description: "אינו ייעוץ מכס. סיווג מוצרים לפי פרט מכס ישראלי (HS) וחישוב עלות מלאה של יבוא לישראל: מכס, מע\"מ 18%, מס קנייה. אפשר להשתמש כשמישהו שואל כמה מס יבוא הוא ישלם על הזמנה מאמזון או עלי אקספרס, מה הפטור האישי ליבוא, איזה מכס על בגדים או מוצרי חשמל, איך להוכיח מקור לפי הסכם סחר, או איך מקבלים בחזרה מס יבוא על מוצר פגום שהוחזר. אל תשתמשו לדיווח מע\"מ שוטף (יש israeli-vat-reporting) או לייצוא (יש israeli-export-shipping-kit)."
+description: "אינו ייעוץ מכס. סיווג מוצרים לפי פרט מכס ישראלי (HS) וחישוב עלות מלאה של יבוא לישראל: מכס, מע\"מ 18%, מס קנייה. אפשר להשתמש כשמישהו שואל כמה מס יבוא הוא ישלם על הזמנה מאמזון או עלי אקספרס, מה הפטור האישי ליבוא, איזה מכס על בגדים או מוצרי חשמל, או איך להוכיח מקור לפי הסכם סחר. אל תשתמשו לדיווח מע\"מ שוטף (יש israeli-vat-reporting), לייצוא (יש israeli-export-shipping-kit), או למשלוחים אישיים של עולים ותושבים חוזרים (יש israeli-aliyah-customs-shipment-planner / israeli-returning-resident-customs-vehicle)."
 license: MIT
 compatibility: "עובד עם Claude Code, Cursor, GitHub Copilot, Windsurf, OpenCode, Codex, Antigravity, Gemini CLI. דורש Python 3.8 ומעלה עבור הסקריפטים."
 ---

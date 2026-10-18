@@ -2,6 +2,12 @@
 
 All notable changes to this skill are documented here.
 
+## [1.5.1] - 2026-10-18
+
+### Changed
+
+- התיאור חזר לנוסח שנבדק במבחן הניתוב, בלי סעיף החזר המס על מוצר שהוחזר (היקף שאף שאילתה במבחן לא בדקה), ונוספה החרגה מפורשת: משלוחים אישיים של עולים ותושבים חוזרים מופנים ל-`israeli-aliyah-customs-shipment-planner` ול-`israeli-returning-resident-customs-vehicle`.
+
 ## [1.5.0] - 2026-10-18
 
 ### Fixed

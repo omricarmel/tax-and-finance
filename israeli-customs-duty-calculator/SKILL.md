@@ -1,6 +1,6 @@
 ---
 name: israeli-customs-duty-calculator
-description: "Not customs advice. Classify products into Israeli customs tariff (HS) codes and calculate full landed cost for imports to Israel: customs duty, VAT 18%, and purchase tax (mas kniya). Use when user asks about Israel import tax, personal import threshold, customs duty on an online order from Amazon/AliExpress, FTA preferences from US/EU/UK/Canada, Shaar Olami tariff lookup, getting import tax back on a returned or defective item, or the cost of bringing goods into Israel. Do NOT use for domestic VAT bookkeeping (use israeli-vat-reporting) or for export documentation (use israeli-export-shipping-kit)."
+description: "Not customs advice. Classify products into Israeli customs tariff (HS) codes and calculate full landed cost for imports to Israel: customs duty, VAT 18%, and purchase tax (mas kniya). Use when user asks about Israel import tax, personal import threshold, customs duty on an online order from Amazon/AliExpress, FTA preferences from US/EU/UK/Canada, Shaar Olami tariff lookup, or the cost of bringing goods into Israel. Do NOT use for domestic VAT bookkeeping (use israeli-vat-reporting), export documentation (use israeli-export-shipping-kit), or aliyah or returning-resident personal shipments (use israeli-aliyah-customs-shipment-planner / israeli-returning-resident-customs-vehicle)."
 license: MIT
 compatibility: "Works with Claude Code, Cursor, GitHub Copilot, Windsurf, OpenCode, Codex, Antigravity, Gemini CLI. Python 3.8+ for helper scripts."
 ---

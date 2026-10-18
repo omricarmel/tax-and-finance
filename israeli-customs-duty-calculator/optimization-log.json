@@ -94,6 +94,14 @@
         "delta": 0.5,
         "verdict": "PASS"
       }
+    },
+    {
+      "version": "1.5.1",
+      "date": "2026-10-18",
+      "lessons": [
+        "Lead decision after the description eval (X, Y, Z all 10/10, indistinguishable): ship Y plus an aliyah/returning-resident exclusion, not Z, because the refund clause added scope that no eval query tested. The refund clause was what made the value-add refund case load the skill (0/3 runs without it, 3/3 with), so expect the value-add score to drop back below 0.8 on that case.",
+        "NEXT CYCLE: before re-adding a refund trigger, add a refund query and a refund-adjacent negative (e.g. a domestic store return, a VAT refund for tourists at the airport) to the frozen eval set, then re-test."
+      ]
     }
   ]
 }
