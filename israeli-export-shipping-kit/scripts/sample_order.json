@@ -2,12 +2,15 @@
   "invoice_number": "EXP-2026-0042",
   "invoice_date": "2026-07-27",
   "currency": "EUR",
-  "incoterm": "CIF",
+  "incoterm": "CIP",
   "named_place": "Hamburg",
   "freight": "450.00",
   "insurance": "75.00",
   "country_of_origin": "Israel",
   "reason_for_export": "Sale",
+  "origin_declaration": "eu",
+  "origin_place": "Beer Sheva",
+  "origin_postcode": "8489312",
   "seller": {
     "name_en": "Negev Optics Ltd",
     "name_he": "נגב אופטיקה בעמ",
@@ -18,10 +21,27 @@
     "name_en": "Muller GmbH",
     "address": "Hafenstrasse 8, 20457 Hamburg",
     "country": "Germany",
-    "vat_id": "DE811234567"
+    "vat_id": "DE811234567",
+    "eori": "DE123456789012345"
   },
   "items": [
-    {"description_en": "Optical lens assembly", "description_he": "מכלול עדשות אופטי", "hs_code": "9002.11", "quantity": 120, "unit_price": "38.50", "gross_kg": "96.0", "net_kg": "88.5"},
-    {"description_en": "Protective housing", "description_he": "מארז מגן", "hs_code": "3926.90", "quantity": 120, "unit_price": "6.25", "gross_kg": "24.0", "net_kg": "21.0"}
+    {
+      "description_en": "Optical lens assembly",
+      "description_he": "מכלול עדשות אופטי",
+      "hs_code": "9002.11",
+      "quantity": 120,
+      "unit_price": "38.50",
+      "gross_kg": "96.0",
+      "net_kg": "88.5"
+    },
+    {
+      "description_en": "Protective housing",
+      "description_he": "מארז מגן",
+      "hs_code": "3926.90",
+      "quantity": 120,
+      "unit_price": "6.25",
+      "gross_kg": "24.0",
+      "net_kg": "21.0"
+    }
   ]
 }

@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
   "skill": "israeli-export-shipping-kit",
-  "generated_at": "2026-08-27T18:05:32.914841+00:00",
+  "generated_at": "2026-10-18T00:00:00Z",
   "claims": [
     {
       "claim_id": "vat-18-zero-export",
@@ -16,7 +16,7 @@
     },
     {
       "claim_id": "vat-section-30-export-proof",
-      "claim": "Zero VAT on exports is governed by Section 30 (סעיף 30) of the VAT Law; the rate is conditional on documentation. If proof is missing the Tax Authority can deny the zero rate and assess at 18 percent.",
+      "claim": "Section 30(a)(1) (סעיף 30) of the VAT Law zero-rates the sale of goods for which an export declaration, or another document the Director approved for this purpose, was filed and customs release was given; without it the zero rate can be denied.",
       "source_url": "https://www.nevo.co.il/law_html/law01/271_001.htm",
       "raw_snippet": "מכירת טובין – למעט טובין כאמור בסעיף 33 – אם הוגשו לגביהם הצהרת ייצוא או מסמך אחר שאישר לעניין זה המנהל, וניתנה לגביהם התרה;",
       "fetched_at": "2026-06-25T00:00:00Z",
@@ -53,26 +53,25 @@
     },
     {
       "claim_id": "eur1-4-month-validity",
-      "claim": "Under the 2012 PEM rules that Israel still applies, an EUR.1 (and invoice declaration) proof of origin is valid for 4 months from the date of issue. The revised PEM Convention extends this to 10 months but does not apply to Israeli exports.",
+      "claim": "Under the 2012 PEM rules, which Israel still applies with the EFTA states, an EUR.1 or invoice declaration is valid 4 months from the date of issue.",
       "source_url": "https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-pan-euro-mediterranean-convention",
       "raw_snippet": "The proof of origin is valid for a period of 4 months from the date of issue.",
       "fetched_at": "2026-06-26T00:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
-        "references/eur1-application-guide.md"
+        "references/eur1-application-guide.md",
+        "references/pem-2026-rules.md",
+        "references/origin-declaration-template.md"
       ]
     },
     {
       "claim_id": "pem-revised-2025-in-force",
-      "claim": "The revised PEM Convention entered into force on 1 January 2025; 2025 was a transition year during which the 2012 and 2023 rules ran in parallel, and from 1 January 2026 only the revised rules apply between the parties that ratified them. Israel has not ratified and stays on the 2012 rules.",
+      "claim": "The revised PEM Convention entered into force on 1 January 2025; 2025 was a transition year during which the 2012 and 2023 rules ran in parallel.",
       "source_url": "https://taxation-customs.ec.europa.eu/news/pem-convention-joint-committee-decisions-paves-way-simplified-rules-origin-2024-12-19_en",
       "raw_snippet": "marking a significant milestone in the lead-up to the entry into force of the Revised PEM Convention on 1 January 2025",
       "fetched_at": "2026-06-26T00:00:00Z",
       "appears_in": [
-        "SKILL.md",
-        "SKILL_HE.md",
-        "references/eur1-application-guide.md",
         "references/pem-2026-rules.md"
       ]
     },
@@ -344,7 +343,7 @@
     },
     {
       "claim_id": "url-fta-wikipedia",
-      "claim": "Wikipedia's overview of Israel's free trade agreements, used as the entry-into-force reference for the UAE, Vietnam, Guatemala, UK and South Korea agreements.",
+      "claim": "Wikipedia's overview of Israel's free trade agreements, used as the entry-into-force reference for the UAE, Vietnam, Guatemala and UK agreements (not for South Korea, where it gives a wrong date; see kifta-in-force-dec-2022).",
       "source_url": "https://en.wikipedia.org/wiki/Free_trade_agreements_of_Israel",
       "raw_snippet": "Israel and South Korea have signed a free trade agreement on 12 May 2021 to improve investments, removing barriers, and other topics.",
       "fetched_at": "2026-06-25T00:00:00Z",
@@ -355,7 +354,7 @@
     },
     {
       "claim_id": "eurmed-still-issuable-2012-rules",
-      "claim": "Under the 2012 PEM rules that Israel still applies, EUR.1 or EUR-MED movement certificates are issued by the customs authorities of the exporting country, so EUR-MED is not retired on the Israel route.",
+      "claim": "Under the 2012 PEM rules (still applied between Israel and EFTA), EUR.1 or EUR-MED movement certificates are issued by the customs authorities of the exporting country.",
       "source_url": "https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-pan-euro-mediterranean-convention",
       "raw_snippet": "Movement certificates EUR.1 or EUR-MED are issued by the customs authorities of the exporting country.",
       "fetched_at": "2026-07-27T00:00:00Z",
@@ -383,7 +382,7 @@
       "claim": "The Korea-Israel Free Trade Agreement (KIFTA) entered into force on 1 December 2022.",
       "source_url": "https://en.globes.co.il/en/article-israel-s-korea-free-trade-pact-comes-into-force-december-1-1001425644",
       "raw_snippet": "Israel-S Korea free trade pact comes into force December 1",
-      "fetched_at": "2026-07-27T00:00:00Z",
+      "fetched_at": "2026-10-18T00:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
@@ -424,11 +423,11 @@
       ]
     },
     {
-      "claim_id": "eu-israel-preferences-not-suspended-2026-07",
-      "claim": "As of 27 July 2026 no suspension of EU-Israel trade preferences is in force: the September 2025 Commission proposal was never adopted by the Council, and subsequent Foreign Affairs Council discussions in April and July 2026 ended without a decision.",
-      "source_url": "https://policy.trade.ec.europa.eu/eu-trade-relationships-country-and-region/countries-and-regions/israel_en",
-      "raw_snippet": "The legal basis for the EU's trade relations with Israel is the EU-Israel Association Agreement, which entered into force in June 2000.",
-      "fetched_at": "2026-07-27T00:00:00Z",
+      "claim_id": "eu-commission-suspension-proposal-2025-09",
+      "claim": "In September 2025 the European Commission proposed to the Council the suspension of certain trade-related provisions of the EU-Israel Association Agreement; adoption requires a Council decision.",
+      "source_url": "https://kpmg.com/us/en/taxnewsflash/news/2025/09/ec-proposes-suspension-trade-provisions-Israel.html",
+      "raw_snippet": "presented a proposal to the Council to suspend certain trade-related provisions of the Association Agreement between the EU and Israel",
+      "fetched_at": "2026-10-18T00:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
@@ -447,15 +446,14 @@
     },
     {
       "claim_id": "revised-pem-applies-from-2026-to-ratifying-parties",
-      "claim": "Under the revised PEM regime, two alternative rule sets applied until 31 December 2025 and from 1 January 2026 only the revised PEM Convention applies (to the parties that have adopted it; Israel has not).",
+      "claim": "From 1 January 2026 only the revised PEM Convention applies between the EU and the parties that adopted it.",
       "source_url": "https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-revised-pan-euro-mediterranean-convention",
       "raw_snippet": "alternative rules of origin apply until 31 December 2025. As of 1 January 2026, only the revised PEM Convention will apply",
       "fetched_at": "2026-07-27T00:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md",
-        "references/pem-2026-rules.md",
-        "references/eur1-application-guide.md"
+        "references/pem-2026-rules.md"
       ]
     },
     {
@@ -506,7 +504,7 @@
     },
     {
       "claim_id": "pem-proof-validity-4-months",
-      "claim": "Under the PEM Convention a proof of origin is valid for 4 months from the date of issue.",
+      "claim": "Under the 2012 PEM rules a proof of origin is valid 4 months (applies on Israel's EFTA route).",
       "source_url": "https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-pan-euro-mediterranean-convention",
       "raw_snippet": "The proof of origin is valid for a period of 4 months from the date of issue.",
       "fetched_at": "2026-07-27T00:00:00Z",
@@ -526,17 +524,6 @@
         "SKILL.md",
         "SKILL_HE.md",
         "references/origin-declaration-template.md"
-      ]
-    },
-    {
-      "claim_id": "fta-korea-kifta",
-      "claim": "The Korea-Israel FTA (KIFTA) entered into force on 1 January 2023.",
-      "source_url": "https://en.wikipedia.org/wiki/Free_trade_agreements_of_Israel",
-      "raw_snippet": "Date of entry is the 01.01.2023.",
-      "fetched_at": "2026-06-25T00:00:00Z",
-      "appears_in": [
-        "SKILL.md",
-        "SKILL_HE.md"
       ]
     },
     {
@@ -609,6 +596,298 @@
       "source_url": "https://www.greeninvoice.co.il/magazine/israel-invoice/",
       "raw_snippet": "מאי 2024 25,000 ₪ ינואר 2025 20,000 ₪ ינואר 2026 10,000 ש״ח יוני 2026 ואילך 5,000 ש״ח",
       "fetched_at": "2026-08-27T18:05:32.914841+00:00",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "eu-israel-not-on-transitional-list",
+      "claim": "From 1 January 2026 only the revised PEM Convention applies between the EU and the PEM parties, except those still on transitional rules pending ratification, which the EU names as Morocco, Egypt, Palestine and Tunisia (Israel is not among them).",
+      "source_url": "https://trade.ec.europa.eu/access-to-markets/en/content/pan-euro-mediterranean-convention-pem",
+      "raw_snippet": "Pending their ratification of the revised Convention, Morocco, Egypt, Palestine and Tunisia will export to the EU under the Transitional rules",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/pem-2026-rules.md"
+      ]
+    },
+    {
+      "claim_id": "eu-pem-notice-israel-permeability",
+      "claim": "The Commission's PEM notice (advance copy, August 2026) lists permeability routes that exist because Israel and EFTA apply the 2012 rules with each other while both apply the 2023 rules with the EU (EU-Israel marked R from 1.1.2026).",
+      "source_url": "https://taxation-customs.ec.europa.eu/document/download/e406059f-0d7b-4fce-88c9-d8a1067e9596_en?filename=Commission%20notice%20August_advanced%20copy.pdf",
+      "raw_snippet": "EFTA States => Egypt/Morocco/Israel/Palestine => EU",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/pem-2026-rules.md",
+        "references/eur1-application-guide.md"
+      ]
+    },
+    {
+      "claim_id": "efta-israel-old-rules",
+      "claim": "EFTA-Israel has no dynamic reference to the PEM Convention, so only the old origin rules continue to apply on that route.",
+      "source_url": "https://www.bazg.admin.ch/en/revised-pem-convention",
+      "raw_snippet": "For FTAs without a dynamic reference to the PEM Convention, only the old rules of origin in accordance with the relevant origin protocols will continue to apply.",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/pem-2026-rules.md",
+        "references/eur1-application-guide.md",
+        "references/origin-declaration-template.md"
+      ]
+    },
+    {
+      "claim_id": "israel-electronic-eur1-global-gate",
+      "claim": "Israeli Customs notified the EU that it issues EUR.1 certificates electronically through Global Gate from 1 April 2024, with an online authenticity check.",
+      "source_url": "https://taxation-customs.ec.europa.eu/document/download/e406059f-0d7b-4fce-88c9-d8a1067e9596_en?filename=Commission%20notice%20August_advanced%20copy.pdf",
+      "raw_snippet": "https://shaarolami-query.customs.mof.gov.il/CustomsPilotWeb/CertificateOfOrigin",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/pem-2026-rules.md",
+        "references/eur1-application-guide.md",
+        "references/origin-declaration-template.md"
+      ]
+    },
+    {
+      "claim_id": "eu-accepts-electronic-eur1-israel-listed",
+      "claim": "French customs (Dec 2025): EU customs accept electronically issued EUR.1 certificates at import since 1 January 2025; the partners issuing them electronically are Norway, Turkey, Morocco and Israel.",
+      "source_url": "https://www.douane.gouv.fr/sites/default/files/2025-12/30/PJ7%20PEM_Foire%20aux%20questions_MAJ122025.pdf",
+      "raw_snippet": "sont la Norvège, la Turquie, le Maroc, et Israël.",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "references/pem-2026-rules.md",
+        "references/eur1-application-guide.md"
+      ]
+    },
+    {
+      "claim_id": "revised-pem-10-month-validity",
+      "claim": "The 2023 (revised PEM) rules extend the validity of a proof of origin from 4 to 10 months.",
+      "source_url": "https://taxation-customs.ec.europa.eu/document/download/720d8a85-52a8-4d7c-8b0b-751d92153a1d_en?filename=Guidance-Revised-PEM-rules-of-origin.pdf",
+      "raw_snippet": "The 2023 rules prolong the period of validity of a proof of origin from 4 to 10 months,",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/pem-2026-rules.md",
+        "references/eur1-application-guide.md",
+        "references/origin-declaration-template.md"
+      ]
+    },
+    {
+      "claim_id": "revised-pem-single-proof-no-eurmed",
+      "claim": "The 2023 rules introduce a single proof of origin type (EUR.1 or origin declaration) instead of the 2012 double approach of EUR.1 and EUR.MED.",
+      "source_url": "https://taxation-customs.ec.europa.eu/document/download/720d8a85-52a8-4d7c-8b0b-751d92153a1d_en?filename=Guidance-Revised-PEM-rules-of-origin.pdf",
+      "raw_snippet": "The 2023 rules introduce a single type of proof of origin (EUR.1 or origin declaration),",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/pem-2026-rules.md",
+        "references/eur1-application-guide.md"
+      ]
+    },
+    {
+      "claim_id": "revised-pem-6000-threshold",
+      "claim": "Under the revised PEM Convention, above EUR 6,000 per consignment only an approved exporter may make out an origin declaration.",
+      "source_url": "https://www.douane.gouv.fr/sites/default/files/2025-12/30/PJ7%20PEM_Foire%20aux%20questions_MAJ122025.pdf",
+      "raw_snippet": "Pour les envois dont la valeur excède 6 000 €",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "references/pem-2026-rules.md"
+      ]
+    },
+    {
+      "claim_id": "us-301-israel-12-5",
+      "claim": "USTR determined to impose 12.5 percent Section 301 tariffs on products of Israel (forced-labor investigations).",
+      "source_url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/FLIP%20301%20Investigation%20Final%20Action%20FRN%207-23-26%20FINAL.pdf",
+      "raw_snippet": "Israel: Determination of Action in Investigation",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "us-301-rate-12-5",
+      "claim": "The Section 301 action imposes a 12.5 percent tariff on products of Israel.",
+      "source_url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/FLIP%20301%20Investigation%20Final%20Action%20FRN%207-23-26%20FINAL.pdf",
+      "raw_snippet": "the Trade Representative has determined to impose 12.5 percent tariffs on products of",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "us-301-effective-2026-07-24",
+      "claim": "The Section 301 additional duties apply to goods entered on or after 12:01 a.m. eastern time on 24 July 2026.",
+      "source_url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/FLIP%20301%20Investigation%20Final%20Action%20FRN%207-23-26%20FINAL.pdf",
+      "raw_snippet": "12:01 a.m. eastern time on July 24, 2026",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "us-301-stacks-special-column",
+      "claim": "The new HTSUS headings show 'the duty provided in the applicable subheading + 12.5%' in both the General and the Special (FTA) rate columns, so the duty stacks on FTA-preference goods.",
+      "source_url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/FLIP%20301%20Investigation%20Final%20Action%20FRN%207-23-26%20FINAL.pdf",
+      "raw_snippet": "subheading + 12.5%",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "us-postal-de-minimis-indefinite",
+      "claim": "CBP suspended the USD 800 de minimis exemption indefinitely for the international postal network (interim final rule effective 24 July 2026) and, by a concurrent rulemaking, for all other modes.",
+      "source_url": "https://www.govinfo.gov/content/pkg/FR-2026-06-24/pdf/2026-12669.pdf",
+      "raw_snippet": "indefinite suspension of the de minimis administrative exemption for imports valued at $800 or less arriving through the international postal network",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "vat-directive-1-2025-zero-rate-no-allocation",
+      "claim": "Israel Tax Authority VAT directive 1/2025: a tax invoice with only exempt or zero-rated transactions does not require, and will not be given, an allocation number; the 5,000 NIS threshold applies from 01.06.2026.",
+      "source_url": "https://www.gov.il/BlobFolder/policy/inst-071225-1/he/vat_inst-071225-1.pdf",
+      "raw_snippet": "ביחס לחשבונית מס הכוללת רק עסקאות פטורות או חשבונית מס בשיעור אפס",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "url-taxud-pem-page",
+      "claim": "EU TAXUD page on PEM cumulation hosting the matrix and the Commission notices (including the electronic EUR.1 issuer list).",
+      "source_url": "https://taxation-customs.ec.europa.eu/customs/international-affairs/pan-euro-mediterranean-cumulation-and-pem-convention_en",
+      "raw_snippet": "The 25 Contracting Parties to the PEM Convention are",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/pem-2026-rules.md",
+        "references/eur1-application-guide.md"
+      ]
+    },
+    {
+      "claim_id": "us-de-minimis-all-other-modes",
+      "claim": "CBP published a concurrent rulemaking indefinitely suspending the USD 800 de minimis exemption for merchandise arriving via all modes other than the international postal network.",
+      "source_url": "https://www.govinfo.gov/content/pkg/FR-2026-06-24/pdf/2026-12669.pdf",
+      "raw_snippet": "arriving via all modes other than through the international postal network",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "us-301-chapter-98-exempt",
+      "claim": "The Section 301 additional duties do not apply to goods properly entered under a provision of HTSUS chapter 98.",
+      "source_url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/FLIP%20301%20Investigation%20Final%20Action%20FRN%207-23-26%20FINAL.pdf",
+      "raw_snippet": "shall not apply to goods for which entry is properly claimed under a provision of chapter 98",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "us-301-annex-exemptions",
+      "claim": "The 12.5 percent tariff on products of Israel applies except as provided in Annex I and Annex II, Part A, of the notice (listed exemptions).",
+      "source_url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/FLIP%20301%20Investigation%20Final%20Action%20FRN%207-23-26%20FINAL.pdf",
+      "raw_snippet": "except as provided in Annex I and Annex II, Part A, of this Notice",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "revised-pem-declaration-wording",
+      "claim": "English text of the origin declaration annexed to the revised PEM rules (Decision No 1/2023, OJ L 2024/390).",
+      "source_url": "https://taxation-customs.ec.europa.eu/document/download/c976dcae-6434-40f8-98ff-2044db2e65ed_en?filename=Decision%20no%C2%A012023%20of%20the%20joint%20committee%20of%20the%20regional-FXL2400390EN_0.pdf",
+      "raw_snippet": "The exporter of the products covered by this document (customs authorisation No",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "references/origin-declaration-template.md",
+        "scripts/generate_invoice.py"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-18"
+    },
+    {
+      "claim_id": "eu-3-eur-low-value-duty",
+      "claim": "From 1 July 2026 to 1 July 2028 the EU applies a temporary customs duty of EUR 3 per item to distance-sale (B2C) consignments with an intrinsic value of EUR 150 or less, regardless of the VAT regime (IOSS, Special Arrangements or standard import VAT).",
+      "source_url": "https://trade.ec.europa.eu/access-to-markets/en/news/eu-applies-eu3-customs-duty-item-low-value-e-commerce-consignments",
+      "raw_snippet": "regardless of the VAT regime used (IOSS, Special Arrangements or standard import VAT)",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "eu-3-eur-low-value-duty-dates",
+      "claim": "Council Regulation (EU) 2026/382 introduces a temporary customs duty of EUR 3 per item, applicable from 1 July 2026 to 1 July 2028.",
+      "source_url": "https://trade.ec.europa.eu/access-to-markets/en/news/eu-applies-eu3-customs-duty-item-low-value-e-commerce-consignments",
+      "raw_snippet": "applicable from 1 July 2026 to 1 July 2028",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "vat-s30-precious-stones-carveout",
+      "claim": "Section 30(a)(1) zero-rates the sale of goods except goods covered by section 33 (precious stones).",
+      "source_url": "https://www.nevo.co.il/law_html/law01/271_001.htm",
+      "raw_snippet": "מכירת טובין – למעט טובין כאמור בסעיף 33",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "us-301-section-232-carveout",
+      "claim": "Heading 9903.05.90: the Section 301 additional duties do not apply to articles of aluminum, steel or copper and derivative articles under the Section 232 headings 9903.82.x, passenger vehicles and parts, and other listed goods.",
+      "source_url": "https://ustr.gov/sites/default/files/files/Press/Releases/2026/FLIP%20301%20Investigation%20Final%20Action%20FRN%207-23-26%20FINAL.pdf",
+      "raw_snippet": "shall not apply to: (1) articles of aluminum, of steel or of copper",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "eu-3-eur-preferential-exclusion",
+      "claim": "EU guidance: the EUR 3 duty excludes goods benefiting from preferential trade agreements or Customs Union measures, as long as VAT has not been collected using IOSS and they are declared in H1.",
+      "source_url": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+      "raw_snippet": "Excluding goods benefiting from preferential trade agreements or Customs Union measures, as long as the VAT has not been collected using IOSS and they are declared in H1.",
+      "fetched_at": "2026-10-18T00:00:00Z",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md"
+      ]
+    },
+    {
+      "claim_id": "eu-3-eur-per-tariff-classification",
+      "claim": "EU guidance: the EUR 3 duty applies per item in a consignment, based on tariff classification, not quantity.",
+      "source_url": "https://taxation-customs.ec.europa.eu/news/guidance-and-legal-text-temporary-flat-fee-low-value-imports-which-will-apply-until-1-july-2028-2026-06-08_en",
+      "raw_snippet": "The duty applies per item in a consignment, based on tariff classification (not quantity).",
+      "fetched_at": "2026-10-18T00:00:00Z",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"

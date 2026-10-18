@@ -46,6 +46,32 @@
         "Unsourced prose claims still in the body, flagged by the judge and NOT resolved this cycle: EORI requirement for EU/UK consignees; Sha'ar Olami filing channel and customs-broker power of attorney; Incoterms CIP=ICC clause A vs CIF=clause C insurance split; record-retention periods (3yr PEM / 5yr US-Israel); Israel's 10 October 2013 ratification of the original PEM Convention; the list of PEM parties still on the 2012 rules. Each needs an evidence entry or removal next cycle.",
         "Consular legalisation requirement for some Arab-market destinations is asserted without a source."
       ]
+    },
+    {
+      "version": "1.4.0",
+      "date": "2026-10-18",
+      "holdout_before": 1.0,
+      "holdout_after": 1.0,
+      "buckets": {
+        "improved": [],
+        "regressed": [],
+        "persistent_fail": [],
+        "stable_success": [
+          "Need a US-Israel FTA certificate of origin for my shipment to Texas",
+          "איך מחשבים מכס על חבילה שהזמנתי מאמזון לישראל?",
+          "How do I become an approved exporter so I can skip the EUR.1?"
+        ]
+      },
+      "lessons": [
+        "CRITICAL fixed: 'Israel has not ratified the revised PEM Convention' was wrong for the EU route. The Commission PEM matrix marks EU-Israel R (2023 rules) from 1.1.2026; EFTA-Israel stays C (2012). The claim had never had an evidence entry: no snippet ever said Israel was unratified. Lesson: a negative status claim ('X has not ratified') needs a dated primary source like any figure.",
+        "CRITICAL fixed: 'electronic EUR.1 rejected by Israeli Customs' was wrong; Israel issues EUR.1 electronically via Global Gate since 1 April 2024 (Commission notice annex, French customs FAQ).",
+        "CRITICAL fixed: US route presented the 'U.S. Origin Invoice Declaration' as required for Israel-to-US; that document is for US exporters to Israel. CBP needs only an importer affidavit on request.",
+        "Added: US Section 301 12.5% on products of Israel from 24 July 2026 (stacks on FTA goods, 9903.05.90 carve-outs), de minimis suspended all modes, EU EUR 3 low-value B2C duty with preferential-origin exclusion.",
+        "KIFTA date flipped again (1 Jan 2023 in 1.3.1, back to 1 Dec 2022): the 1.3.1 'fix' trusted Wikipedia over Globes. Do not cite Wikipedia for entry-into-force dates.",
+        "Deferred MINOR: revised PEM drawback rule (prohibition only for chapters 50-63) vs 2012 rules on EFTA route.",
+        "Deferred: US Section 301 is under legal challenge at the CIT (no primary source captured); re-check status next cycle. Also re-check Israel Post US parcel service status (unverifiable this cycle).",
+        "Carry still open: Incoterms CIP clause A vs CIF clause C in incoterms-2020.md is unsourced; EORI and customs-broker POA statements remain without evidence entries."
+      ]
     }
   ]
 }

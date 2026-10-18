@@ -1,14 +1,14 @@
 # EUR.1 Application Guide for Israeli Exporters
 
-The EUR.1 movement certificate proves Israeli origin for preferential trade with the EU, the UK, EFTA and other PEM partners. It is NOT the Mercosur route: Mercosur is not a PEM party, and the Israel-Mercosur agreement has its own certificate of origin, which you request through Israeli Customs. Do not present a EUR.1 to Brazil, Argentina, Uruguay or Paraguay.
+The EUR.1 movement certificate proves Israeli origin for preferential trade with the EU, the UK, EFTA and other partners whose agreement uses it. It is NOT the Mercosur route: Mercosur is not a PEM party, and the Israel-Mercosur agreement has its own certificate of origin, which you request through Israeli Customs. Do not present a EUR.1 to Brazil, Argentina, Uruguay or Paraguay.
 
 ## Who issues it
 
-The exporter fills in the EUR.1 application form and submits it to Israeli Customs (usually the port or airport office) along with the commercial invoice and supporting documents. Israeli Customs certifies the form with a stamp and signature. Source: https://en.wikipedia.org/wiki/EUR.1_movement_certificate.
+The exporter (in practice usually the customs broker) applies to Israeli Customs with the commercial invoice and supporting documents, and Israeli Customs endorses the certificate. Source: https://en.wikipedia.org/wiki/EUR.1_movement_certificate. Since 1 April 2024 Israeli Customs has also issued EUR.1 certificates electronically through the Global Gate (Sha'ar Olami) system, as notified to the EU in the Commission's PEM notice, with an online authenticity check; EU customs accept electronically issued certificates presented at import.
 
 ## Validity
 
-Israel applies the 2012 PEM rules, under which an EUR.1 (and any invoice declaration) is valid for 4 months from the date of issue. The destination customs must receive the proof within that 4-month window. The revised PEM Convention (in force from 1 January 2025 between the parties that ratified it) extends this to 10 months, but that longer window does NOT apply to Israeli exports, because Israel has not ratified the revised rules. Plan around 4 months.
+It depends on the route. EU-Israel trade has used the revised PEM rules since 1 January 2026, under which a proof of origin is valid 10 months. Israel's trade with the EFTA states is still on the 2012 rules, under which an EUR.1 (and any invoice declaration) is valid 4 months from the date of issue. The destination customs must receive the proof within that window. See `pem-2026-rules.md`.
 
 ## Fields (boxes)
 
@@ -18,13 +18,13 @@ Israel applies the 2012 PEM rules, under which an EUR.1 (and any invoice declara
 | 2 | Certificate number | Assigned by Israeli Customs |
 | 3 | Consignee | Buyer's name and address (optional; some authorities accept blank) |
 | 4 | Country, group of countries or territory in which the products are considered as originating | Write "ISRAEL" |
-| 5 | Country, group of countries or territory of destination | e.g. "EUROPEAN UNION", "UNITED KINGDOM", "CANADA" |
+| 5 | Country, group of countries or territory of destination | e.g. "EUROPEAN UNION", "UNITED KINGDOM", "SWITZERLAND" (never Canada: CIFTA uses Form B239) |
 | 6 | Transport details (optional) | Vessel name, flight number, etc. |
 | 7 | Remarks | For EU exports: state the city/village/industrial zone name AND postal code where origin processing took place (EU-Israel Technical Arrangement) |
 | 8 | Item number, marks and numbers, description, quantity | Mirror the commercial invoice |
 | 9 | Gross mass (kg) or other measure | Match packing list |
 | 10 | Invoices | Invoice number and date |
-| 11 | Customs endorsement | Stamped by Israeli Customs |
+| 11 | Customs endorsement | Endorsed by Israeli Customs (stamp on paper, or through the electronic system) |
 | 12 | Declaration by the exporter | Signed by the exporter |
 
 ## EU-Israel Technical Arrangement (place name + postal code rule)
@@ -40,19 +40,18 @@ Source: https://trade.ec.europa.eu/access-to-markets/en/news/new-code-y864-goods
 
 ## Common rejection reasons
 
-- Electronic signature in box 12: Israel does not accept electronic signatures on EUR.1.
-- Missing Israeli Customs stamp in box 11.
+- No Israeli Customs endorsement in box 11 (an exporter cannot endorse its own EUR.1).
 - Wrong box 4 (e.g. "EU" instead of "ISRAEL").
 - Missing place name + postal code in box 7 (EU-Israel Technical Arrangement, see above).
 - Description mismatch between EUR.1 and the commercial invoice.
-- EUR.1 presented more than 4 months after issuance (Israel uses the 2012 PEM 4-month validity, not the revised-PEM 10-month window).
+- Proof presented after its validity ran out: 10 months on the EU route, 4 months on routes still on the 2012 rules, such as EFTA.
 
 ## Invoice declaration alternative
 
-For shipments up to 6000 euros in total invoice value, any Israeli exporter may replace the EUR.1 with an invoice declaration written on the commercial invoice. See `origin-declaration-template.md` for the exact wording.
+For consignments whose originating products total up to 6000 euros (the goods, not the invoice total with freight and insurance), any Israeli exporter may replace the EUR.1 with an invoice declaration written on the commercial invoice. See `origin-declaration-template.md` for the exact wording.
 
 For repeated shipments at any value, apply for approved-exporter status with Israeli Customs. Once approved, invoice declarations are accepted for any value and the EUR.1 paper-and-stamp process is no longer required.
 
 ## Israel and the revised PEM Convention
 
-Israel has NOT yet ratified the revised PEM Convention. Israeli exporters therefore continue to use the 2012 PEM rules of origin and the same EUR.1 form. EUR-MED certificates (used for diagonal cumulation) are abolished under the revised rules, but NOT on the Israel route, because Israel still applies the 2012 rules, under which the EU states that "Movement certificates EUR.1 or EUR-MED are issued by the customs authorities of the exporting country" (https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-pan-euro-mediterranean-convention). Source: https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-revised-pan-euro-mediterranean-convention.
+EU-Israel trade moved to the revised PEM rules on 1 January 2026 (the Commission's PEM matrix marks the pair "R"). On that route EUR-MED no longer exists: the revised rules keep a single proof type, EUR.1 or origin declaration. Israel's trade with the EFTA states stays on the 2012 rules (marked "C"), where EUR.1 or EUR-MED certificates are issued by the exporting country's customs and the 4-month validity applies. Sources: https://taxation-customs.ec.europa.eu/customs/international-affairs/pan-euro-mediterranean-cumulation-and-pem-convention_en and https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-pan-euro-mediterranean-convention.

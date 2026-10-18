@@ -38,7 +38,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from decimal import Decimal, ROUND_HALF_UP, ROUND_HALF_UP
+from decimal import Decimal, ROUND_HALF_UP
 from pathlib import Path
 
 # Incoterms 2020 - 11 rules (source: ICC, Trade.gov)
@@ -128,6 +128,10 @@ def render_invoice(order: dict) -> str:
     md.append(f"- Name: {order['buyer']['name_en']}")
     md.append(f"- Address: {order['buyer']['address']}")
     md.append(f"- Country / ארץ יעד: {order['buyer'].get('country', '')}")
+    if order['buyer'].get('vat_id'):
+        md.append(f"- VAT ID / מספר מע\"מ: {order['buyer']['vat_id']}")
+    if order['buyer'].get('eori'):
+        md.append(f"- EORI: {order['buyer']['eori']}")
     md.append("")
     md.append("## Items (English)")
     md.append("| # | Description | HS code | Qty | Unit price | Line total |")
@@ -169,17 +173,22 @@ def render_invoice(order: dict) -> str:
     dest = str(order.get("origin_declaration", "")).lower()
     if dest in ("eu", "uk"):
         auth = order.get("approved_exporter_number")
+        emit = True
         if auth:
-            auth_txt = f"(customs authorization No {auth}) "
+            auth_txt = f"(customs authorisation No {auth}) "
         elif currency == "EUR" and subtotal > Decimal("6000"):
+            # Above the ceiling a non-approved exporter may not make out an invoice
+            # declaration at all. Printing one anyway (with a stderr warning nobody
+            # reads) produces a preference claim the rules do not allow, so the
+            # declaration is suppressed and the document says what is needed instead.
             print(
                 "WARNING: an invoice declaration by a non-approved exporter is only\n"
-                "         accepted up to 6,000 EUR. This consignment is above that, so a\n"
-                "         EUR.1 movement certificate is required instead, or supply\n"
-                "         approved_exporter_number.",
+                "         accepted up to 6,000 EUR. This consignment is above that, so\n"
+                "         the declaration was NOT printed: a EUR.1 from Israeli Customs\n"
+                "         is required instead, or supply approved_exporter_number.",
                 file=sys.stderr,
             )
-            auth_txt = "(customs authorization No ...) "
+            emit = False
         elif currency != "EUR":
             # The ceiling is a EUR-equivalent value test, not a test on EUR-denominated
             # invoices only. The script has no exchange rate, so it cannot decide this
@@ -196,24 +205,48 @@ def render_invoice(order: dict) -> str:
             auth_txt = ""
         md.append("## Origin declaration / הצהרת מקור")
         md.append("")
-        md.append(
-            "The exporter of the products covered by this document " + auth_txt
-            + "declares that, except where otherwise clearly indicated, these products "
-            "are of ISRAEL preferential origin."
-        )
-        md.append("")
-        md.append(
-            "Place and date / מקום ותאריך: "
-            + str(order.get("origin_place", "______________"))
-            + "  " + str(order.get("origin_postcode", ""))
-            + "   " + order["invoice_date"]
-        )
-        md.append("")
-        md.append("(Sign manually. The place name AND postal code where the originating")
-        md.append("processing took place are required on Israeli origin proofs.)")
-        md.append("")
+        if not emit:
+            md.append(
+                "Not printed: the originating goods exceed 6,000 EUR and no approved-exporter "
+                "number was given. Obtain a EUR.1 movement certificate from Israeli Customs. / "
+                "לא הודפסה: ערך הטובין עולה על 6,000 אירו ואין מספר מייצא מאושר. יש להוציא "
+                "תעודת EUR.1 ממכס ישראל."
+            )
+            md.append("")
+        else:
+            missing = [f for f in ("origin_place", "origin_postcode") if not order.get(f)]
+            if dest == "eu" and missing:
+                print(
+                    f"WARNING: {' and '.join(missing)} missing. Israeli origin proofs for the\n"
+                    "         EU must state the place AND postal code where the originating\n"
+                    "         processing took place, or they are refused.",
+                    file=sys.stderr,
+                )
+            md.append(
+                "The exporter of the products covered by this document " + auth_txt
+                + "declares that, except where otherwise clearly indicated, these products "
+                "are of ISRAEL preferential origin."
+            )
+            md.append("")
+            md.append(
+                "Place of production and postal code / מקום הייצור ומיקוד: "
+                + str(order.get("origin_place", "______________"))
+                + " " + str(order.get("origin_postcode", "_______"))
+            )
+            md.append("")
+            md.append("Place and date / מקום ותאריך: ______________   " + order["invoice_date"])
+            md.append("")
+            if dest == "eu":
+                md.append("(Sign manually. The place name AND postal code where the originating")
+                md.append("processing took place are required on Israeli origin proofs for the EU.)")
+            else:
+                md.append("(Sign manually.)")
+            md.append("")
     elif dest == "us":
-        md.append("## Origin declaration / הצהרת מקור")
+        # Israel to the US: CBP requires no exporter certificate or declaration; the
+        # US importer claims the preference and gives CBP a signed affidavit on
+        # request. This is a voluntary exporter statement the buyer can rely on.
+        md.append("## Exporter origin statement (US-Israel FTA) / הצהרת מקור של המייצא")
         md.append("")
         md.append(
             "I, the undersigned, hereby declare that unless otherwise indicated, the "
@@ -229,7 +262,11 @@ def render_invoice(order: dict) -> str:
             "importing country."
         )
         md.append("")
-        md.append("(Sign manually. Print the signatory name and position in clear.)")
+        md.append(f"{order['seller']['name_en']}, {order['seller']['address']}")
+        md.append(f"Invoice {order['invoice_number']}, {order['invoice_date']}")
+        md.append("")
+        md.append("(Voluntary: supports the affidavit CBP may request from the US importer.")
+        md.append("Sign manually. Print the signatory name and position in clear.)")
         md.append("")
     md.append("## Signature / חתימה")
     md.append("")

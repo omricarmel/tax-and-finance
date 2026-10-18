@@ -1,40 +1,41 @@
-# PEM 2026 Rules - Israel's Status
+# PEM Rules - Which Set Applies to an Israeli Export
 
 ## Timeline
 
-- 2012: Pan-Euro-Mediterranean Convention original rules.
-- October 10, 2013: Israel signed and ratified the original Regional Convention.
-- 2021-2024: Several PEM parties (EU, EFTA, most Western Balkans) ratified the revised rules.
-- January 1, 2025: revised PEM Convention enters into force between the EU and ratifying PEM parties. 2025 is a transition period: the 2012 rules and the 2023 (revised) rules run in parallel through 31 December 2025, creating two separate cumulation zones. Israel remains on the 2012 rules.
-- January 1, 2026: only the revised rules apply between the EU and the parties that ratified them; non-ratifying parties (including Israel) stay on the 2012 rules and the same EUR.1 form.
-- As of mid-2026, Israel has not ratified the revised PEM Convention.
+- 2012: Pan-Euro-Mediterranean (PEM) Convention, original rules.
+- 1 January 2025: the revised PEM Convention (the "2023 rules") enters into force. 2025 is a transition year in which the 2012 rules and the 2023 rules run in parallel.
+- 1 January 2026: only the revised rules apply between the EU and the PEM parties that adopted them. The EU's Access2Markets page names Morocco, Egypt, Palestine and Tunisia as the parties still exporting to the EU on transitional rules pending ratification; Israel is not on that list.
+- EU-Israel: the Commission's PEM notice (advance copy of 28 August 2026) marks the EU-Israel pair "R" (2023 rules) with a date of application of 1 January 2026.
+- EFTA-Israel: the same notice marks Israel's pairs with Switzerland (+Liechtenstein), Iceland and Norway "C" (2012 rules). Swiss customs states that FTAs without a dynamic reference to the PEM Convention, EFTA-Israel among them, keep the old origin protocols.
 
-Source: https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-revised-pan-euro-mediterranean-convention.
+Sources: https://trade.ec.europa.eu/access-to-markets/en/content/pan-euro-mediterranean-convention-pem and https://taxation-customs.ec.europa.eu/customs/international-affairs/pan-euro-mediterranean-cumulation-and-pem-convention_en (matrix and notices).
 
 ## What this means for Israeli exporters
 
-While most EU trade partners are now on the revised PEM rules, Israel (along with Morocco, Tunisia, Algeria, Lebanon, Egypt, Palestine) continues under the 2012 rules. Practical consequences:
+| Route | Rule set | Proof validity | EUR-MED |
+|-------|----------|----------------|---------|
+| Israel to the EU | Revised (2023) rules, since 1 January 2026 | 10 months | Abolished: a single proof type, EUR.1 or origin declaration |
+| Israel to Switzerland, Liechtenstein, Norway, Iceland | Old (2012) rules | 4 months | Still issuable, needed only for diagonal cumulation |
+| Israel to the UK | UK-Israel Trade and Partnership Agreement protocol (not PEM) | Per that protocol; confirm with your broker | n/a |
 
-- Same EUR.1 form, same fields.
-- Same invoice declaration wording.
-- Same 6000 euros threshold below which any exporter can use an invoice declaration.
-- EUR-MED certificates are abolished under the REVISED rules only. Because Israel remains on the 2012 rules, EUR-MED is still an issuable instrument on the Israel route: the Access2Markets 2012-PEM page states "Movement certificates EUR.1 or EUR-MED are issued by the customs authorities of the exporting country" (https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-pan-euro-mediterranean-convention). It is only needed for diagonal cumulation; a plain EUR.1 covers a direct Israel-to-EU shipment.
-- Cumulation options remain limited to PEM parties that share a mutual FTA with Israel and apply compatible rules.
+Common to both PEM rule sets:
+- The same EUR.1 form.
+- An origin declaration on the invoice by any exporter where the total value of the originating products in the consignment does not exceed EUR 6,000; above that, only an approved exporter may make one.
+- The EU-Israel Technical Arrangement (place name + postal code of production, settlement goods excluded, EU code Y864) applies on the EU route whichever rule set is in force. See `eur1-application-guide.md`.
 
-## When Israel ratifies
+## Electronic EUR.1
 
-When Israel eventually ratifies the revised PEM Convention, expect:
-- New simplified rules of origin for several product categories.
-- Possible new limits on cumulation.
-- A transition period during which both rule sets may apply depending on the shipment date.
+Israeli Customs notified the EU that it issues EUR.1 movement certificates electronically through the Global Gate (Sha'ar Olami) system from 1 April 2024, with an authenticity check at the Israeli customs query site listed in the Commission notice. French customs guidance (December 2025) confirms that EU customs accept electronically issued certificates presented at import, and lists Israel among the partners that issue them. So a paper form with a wet-ink signature is no longer the only valid EUR.1.
 
-Check the EU Access2Markets page for the rules Israel actually applies before each shipment (https://trade.ec.europa.eu/access-to-markets/en/content/rules-origin-pan-euro-mediterranean-convention).
+## Cumulation
+
+Diagonal cumulation needs the same rule set at every intersection of the partners involved. Where Israel and an EFTA state are on the 2012 rules with each other but both are on the 2023 rules with the EU, the Commission lists limited "permeability" routes (for example EFTA States => Israel => EU, and Israel => Jordan => EU). Ask Israeli Customs before planning a product around cumulation.
 
 ## Recommended exporter practice
 
-1. Continue to issue EUR.1 certificates or invoice declarations under the 2012 PEM rules.
-2. Label proofs simply "EUR.1" or "Invoice Declaration" - DO NOT add the obsolete "REVISED RULES" marking; under the revised rules that marking is retired anyway.
-3. Keep origin calculations and supplier declarations on file for 3 years (standard retention for post-verification).
+1. Before each new destination, check the partner pair in the Commission's PEM matrix; it is updated several times a year.
+2. Label proofs simply "EUR.1" or "Invoice Declaration". The "REVISED RULES" marking belonged to the 2025 transition and is no longer used.
+3. Keep origin calculations and supplier declarations on file for post-verification, for the retention period your broker confirms for the route.
 
 ## HS tariff code lookup
 
