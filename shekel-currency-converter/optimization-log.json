@@ -72,6 +72,39 @@
         "MINOR: name the charging-event date for reverse-charge VAT on imported services instead of 'the relevant date'.",
         "MINOR: state that the customs rate answers only the currency-translation part of the import-VAT base, which also includes duty, purchase tax and landed costs."
       ]
+    },
+    {
+      "date": "2026-10-18",
+      "from_version": "2.2.0",
+      "to_version": "2.3.0",
+      "type": "minor",
+      "summary": "Live re-probe of the BOI JSON and SDMX endpoints with negative controls (sibling path 404, RER_XXX_ILS 404, ?date= ignored, currency.xml 301): no API drift. Resolved all three carried deferrals: (1) the 15:15/12:15 publication times are now cited verbatim from the BOI explanatory notes, which render in headless Chrome; the same page added Christmas Day, New Year's Day and Easter as non-publication days, which the skill had missed; (2) the customs rule is now primary-sourced from the gov.il PDF of the Customs Rules 5749-1989 (rate + 0.5%, preceding-Friday window, 3% switch, MoF fallback) and the Tax Authority query system https://www.gov.il/apps/taxes/currencyGates/ is linked (headed Chrome passes Cloudflare); (3) future dates rejected up front. Coverage audit drove a rewrite of the tax-date section: the Conversion Rules 5764-2003 cover only foreign-source income (Rules 1-7 now cited per rule), VAT on services is charged on receipt (s.24, s.29(1a) exception), intangible imports use the bank purchase rate (ss.11(b), 26(b)), reverse charge per reg 6D with its invoice exception, s.88 caution for individuals' foreign-currency securities. Removed unsourced claims (Dec-31 balance-sheet rule, loan per-event rule, 'symbol before number', 'official rate for legal obligations', 'plain representative rate for reverse-charge services'). Fixed: Old Shekel ISO code IS -> ILR; Example 2 jumped toward Jan 2. Script: per-leg live dating, Israel-date today/future logic, SDMX lag falls back to JSON, SDMX 404 = no data, precision warning by published decimals, >=4 sig-fig display, lira and reform notes, certifi TLS retry (edge.boi.gov.il needs Sectigo R46, missing from macOS /etc/ssl/cert.pem). evidence.json rebuilt so --check-sources actually verifies text sources (previously all 19 entries were verified_via and nothing was checked).",
+      "lessons": [
+        "Expert MINOR deferred: VAT Regs reg 6C, the bank collects VAT on intangible imports when it sells/transfers the currency; a user may not realise VAT was already collected.",
+        "Expert MINOR deferred: s.88 lets a person who bought an asset in foreign currency while a foreign resident elect the currency rate as the index (olim, returning residents).",
+        "Expert MINOR deferred: Rule 7 also governs depreciation; Rule 8 keeps carried-forward losses in shekels.",
+        "Expert MINOR deferred: payroll paid in foreign currency (withholding conversion) not covered.",
+        "Expert MAJOR deferred to out-of-scope: what a foreign-currency tax invoice must show (rate, shekel equivalent); source the Bookkeeping Instructions clause before adding.",
+        "Arithmetic MINOR: a weekday holiday 'today' request errors (hedged) instead of walking back; LBP per-1 display pads zeros; pre-1980 totals round to 0.00 at two decimals.",
+        "Evidence note: SDMX labelled CSV is language-dependent (the verifier sends Accept-Language he), and the JSON endpoint is compact with no whitespace, so JSON-sourced claims stay verified_via api with a pretty-printed snapshot.",
+        "Value-add cases written this cycle under .claude/skills/value-add-gate/cases/shekel-currency-converter/ (uncommitted in the monorepo; batch lead to commit).",
+        "Legal gate: Tier B (S2 tax-date conclusions); TIER_A_TAX notice added after the H1 and 'Not tax advice and not a filed return.' prefix added to the descriptions.",
+        "UNVERIFIED, carry: whether issuing a tax invoice (heshbonit mas) before payment brings the VAT reporting period forward for a service. Plain-Claude arms consistently assert 'earlier of invoice or payment'; find a primary source (VAT Regulations or ITA guidance) next cycle and either state the rule or keep the hedge."
+      ],
+      "holdout_before": 1.0,
+      "holdout_after": 1.0,
+      "buckets": {
+        "improved": [],
+        "regressed": [],
+        "persistent_fail": [],
+        "stable_success": [
+          "שער הדולר היציג ב-31 בדצמבר 2025 לצורך הדוח השנתי",
+          "Convert 10,000 ILS to Swiss francs at the official BOI rate",
+          "What's the USDT to ILS rate on Binance right now?",
+          "I got paid 3,000 USD by a US client, how many shekels do I report?"
+        ]
+      },
+      "value_add": "PASS with=1.00 without=0.17 delta=+0.83 (4 cases; first two runs BLOCKed because the description did not route import-VAT and VAT-date questions, so the skill was never loaded; the description now names those triggers)"
     }
   ]
 }

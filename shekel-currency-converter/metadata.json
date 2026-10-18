@@ -1,6 +1,6 @@
 {
   "author": "skills-il",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "category": "tax-and-finance",
   "tags": {
     "he": [
@@ -23,8 +23,8 @@
     "en": "Shekel Currency Converter"
   },
   "display_description": {
-    "he": "המרת מטבעות מול השער היציג של בנק ישראל, כולל שער לתאריך מס. תומך ב-14 המטבעות הרשמיים שבנק ישראל מפרסם, עם שער נוכחי ושער היסטורי לכל תאריך עסקה.",
-    "en": "Convert currencies to/from Israeli New Shekel (NIS/ILS) using Bank of Israel official representative rates (shaar yatzig). Use when user asks to convert shekels, NIS, ILS, asks about exchange rates, \"shaar yatzig\" (representative rate), or needs currency conversion for Israeli tax or business purposes. Covers the official Bank of Israel published currencies (14 currencies) with current and historical (tax-date) rates. Do NOT use for cryptocurrency or unofficial money exchange rates."
+    "he": "אינו ייעוץ מס ואינו דוח שהוגש. המרת מטבעות מול השער היציג של בנק ישראל, כולל שער לתאריך מס. תומך ב-14 המטבעות הרשמיים שבנק ישראל מפרסם, עם שער נוכחי ושער היסטורי לכל תאריך עסקה, וכן איזה תאריך שער חל על הכנסה במטבע חוץ, על מע\"מ בתשלום מלקוח בחו\"ל ועל שער המכס במע\"מ ביבוא.",
+    "en": "Not tax advice and not a filed return. Convert currencies to/from Israeli New Shekel (NIS/ILS) using Bank of Israel official representative rates (shaar yatzig). Use when user asks to convert shekels, NIS, ILS, asks about exchange rates, \"shaar yatzig\" (representative rate), or needs currency conversion for Israeli tax or business purposes, including which date's rate applies to foreign-currency income, to VAT on a payment from a foreign client, or as the customs rate for import VAT. Covers the official Bank of Israel published currencies (14 currencies) with current and historical (tax-date) rates. Do NOT use for cryptocurrency or unofficial money exchange rates."
   },
   "supported_agents": [
     "claude-code",
