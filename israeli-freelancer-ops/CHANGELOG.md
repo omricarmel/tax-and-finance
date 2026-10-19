@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.7.1 - 2026-10-20
+
+- Step 5 projection: when it is unclear whether a contract is part of the usual flow or extra to it, add it, since the notification duty is triggered by expectation. Reworded the 95,000-in-July sentence (wording only).
+
 ## 1.7.0 - 2026-10-19
 
 Two dates and one figure were wrong, several facts a freelancer acts on were missing, and a projection rule double counted.
