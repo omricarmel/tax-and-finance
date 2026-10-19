@@ -45,6 +45,21 @@
         "The operative rule, and it is now enforced by a scripted sweep rather than by care: after ANY retraction, grep every literal across SKILL.md, SKILL_HE.md and every reference file, and require zero live hits before the gate is called green. Withdrawing a figure in one of three copies is not withdrawing it.",
         "Asymmetries the same sweep caught: the water 7 m3 floor, the arnona מחזיק (occupier pays, so the tenant in a rented flat) rule, and the fixed-charge row-selection rule each existed in one file and not the others; the Hebrew gotcha still anchored the tariff on the superseded January 2026 edition; and the withdrawn Beer Sheva relocation saving, the 40-60 percent gas figure and the 19-30 shekel unlimited plan each survived in a copy the withdrawal had not reached."
       ]
+    },
+    {
+      "version": "1.6.0",
+      "date": "2026-10-20",
+      "value_add": "with=1.00 without=0.22 delta=+0.78 (4 cases) PASS",
+      "lessons": [
+        "THE PREVIOUS CYCLE WITHDREW A CORRECT, ADOPTED TARIFF. v1.5.0 told users the solar export tariff could not be stated and that the +6 urban premium appeared in no source. Both are in the Electricity Authority tariff book (tables 5-6.7, 5-6.7a, 27-6.7) and the accelerated/real tracks were adopted as decision 71004 (Yalkut HaPirsumim 13738, 13.8.2025), three months BEFORE that cycle. The trade-press article it relied on described the consultation; nobody opened the tariff book PDF. Rule: before declaring a figure unsourced, open the regulator's current tariff book or Reshumot, not only the article you were given.",
+        "The 2027+ solar regime is a DRAFT open to comment until 10.11.2026 (Globes/Bizportal). The next update MUST check whether a final decision was published and, if so, add the 2027 table as a temporal row set (requests registered from 1.1.2027) next to the current one, which keeps governing requests registered by 31.12.2026.",
+        "Hebrew file had silently diverged: it still carried the withdrawn ~30 NIS unlimited plan, unsourced solar cost and 4-7 year payback, the 7-day switching claim and the Athena/Olympus contradiction. Rewrote SKILL_HE.md as a mirror of SKILL.md (now 4,575 words, warning cleared, CARRY closed).",
+        "references/details-2026.md contained several moved copies of the same sections that had drifted; rewritten from scratch and deduplicated. CARRY-STALE closed by removal: the unsourced 8-city arnona table, fiber price table and MNO price ranges (logged unsourced since v1.4.0) are gone.",
+        "Reviewer findings that were verified and fixed: 12-group IEC list mis-enumerated (s.2(a)(4) split in two, IDF and hostile-action merged); 50% attributed to an IEC page that does not state it; 'two tiers since April 2023' was wrong (clusters first applied 1.1.2023, decision 63609); central-gas switching cited the wrong statute; self-consumption valued at 63.52 even for TOU households (45.78-50.42 in solar hours); water allocation supplement (+3.5 m3) for nursing 3-6, IDF disabled 50%+ and general disability 70%+ was missing; urban-premium eligibility is the 35meh list on the request-filing date (decision 70806).",
+        "MCP links in this skill used /he/mcps/<category>/<slug>, which 404s; the live route is /he/mcp/<slug>. The update-skill template itself prints the wrong pattern, so other skills likely carry the same dead links.",
+        "DEFERRED (no primary source found): Electricity Authority terms for disconnection and medical-equipment households; prepaid meters; how the water supplement combines with the 7 m3 floor in a one-person home; the arnona objection deadlines (still labelled unverified); small-claims ceiling.",
+        "Checker: none. A solar-track calculator is a natural fit, but building a frozen manifest now would go stale when the 2027 decision lands within weeks; revisit after the final decision."
+      ]
     }
   ]
 }
