@@ -1,5 +1,37 @@
 # Changelog
 
+## 1.4.0 - 2026-10-19
+
+### Fixed
+
+- Step 3 and Step 5 described the 2026 Hok Iddud exemption as covering salary only. Section 1 of the law defines qualifying income as personal-exertion income under Sections 2(1) AND 2(2) of the Ordinance, so Israeli business and self-employment income is covered too. The listed exclusions (interest, dividends, rent, capital gains) were correct.
+- Step 5 said the window is for returnees "arriving" between 5.11.2025 and 31.12.2026. The statute and Circular 07/2026 test when the person became an Israeli resident, by the actual center-of-life move, not the landing or certificate date.
+- `scripts/cashflow-projection.py` labelled Israeli labour IL-LABOUR ("may be exempt") on every track and for every residency date, so a regular toshav chozer or a 2024 returnee was told Hok Iddud might apply when it cannot. It now marks IL-LABOUR only on the vatik track with a residency date inside the window and only for tax years 2026 to 2030, prints that year's cap (2026 pro-rated by days, as Circular 07/2026 computes it), and marks Israeli labour TAXABLE otherwise.
+- The Nefesh B'Nefesh taxation link now points at the page it redirects to.
+- Self-employment and employment income are sourced where the work is performed (Section 4A), not where the client or payer is. The skill listed only "business income from Israeli customers" as taxable, so a freelancer serving foreign clients from Israel would have read that income as Section 14 exempt. It is Israeli-source and protected only by the Hok Iddud caps.
+- Green-card holders were treated as citizens. A green card keeps US worldwide taxation only until it is abandoned or a treaty-residence position is taken, and a holder with 8 of the last 15 years is a long-term resident whose exit is an IRC 877A expatriation. Step 6 and the script now separate the two.
+- Three references still said the Misrad HaKlitah certificate was optional or conferred no tax benefit, contradicting Gotcha 13 and Hok Iddud Section 1. Two references still described the acclimation election as a deferral, and one said it made residency after 1.1.2026 "more attractive", which is backwards for Amendment 272.
+- SKILL_HE.md Step 7 still carried the 14-day Form 2409 bank deadline that 1.3.0 removed from the English file as unsourced.
+- Gotcha 2's "one day later" example used 30.12.2025.
+- The 2026 relative cap (140,000 NIS) is pro-rated like the general cap; "relative" includes a company held 25% or more unless wholly owned.
+
+### Added
+
+- ITA Income Tax Circular 07/2026: in-year relief on Form 116ע with 300,000 / 500,000 NIS caps, the day-count pre-screen for the person and spouse, relative income only through the annual return, and the transparent-entity rules. New `references/hok-iddud-2026.md` holds the full mechanics.
+- Section 3 of Hok Iddud, which exempts a foreign employer's Israeli-produced profit arising solely from the returnee's work, unless the returnee is a substantial shareholder.
+- The Ordinance's day-count residency presumptions (183 days, or 30 plus 425) in Step 1, previously only in the Form 1348 reference.
+- No US-Israel totalization agreement: a US-citizen freelancer can owe both Bituach Leumi and US self-employment tax.
+- Example 4, a self-employed returnee from May 2026 with Israeli and foreign clients, and a route to `israeli-freelancer-ops` for Tax Authority, VAT and Bituach Leumi setup.
+- The Form 116ע declarations and attachments (including no Bituach Leumi allowances in 2016-2025 and the spouse's entry/exit printout).
+
+### Changed
+
+- `scripts/cashflow-projection.py` now prints one row per TAX YEAR (Year 1 = the residency year, up to Year 11 where the window ends, marked PART-EX), so Hok Iddud caps sit on the right calendar year. The previous anniversary-year rows put every cap one year late for a late-year resident and could show the law in force in 2031. `years_active` indices are now tax years 1-11. A 1 January 2026 resident gets the full 2026 cap.
+- The script now marks a post-window capital gain LINEAR-EX instead of TAXABLE, because Section 97(b)(3) keeps the pre-window slice exempt; adds an `acquired_by_gift` field (GIFT-TAX for a s.97(a)(5) gifted asset on the vatik track, and a warning when the field is missing); tells the user to enter only post-residency income in Year 1; and ends a 29 February window on 1 March.
+- The frontmatter descriptions now OPEN with the legal clause, and the legal notice's non-recommendation clause extends to foreign-law decisions such as keeping or giving up US citizenship or a green card.
+- Company edge cases (CFC, managing a foreign company from Israel) and the Section 14 waiver detail moved to references to keep both files under the word cap.
+- The olim credit-point schedule moved from Step 5.5 to `references/section-14-mechanics.md` to keep both skill files under the 5,000-word cap.
+
 ## 1.3.0 - 2026-08-27
 
 ### Fixed

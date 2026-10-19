@@ -1,6 +1,22 @@
 {
   "cycles": [
     {
+      "version": "1.4.0",
+      "date": "2026-10-19",
+      "lessons": [
+        "Fixed: Hok Iddud described as salary-only; s.1 'הכנסה מזכה' covers s.2(1) business AND s.2(2) employment. Fixed: window described as 'arriving'; the test is the actual center-of-life move (Circular 07/2026), unaffected by an acclimation election (s.2(e)).",
+        "Fixed CRITICAL (Expert): active income was framed by client location ('business income from Israeli customers'). Section 4A sources business/profession/employment income where the work is performed, so a freelancer serving foreign clients from Israel has Israeli-source income outside Section 14. Added to Step 2/3, references, script and Example 4.",
+        "Fixed CRITICAL (Expert): green-card holders were folded into US citizens. A green card keeps US worldwide taxation only until I-407 or a notified treaty-residence position; 8-of-15-year holders are long-term residents whose exit is an IRC 877A expatriation. Verified against IRS Instructions for Form 8854.",
+        "Script defects, three cycles running in the same area: v1.3.0 labelled Israeli labour TAXABLE; the first v1.4.0 draft labelled it IL-LABOUR on every track; then anniversary-year rows put caps one tax year late for late-year residents. Now: tax-year rows (Year 1 = residency year, Year 11 = window end, PART-EX), IL-LABOUR only for an eligible vatik in 2026-2030, Year 1 counts only post-residency income, 29 Feb end rolls to 1 Mar. Lesson: when a script maps a statutory window onto calendar caps, test 5.11/31.12.2025, 1.1/1.7/31.12.2026 and 29 Feb explicitly.",
+        "Drift found: SKILL_HE.md Step 7 still carried the 14-day Form 2409 deadline 1.3.0 removed from EN; three references still called the Misrad HaKlitah certificate optional; two still called the acclimation election a deferral. Cross-file grep for every corrected claim, including the Hebrew halves of references.",
+        "CARRY (Expert r1 MINOR): the regular-track and 'none' 2030 cap is not pro-rated at the end of the window; verified correct (s.2(d) pro-rates only 2026). Close this carry item.",
+        "Process: SKILL.md and SKILL_HE.md both sit at ~4,970-4,980 words; every addition now requires moving text to references. The next substantive cycle should move Step 6 detail and Example 1 into references before adding anything.",
+        "Description not changed this cycle, so Phase 5.7 was skipped.",
+        "Done this cycle after review: script acquired_by_gift field (GIFT-TAX) and LINEAR-EX for post-window capital gains under s.97(b)(3) (the tax-year rewrite had briefly printed them TAXABLE, a fourth defect caught by the arithmetic reviewer); Gotcha 8 now says the 90-day Form 1130 window runs from arrival; frontmatter descriptions now open with the legal clause (lead decision; Phase 5.7 holdout not re-run because only the legal clause moved).",
+        "CARRY (Expert MAJOR, deferred): a fuller pre-arrival 'Step 0' planning block, and foreign pension / 401(k) treatment after year 10 (s.9A, treaty pension article). Both need room: move Step 6 detail or Example 1 to references first."
+      ]
+    },
+    {
       "version": "1.3.0",
       "date": "2026-08-27",
       "holdout_before": 1.0,

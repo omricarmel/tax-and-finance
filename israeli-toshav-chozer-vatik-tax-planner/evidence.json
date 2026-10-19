@@ -1,7 +1,7 @@
 {
   "schemaVersion": "1.0",
   "skill_slug": "israeli-toshav-chozer-vatik-tax-planner",
-  "generated_on": "2026-05-26",
+  "generated_on": "2026-10-19",
   "claims": [
     {
       "id": "vatik-10-year-threshold",
@@ -12,7 +12,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "section-14-statute",
@@ -65,7 +67,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "regular-toshav-chozer-passive-5-years",
@@ -76,7 +80,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "regular-toshav-chozer-capital-gains-10-years",
@@ -87,7 +93,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "2026-reporting-exemption-canceled",
@@ -148,7 +156,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "misrad-haklitah-certificate-not-binding",
@@ -237,8 +247,8 @@
       "id": "bshcpa-form-1348",
       "claim": "BSH CPA practitioner guide on Form 1348 confirms it is used by Israelis leaving Israel claiming non-residency.",
       "source_url": "https://www.bshcpa.co.il/טופס-1348/",
-      "raw_snippet": "טופס 1348 מוגש על ידי תושב ישראל שביצע תהליך רילוקיישן ומעוניין לטעון כי אינו תושב ישראל.",
-      "fetched_at": "2026-05-23",
+      "raw_snippet": "תושב ישראל, שביצע תהליך רילוקיישן או הגירה למדינה זרה בשנת מס ומעוניין לטעון כי באותה שנת המס אינו \"תושב ישראל\" (ניתק תושבות מס) וזאת על אף שמתקיימת ל",
+      "fetched_at": "2026-10-19",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
@@ -638,7 +648,9 @@
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
-      ]
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "section-97-b1-capital-gains-statute",
@@ -696,12 +708,12 @@
     {
       "id": "nbn-taxation-page",
       "claim": "עמוד המיסוי של נפש בנפש מסביר שחופשת המס בת עשר השנים לא השתנתה, ומתאר את הכללים לעולים ולתושבים חוזרים ותיקים החל מ-1.1.2026.",
-      "source_url": "https://www.nbn.org.il/life-in-israel/finances/taxes/taxation-of-new-immigrants-rules-in-israel/",
+      "source_url": "https://www.nbn.org.il/life-in-israel/finances/taxes/us-tax-compliance/",
       "raw_snippet": "Rules for Olim and Returning Israelis Effective 1/1/2026 Background The ten-year tax holiday has not changed. Israel has long offered tax incentives to new immigrants (olim) and veteran Israeli returning residents. Such individuals could benefit from a 10-year exemption from Israeli tax on income sourced abroad (foreign-sourced income) from the date they become a tax-resident. In many cases, they",
       "fetched_on": "2026-07-15",
       "verified_via": "nbn.org.il fetched with a browser user agent",
-      "verified_at": "2026-08-17",
-      "fetched_at": "2026-08-17",
+      "verified_at": "2026-10-19",
+      "fetched_at": "2026-10-19",
       "appears_in": [
         "SKILL.md",
         "SKILL_HE.md"
@@ -904,6 +916,612 @@
         "SKILL.md",
         "SKILL_HE.md"
       ]
+    },
+    {
+      "id": "ito-residency-day-count-presumption",
+      "claim": "The Ordinance presumes Israeli residency at 183+ days in the tax year, or 30+ days in the year and 425+ days across that year and the two before it; rebuttable.",
+      "source_url": "https://www.nevo.co.il/law_html/law01/255_001.htm",
+      "raw_snippet": "חזקה היא שמרכז חייו של יחיד בשנת המס הוא בישראל – (א) אם שהה בישראל בשנת המס 183 ימים או יותר; (ב) אם שהה בישראל בשנת המס 30 ימים או יותר, וסך כל תקופת שהייתו בישראל בשנת המס ובשנתיים שקדמו לה הוא 425 ימים או יותר",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/form-1348-fields.md"
+      ]
+    },
+    {
+      "id": "iddud-qualifying-income-2-1-2-2",
+      "claim": "Hok Iddud qualifying income is taxable personal-exertion income under Ordinance s.2(1) or 2(2) (business/profession and employment), excluding \"other income\".",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "הכנסה חייבת שהיא הכנסה מיגיעה אישית לפי סעיף 2(1) או (2) לפקודה, שאינה הכנסה אחרת",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-other-income-62a",
+      "claim": "\"Other income\" for Hok Iddud is as defined in Ordinance s.62A(d).",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "\" הכנסה אחרת \" – כהגדרתה בסעיף 62א(ד) לפקודה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-relative-s88",
+      "claim": "A \"relative\" for Hok Iddud follows Ordinance Section 88 (סעיף 88), excluding a company wholly owned by the oleh.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "\" קרוב \" – כהגדרתו בסעיף 88 לפקודה, למעט חברה שבבעלותו המלאה של העולה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-relative-cap-2026-2029",
+      "claim": "Income from a relative is capped at 140,000 NIS a year for 2026-2029; s.2(b) replaces only paragraphs (1)-(3), so 2030 stays 150,000.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "במקום פסקאות (1) עד (3) שבסעיף קטן (א) יקראו כך: \"בשנות המס 2026 עד 2029 – עד לתקרת הכנסה של 140,000 שקלים חדשים, לכל שנה;\"",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-2026-proration",
+      "claim": "The 2026 cap is pro-rated to the period of Israeli residency in that year (s.2(d)).",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "יהיו זכאים בשנת המס 2026 לתקרת ההכנסה הפטורה המפורטת בסעיף קטן (א)(1) או (ב), לפי העניין, באופן יחסי לתקופת תושבותם בישראל בשנה האמורה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-combined-cap-s2c",
+      "claim": "Combined exempt income from a relative and others in one year may not exceed the general caps (s.2(c)).",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "ובלבד שסך הסכום הפטור לא יעלה על תקרות ההכנסה המנויות בסעיף קטן (א)",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-s3-foreign-company",
+      "claim": "Section 3: business income of a foreign-resident body of persons produced in Israel due to the personal exertion of a qualifying oleh/vatik is exempt 2026-2030.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "הכנסתו מעסק של חבר בני אדם תושב חוץ, אשר הופקה בישראל בשל יגיעתו האישית של עולה או תושב חוזר ותיק כאמור בסעיף 2(א), בשנות המס 2026 עד 2030, תהיה פטורה ממס",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-s3-substantial-shareholder-exclusion",
+      "claim": "Section 3 does not apply where the oleh/vatik is a substantial shareholder in the foreign company.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "הופקה בישראל בשל יגיעתו האישית של עולה או תושב חוזר ותיק שהוא בעל מניות מהותי בחבר בני אדם תושב החוץ",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-s3-transparent-israeli-holder",
+      "claim": "For a transparent foreign entity, Section 3 does not cover the share attributed to an Israeli-resident holder.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "לגבי חבר בני אדם תושב חוץ שהוא תאגיד שקוף – לגבי חלק ההכנסה המיוחס לבעל זכויות בתאגיד שהוא תושב ישראל",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-s5-preserves-14-97",
+      "claim": "Hok Iddud Section 5 (סעיף 5): the law does not derogate from Ordinance ss.14 and 97.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "אין בהוראות חוק זה כדי לגרוע מההוראות לפי סעיפים 14 ו-97 לפקודה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-transparent-entity-substantial",
+      "claim": "Attributed income from a transparent entity in which the oleh/vatik is a substantial shareholder is excluded, except a wholly-owned one.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "\" תאגיד שקוף \" – כהגדרתו בסעיף 64(א) לפקודה, שעולה או תושב חוזר ותיק הוא בעל מניות מהותי בו, אך למעט תאגיד כאמור שבבעלותו המלאה של עולה או תושב חוזר ותיק כאמור",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "circ07-2026-date-and-subject",
+      "claim": "ITA Income Tax Circular 07/2026 of 5.7.2026 implements the Hok Iddud temporary provision.",
+      "source_url": "https://y-tax.co.il/new-immigrants-tax-benefits-2026-circular-07/",
+      "raw_snippet": "ביום 5.7.2026 פרסמה רשות המסים את חוזר מס הכנסה 07/2026 בנושא הוראת השעה \"חוק עידוד עלייה לישראל וחזרה אליה\"",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "circ07-acclimation-example",
+      "claim": "Circular 07/2026: an acclimation-year election does not change the residency date for Hok Iddud; a January 2025 mover who elected acclimation is treated as resident before the window.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "בחירה בשנת הסתגלות לא תשפיע על המועד שבו הפך היחיד לתושב ישראל לעניין עמידה בתנאי האמור לעיל לצורך קבלת ההטבה .כך למשל יחיד שהעביר מרכז חייו לישראל בינואר 2025וביקש שנת הסתגלות יראו אותו לצורך הוראת השעה כמי שהפך לתושב ישראל לפני התקופה הקובעת ולכן אינו עומד בתנאי .לעומת זאת יחיד שהעביר מרכז חייו לישראל במהלך שנת 2026ייחשב כמי ע",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-in-year-caps-300-500",
+      "claim": "In-year relief is capped at 300,000 NIS (not registered as annual filer) or 500,000 NIS (registered).",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "יקבל אישור לפטור מניכוי מס במקור (לשכיר) או הקטנת מקדמות (לעצמאי) עד לתקרת הכנסה של ( ₪ 300,000אם רשום כמי שאינו חייב בהגשת דוח שנתי) או עד לתקרה של ( ₪ 500,000אם רשום כמי שחייב בהגשת דוח שנתי). • על הכנסה שעולה על",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-2026-proration-example",
+      "claim": "2026 in-year caps are pro-rated; example resident from 1 July 2026: 183/365 * 300,000 = 150,000, or 250,000 for a filer.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "לתקרה יחסית של 150,000ש\"ח ( ;))183/365( * 300,000או 250,000ליחיד כאמור החייב בהגשת דו\"ח • חו",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-form-116a",
+      "claim": "The in-year application is filed on Form 116ע instead of the regular Form 116.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "טופס 116ע יוגש ע\"י היחיד המוטב לצורך תיאום המס במקום טופס 116הרגיל .טופס 11",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-relative-only-annual-return",
+      "claim": "Income from a relative can be exempted only via the annual return, not tax coordination.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "ההטבה על הכנסה מקרוב תינתן אך ורק במסגרת הגשת דוח שנתי ,ולא במסגרת תיאום מס. ראה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-90-day-rule",
+      "claim": "Pre-screen 90-day rule: in each of 2016-2025, days in Israel of the individual and spouse did not exceed 90.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "בכל אחת מהשנים 2016ועד ( 2025להלן\" :עשר השנים הנבדקות\") ,היקף ימי השהייה בישראל של היחיד והיקף ימי השהייה בישראל של בן/בת הזוג של היחיד לא עלה על 90ימים.9 ב .חר",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-90-day-exceptions",
+      "claim": "The 90-day rule may be exceeded in at most three years, not 2016 or 2025.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "ניתן לחרוג מכלל 90הימים בשלוש שנים לכל היותר ,ובלבד שמתקיימים כל התנאים הבאים במצטבר: .1מגבלת שנים :השנים החורגות לא יהיו שנת 2016או שנת 2025 .2סוגי ה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-182-150",
+      "claim": "Exception detail: two years up to 182 days, a third year up to 150 days.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "בכל אחת מהשנתיים הללו לא עלה על 182ימים. • ניתן לחרוג מכלל 90הימים בשנה נוספת (שלישית) ובלבד שמספר ימי השהייה בישראל ,של היחיד ו/או של בן/בת הזוג ,בשנה זו לא עלה על 150ימים. .",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-425-test",
+      "claim": "425-day test: for each of 2018-2025, cumulative days of individual and spouse in that year and the two before it below 425.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "בכל אחת מהשנים שבין שנת 2018לשנת ,2025מספר ימי השהייה המצטבר בישראל של היחיד ושל בן/בת הזוג ,לאותה שנה ולשתי השנים שקדמו לה נמוך מ 425ימים. יובהר ,כי על מנ",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-fail-prescreen-annual-claim",
+      "claim": "Failing the day-count pre-screen blocks in-year relief only; the benefit can still be claimed in the annual return.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "לא יוכל לקבל את ההטבה במסגרת תיאום מס אך יוכל לדרוש את ההטבה במסגרת הגשת דו\"ח ככל והוא יכול לשכנע כי בכל זאת הוא עומד בהגדרת יחיד מוטב שהעביר מרכז חיי",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-entry-exit-days",
+      "claim": "Days of entry and exit count as days in Israel.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "ימי כניסה לישראל וימי יציאה מישראל יחשבו כימי שהייה בישראל א",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-spouse-from-marriage",
+      "claim": "A spouse is tested only from the year the couple became spouses.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "אולם ,אם המועד שבו הפכו היחיד ובן/בת זוגו לבני זוג חל במהלך עשר השנים הנבדקות ,תיבחן העמידה בתנאי היקף ימי השהייה עבור בן/בת הזוג רק מהשנה שבה הפכו בני הזוג לכאלה. ראה דוגמאות מס' 6ו7- 9.2מקור ההכנסה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-filing-obligation",
+      "claim": "Withholding relief does not remove an annual-return obligation existing for other reasons.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "קבלת פטור מניכוי במקור במסגרת הוראת שעה זו אינה פוטרת מחובת הגשת דוח שנתי אם קיימת חובה כזו מסיבות אחרות (למשל :היותו עצמאי ,הכנסה ממעביד זר, הכנסה מעל התקרה הקבועה בתקנות ,וכו'). חלק ג' – ה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-wallet-company",
+      "claim": "For this temporary provision only, a wallet company is not treated as a transparent entity.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "לצרכי הוראת שעה זו בלבד ,אין להתייחס לחברת ארנק כמשמעותה בסעיף 62א כתאגיד שקוף לעניין זה.",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-center-of-life-move",
+      "claim": "The Hok Iddud test is when the center of life actually moved to Israel during the window.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "מכלול הזיקות מצביע באופן מובהק על העתקת מרכז החיים לישראל במהלך התקופה",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-waiver",
+      "claim": "The individual may waive the exemption in whole or in part.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "רשאי לוותר על הפטור ממס ,במלואו או בחלקו – הו",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "ytax-transparent-5pct-example",
+      "claim": "Circular examples: an active 5% partner qualifies; a 15% house-company holding is substantial and does not.",
+      "source_url": "https://y-tax.co.il/new-immigrants-tax-benefits-2026-circular-07/",
+      "raw_snippet": "שותף אקטיבי המחזיק 5% בשותפות יכול ליהנות מהפטור על חלקו ברווחים, בעוד החזקה של 15% בחברת בית תיחשב החזקה מהותית ולכן לא תזכה בפטור",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "ytax-admin-approval-gap",
+      "claim": "A gap between the administrative approval and the real move does not help if the center of life moved outside the window.",
+      "source_url": "https://y-tax.co.il/new-immigrants-tax-benefits-2026-circular-07/",
+      "raw_snippet": "פער בין המועד שבו ניתן האישור המנהלי לבין מועד ההשתקעות בפועל לא יסייע לנישום אם מרכז החיים עבר לישראל מחוץ לתקופה הקובעת",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "iddud-s4-clawback-from-start",
+      "claim": "Hok Iddud Section 4 (סעיף 4): the law does not apply from its start to an individual who ceased to be resident during 2028 or 2029 and stayed fewer than 75 days in Israel in one of those years.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "סייג לתחולה 4. הוראות חוק זה לא יחולו מיום תחילתן על יחיד אשר חדל להיות תושב ישראל במהלך אחת משנות המס 2028 או 2029 ושהה בישראל פחות מ-75 ימים באחת מאותן השנים",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "ito-s4a-source-of-income",
+      "claim": "Ordinance Section 4A (סעיף 4א): business income is produced where the income-producing activity takes place, profession income where the service is performed, employment income where the work is performed.",
+      "source_url": "https://www.nevo.co.il/law_html/law01/255_001.htm",
+      "raw_snippet": "(1) לגבי הכנסה מעסק – המקום שבו מתקיימת הפעילות העסקית מניבת ההכנסה; (2) לגבי הכנסה מעסקה או מעסק אקראי בעלי אופי מסחרי – המקום שבו מתבצעים העסקה או העסק; (3) לגבי הכנסה ממשלח יד – מקום ביצוע השירות; (4) לגבי הכנסה מעבודה – מקום ביצוע העבוד",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md",
+        "references/section-14-mechanics.md"
+      ]
+    },
+    {
+      "id": "iddud-s6-commencement",
+      "claim": "Hok Iddud Section 6: commencement 1 January 2026, applying from the date the oleh/vatik became resident.",
+      "source_url": "https://www.nevo.co.il/law_html/law00/241397.htm",
+      "raw_snippet": "תחילתו של חוק זה ביום י\"ב בטבת התשפ\"ו (1 בינואר 2026)",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ]
+    },
+    {
+      "id": "circ07-in-force-and-vehicle",
+      "claim": "Circular 07/2026 footnote 1: the provision was published as sections 8 and 9 of the 2026 Economic Efficiency Law.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "1הוראת השעה פורסמה כסעיפים 8ו 9-לחוק ההתייעלות הכלכלית (תיקוני חקיקה להשגת יעדי התקציב לשנת ,)2026התשפ\"ו,2026- אשר מהווי",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-relative-definition",
+      "claim": "Circular 07/2026 quotes the s.88 \"relative\" definition, including a body of persons held 25% or more.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "כל אחד מאלה: ( )1בן זוג ,אח ,אחות ,הורה ,הורה הורה ,צאצא וצאצא של בן זוג ,ובן זוגו של כל אחד מאלה; ( )2צאצא של אח או של אחות ,ואח או אחות של הורה; ( )3חבר-בני-אדם שבהחזקת אדם או קרובו ,אדם המחזיק בו וחבר-בני-אדם המוחזק בידי אדם המחזיק בו; לעניין הגדרה זו\" ,החזקה\" – במישרין או בעקיפין ,לבד או יחד עם אחר, ב 25%-לפחות באחד או יותר מסוג כלשהו של אמצעי השליטה; ( )4נאמן כהגדרתו בסעיף 75ג ,לגבי היוצר בנא",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-relative-2030",
+      "claim": "In 2030 the relative cap is 150,000 NIS like the general cap.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "8בשנת 2030תקרת ההטבה תהיה ₪ 150,000לשנה בדומה להטבה על הכנסה שלא מקרוב",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-wholly-owned-not-relative",
+      "claim": "A company wholly owned by the individual is not a relative and can get the full cap.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "חברה הנמצאת בבעלותו המלאה של היחיד לא תיחשב \"קרוב\" והכנסה ממנה יכולה להנות מתקרת הפטור הקבועה בסעיף (2א) להוראת הביצוע (",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-116a-declarations",
+      "claim": "Form 116ע declarations include: center-of-life move in the window, intention to remain resident, income not from a relative, not from a gifted business, and no Bituach Leumi allowances in 2016-2025.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "הוא העביר מרכז חייו לישראל בתקופה הקובעת (בין 5לנובמבר 2025לבין 31לדצמבר – )2026ראה הסבר בסעיף (4א) לחוזר זה. • בכוונתו להישאר תושב ישראל עד תום שנת המס – ראה סעיף (5ד) לחוזר זה. • הכנסתו אינה משולמת על ידי \"קרוב\" – ראה סעיף 6לחוזר זה. • הצהרה כי ההכנסה אינה מעסק שהתקבל במתנה – ראה סעיף (5ה) לחוזר זה. • ההכנסה בגינה היחיד מבקש את הפטור אינה הכנסה אשר מיוחסת אליו משותפות או מחברה שקופה שאינו בעל המניות היחיד בה .אלא אם ,אינו בעל מניות מהותי – ראה סעיף 5לחוזר זה. • הצהרה כי בשנים 2016עד 2025לא קיבל קצבאות מביטוח לאומי. ד .היחיד ייצרף לטופס 116ע את המסמכים הבאים : • צירוף תעודת עולה או תעודת תושב חוזר. • צירוף תעודת \"בירור פרטים על נוסע\" המונפק",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-116a-attachments",
+      "claim": "Form 116ע attachments: oleh or returning-resident certificate and the Population Authority entry/exit printout for 2016-2025 for the applicant and spouse.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "צירוף תעודת עולה או תעודת תושב חוזר. • צירוף תעודת \"בירור פרטים על נוסע\" המונפק ע\"י רשות האוכלוסין וההגירה (פלט כניסות ויציאות) ,בגין השנים 2016ועד 2025עבור המבקש ועבור בן/בת זוגו. • תלושי שכר /אישורי הכנסה מכל המעסיקים וכן מכל המ",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/hok-iddud-2026.md",
+        "references/section-14-mechanics.md",
+        "references/form-1348-fields.md",
+        "references/domain-checklist.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-mixed-income-s15",
+      "claim": "Circular 07/2026 s.15: mixed personal-exertion income, the part tied to activity abroad exempt under s.14, the part tied to activity in Israel exempt only up to the cap.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "במצב זה חלק ההכנסה המיוחס לפעילותו בחו\"ל יהיה פטור במלואו בהתאם לסעיף 14לפקודה ואילו חלק ההכנסה המיוחס לפעילותו בישראל יהיה פטור בהתאם להוראת שעה זה רק עד גובה התקרה הנקובה בסעיף והמתייחסת לשנת המס. ב",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "circ07-temporary-absence",
+      "claim": "Circular 07/2026: a temporary absence in 2028/2029 with fewer than 75 days, without severing the center of life, does not cancel the 2026-2027 benefit.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": "מהאמור עולה כי במצבים בהם ישנה יציאה זמנית של היחיד המוטב מישראל באחת מהשנים 2028 ו/או ( 2029והוא שהה בישראל פחות מ 75-ימים) אך היחיד חוזר וממשיך לקיים תושבות בישראל מבלי שניתק את מרכז חייו מישראל ,הטבת המס שקיבל בשנים 2026או 2027לא תבוטל. .15שמירת הפטור על הכ",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "irs-8854-ltr-definition",
+      "claim": "IRS: a long-term resident was a lawful permanent resident in at least 8 of the last 15 tax years; treaty-resident years without waiver are not counted. Expatriation provisions IRC 877 and 877A apply to long-term residents.",
+      "source_url": "https://www.irs.gov/instructions/i8854",
+      "raw_snippet": "You are an LTR if you were a lawful permanent resident of the United States in at least 8 of the last 15 tax years ending with the year you are no longer treated as a lawful permanent resident. In determining if you meet the 8-year requirement, don't count any year if in that year you were treated as a resident of a foreign coun",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/us-citizen-dual-tax.md"
+      ]
+    },
+    {
+      "id": "irs-8854-ltr-termination",
+      "claim": "IRS: long-term residency ends on the earliest of filing Form I-407, a final order, or the date treaty residence of another country began without waiver and with notice to the IRS.",
+      "source_url": "https://www.irs.gov/instructions/i8854",
+      "raw_snippet": "you terminated your lawful permanent residency (and consequently, have an expatriation date) on the earliest of the following dates. The date you voluntarily abandoned your lawful permanent resident status by filing Department of Homeland Security Fo",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/us-citizen-dual-tax.md"
+      ]
+    },
+    {
+      "id": "irs-expatriation-877a",
+      "claim": "IRS: the expatriation tax provisions under IRC sections 877 and 877A apply to US citizens who renounced and to long-term residents (IRC 877(e)) who ended US residency; Form 8854.",
+      "source_url": "https://www.irs.gov/individuals/international-taxpayers/expatriation-tax",
+      "raw_snippet": "The expatriation tax provisions under Internal Revenue Code (IRC) sections 877 and 877A apply to U.S. citizens who have renounced their citizenship and long-term residents (as defined in IRC 877(e)) who have ended their U.S. resident status for federal tax purposes.",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/us-citizen-dual-tax.md"
+      ]
+    },
+    {
+      "id": "ssa-no-us-israel-totalization",
+      "claim": "The SSA list of US international social security (totalization) agreements does not include Israel (read in a browser 2026-10-19; Israel absent from the A-Z country table).",
+      "source_url": "https://www.ssa.gov/international/status.html",
+      "raw_snippet": "Country Agreement Date of Signing Effective Date Legal Citation Australia Agreement on Social Security Sept. 27, 2001 Oct. 1, 2002 TIAS 13169",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/us-citizen-dual-tax.md"
+      ],
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "irs-feie-not-se-tax",
+      "claim": "IRS: the foreign earned income exclusion on self-employment income reduces regular income tax but not self-employment tax.",
+      "source_url": "https://www.irs.gov/individuals/international-taxpayers/foreign-earned-income-exclusion",
+      "raw_snippet": "A qualifying individual may claim the foreign earned income exclusion on foreign earned self-employment income. The excluded amount will reduce your regular income tax but will not reduce your self-em",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/us-citizen-dual-tax.md"
+      ]
+    },
+    {
+      "id": "irs-877a-mark-to-market",
+      "claim": "IRS: a covered expatriate is subject to the 877A mark-to-market tax on net unrealized gain as if property were sold at FMV the day before expatriation.",
+      "source_url": "https://www.irs.gov/instructions/i8854",
+      "raw_snippet": "If you are a covered expatriate in the year you expatriate, you are subject to income tax on the net unrealized gain on your property as if the property had been sold for its fair market value (FMV) on the day before your expatriation date",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "SKILL.md",
+        "SKILL_HE.md",
+        "references/us-citizen-dual-tax.md"
+      ]
+    },
+    {
+      "id": "circ07-in-force-31-3",
+      "claim": "Circular 07/2026 s.1: the temporary provision entered into force on 31 March 2026.",
+      "source_url": "https://www.gov.il/BlobFolder/service/tax-relief-new-immigrants/he/IncomeTax_hozer-7-2026-acc.pdf",
+      "raw_snippet": ".1בתאריך 31למרץ 2026נכנסה לתוקפה הוראת השעה \"חוק עידוד עלייה לישראל וחזרה אליה\" (הורא",
+      "fetched_at": "2026-10-19",
+      "appears_in": [
+        "references/hok-iddud-2026.md"
+      ],
+      "verified_via": "pdf",
+      "verified_at": "2026-10-19"
     }
   ]
 }

@@ -32,7 +32,7 @@ For 10 years starting on the date the individual becomes an Israeli tax resident
 
 ## What is NOT exempt
 
-1. **Israeli-source income** earned during the 10-year window. Salary from an Israeli employer, business income from Israeli customers, rent from Israeli property, dividends from Israeli companies, interest from Israeli bonds, gains from Israeli securities (TASE) are all taxed at regular Israeli rates.
+1. **Israeli-source income** earned during the 10-year window. Salary for work performed in Israel, business or professional income from work performed in Israel (for Israeli or foreign clients alike, Section 4A), rent from Israeli property, dividends from Israeli companies, interest from Israeli bonds, gains from Israeli securities (TASE) are all taxed at regular Israeli rates.
 2. **Mixed-source income** where part of the activity was performed in Israel. The exemption is pro-rated to the foreign-source portion.
 3. **Equity compensation sourced by vesting** (see `equity-compensation-sourcing.md`). Pre-move grant + post-move vest + work performed in Israel = largely Israeli-source, regardless of grant date.
 4. **Income through Israeli-resident intermediaries** that the Tax Authority can re-characterize as Israeli-source.
@@ -45,9 +45,9 @@ For 10 years starting on the date the individual becomes an Israeli tax resident
 | TASE securities trading and Israeli mutual funds | Taxable at standard Israeli capital gains rates (25% nominal as of 2026) |
 | Dividends from Israeli companies | Taxable at 25% (or higher for substantial holders) |
 | Rental income from Israeli real estate | Taxable under the residential exemption track or 10% track or marginal track per Israeli rules |
-| Salary from Israeli employer (work performed in Israel) | Taxable at marginal rates, subject to the new 2026 labor-income caps (see below) |
+| Salary for work performed in Israel (any employer) | Taxable at marginal rates, subject to the 2026 Hok Iddud personal-exertion caps (see below) |
 | Interest from Israeli bank deposits and Israeli bonds | Taxable at standard rates |
-| Business income from Israeli customers | Taxable at marginal/corporate rates |
+| Business or professional income from work performed in Israel, whatever the client's location (Section 4A) | Taxable at marginal/corporate rates, subject to the Hok Iddud caps for an eligible individual |
 
 A returnee who opens a Bank Leumi or IBI brokerage and starts trading TASE securities will pay normal Israeli capital gains tax on those trades for every year of the vatik window. Section 14 does NOT shield Israeli-source investment income.
 
@@ -80,7 +80,7 @@ There is no single "election form" for the section 14 exemption itself. The exem
 
 1. Filing an annual return (Form 1301) as an Israeli resident.
 2. Reporting foreign income on Schedule D-1 (Nispach D-1) at the exempt rate (after 1.1.2026 reporting change, see `2026-reporting-change.md`).
-3. Optionally holding a Returning Resident Certificate (Te'udat Toshav Chozer) from the Ministry of Aliyah and Integration. Note: this certificate is an administrative document useful for absorption services. It is NOT binding on the Tax Authority; section 14 status is determined independently by Mas Hachnasa under the Ordinance. BSH CPA writes: "תעודת תושב חוזר ותיק המוענקת ע"י משרד הקליטה אינה מקנה הטבות מס מכוח מעמד תושב חוזר כהגדרתו בפקודת מס הכנסה ואינה מחייבת את רשות המסים בעניין תושבות לצורכי מס."
+3. Holding a Returning Resident Certificate (Te'udat Toshav Chozer) from the Ministry of Aliyah and Integration. It does not establish Section 14 status, which the Tax Authority determines independently. But Hok Iddud Section 1 makes the certificate a PRECONDITION for a toshav chozer vatik to get the 2026-2030 Israeli-source caps, and Form 116ע requires it to be attached, so a returnee in the window must get it.
 4. For section 14(b) year-of-acclimation, a separate Form 1130 filed within 90 days of arrival.
 
 For bank-level treatment of foreign-currency deposits, Form 2409 is commonly requested by Israeli banks in connection with an incoming foreign transfer. Any deadline here is a bank convention, not a statute, and it varies in practice, so ask the specific bank for its own window rather than quoting one.
@@ -93,17 +93,9 @@ Practical consequence for crypto and stock-heavy returnees in 2026: if you sell 
 
 ITA Circular 10/2025 (חוזר מס הכנסה 10/2025), published November 2025, clarifies the section 92 matching principle in detail and confirms this treatment for olim and toshav chozer vatik exemption periods.
 
-## 2026 Israeli-source labor income caps
+## 2026 Israeli-source personal-exertion caps (Hok Iddud)
 
-Separate from section 14, the 2026 חוק עידוד עלייה לישראל וחזרה אליה (הוראת שעה), התשפ"ו-2026 created an additional exemption on ISRAELI-source labor income for olim and vatik returnees who arrive in the window 5.11.2025 to 31.12.2026. The annual caps are:
-
-- 2026: up to 600,000 NIS
-- 2027: up to 1,000,000 NIS
-- 2028: up to 1,000,000 NIS
-- 2029: up to 350,000 NIS
-- 2030: up to 150,000 NIS
-
-This is the single biggest planning lever for a 2026 returnee with a high Israeli salary. The exemption is on top of the section 14 exemption on foreign income; together they shield substantial total income in the early years.
+Separate from section 14. An oleh or toshav chozer vatik who BECAME an Israeli resident (actual center-of-life move) between 5.11.2025 and 31.12.2026 is exempt on Israeli-source personal-exertion income (employment and business or profession, Sections 2(1)/2(2)) up to 600,000 NIS in 2026 (pro-rated), 1,000,000 NIS in 2027 and 2028, 350,000 NIS in 2029 and 150,000 NIS in 2030. Full mechanics, Circular 07/2026 and sources: `references/hok-iddud-2026.md`.
 
 ## Sources
 
@@ -116,3 +108,37 @@ This is the single biggest planning lever for a 2026 returnee with a high Israel
 - ITA Circular 10/2025 (capital loss matching principle): https://www.gov.il/BlobFolder/policy/professional-directives-271125-1/he/IncomeTax_professional-directives-271125-1.pdf
 - Y-Tax commentary on capital loss offsetting under Circular 10/2025: https://y-tax.co.il/capital-loss-offsetting/
 - BSH CPA on 2026 Israeli-source labor cap: https://www.bshcpa.co.il/tax-exemption-returning-residents-olim-2026/
+
+## Olim credit points (Section 35), moved from SKILL.md Step 5.5
+
+Only for a returnee who also holds oleh status. A returning Israeli citizen who is a vatik does not receive them.
+
+For an oleh (whether or not they also qualify as vatik):
+
+- **The olim scheme runs 54 months from the aliyah date and the schedule is NOT front-loaded: under Section 35 the first 12 months accrue at the lowest rate (1/12 point per month, so 1 point), the next 18 months at the highest (1/4 point per month, so 3 points a year), then 1/6 per month, then 1/12. Do not tell an oleh year 1 is the richest year. Confirm the exact per-year allocation and the current point value against the Tax Authority / Kol-Zchut table.**
+- Each point is worth 2,904 NIS/year in 2026 (242 NIS/month), so the benefit is worth roughly **3,000 NIS to 9,000 NIS per year** depending on the year in the taper.
+- Applied AGAINST Israeli-source tax (after the Hok Iddud exemption is exhausted).
+- Useful for olim with modest Israeli salaries that fall under the Hok Iddud cap: the credit points still reduce tax on the portion above the cap or on Israeli interest/dividends/rent.
+
+An oleh resident from before 2026 (for example from December 2025) who earns 800K Israeli salary in 2026 with 600K exempt under Hok Iddud should still claim the olim credit points against tax on the 200K residual. A returning-citizen vatik in the same position claims section 14 and Hok Iddud only, no olim points.
+
+### בעברית
+
+לעולה (בין אם הוא גם ותיק ובין אם לא):
+
+- **הסדר העולים נמשך 54 חודשים מתאריך העלייה, והמתווה אינו מוטה לתחילתו: לפי סעיף 35, 12 החודשים הראשונים נצברים בשיעור הנמוך ביותר (1/12 נקודה לחודש, כלומר נקודה אחת), 18 החודשים שאחריהם בשיעור הגבוה ביותר (1/4 נקודה לחודש, כלומר 3 נקודות לשנה), אחר כך 1/6 לחודש ואז 1/12. אל תגידו לעולה ששנה 1 היא השנה הכי משתלמת. את ההקצאה המדויקת לפי שנה ואת שווי הנקודה העדכני יש לאמת מול הטבלה של רשות המסים / כל-זכות.**
+- כל נקודה שווה 2,904 ש"ח לשנה ב-2026 (242 ש"ח לחודש), כך שההטבה שווה בקירוב **3,000 ש"ח עד 9,000 ש"ח לשנה** תלוי בשנה במתווה.
+- מקוזזת כנגד מס ישראלי (אחרי שהפטור של חוק עידוד נוצל עד תקרתו).
+- שימושית לעולים עם שכר ישראלי בינוני שלא מגיע לתקרת חוק עידוד: נקודות הזיכוי עדיין מפחיתות מס על החלק מעל התקרה או על ריבית/דיבידנד/שכר דירה ישראלי.
+
+עולה שהיה תושב כבר לפני 2026 (למשל מדצמבר 2025) ומרוויח 800 אלף שכר ישראלי ב-2026, עם 600 אלף פטור לפי חוק עידוד, צריך עדיין לתבוע את נקודות הזיכוי לעולים כנגד המס על ה-200 אלף השאריים. חוזר-אזרח ותיק באותו מצב תובע רק סעיף 14 וחוק עידוד, בלי נקודות זיכוי לעולים.
+
+## Company edge cases (moved from SKILL.md Step 2)
+
+- **CFC dividends**: the vatik exemption can be challenged on dividends from a foreign company the returnee controls. Do not quote a 25% test. Section 75B turns on control tests (more than 50% of the means of control held by Israeli residents, or more than 40% held by Israeli residents who with a relative hold more than 50%) plus passive-income and foreign-tax-rate limbs. Have a CPA test the structure. See `references/section-14-mechanics.md`.
+- **A foreign company you manage from Israel does NOT automatically become Israeli-resident.** Separate from the CFC point above, and the question a returning founder actually has. The "Israeli resident" definition for a body of persons expressly excludes a company whose control and management are exercised in Israel by a first-time resident or veteran returning resident under Section 14(a) where ten years have not passed, unless the company requests otherwise. Running your foreign entity from Israel does not by itself pull its worldwide profits into Israeli tax during the window. Three riders: the relief ends with the same ten-year clock, so year 11 needs a plan; the company's profit produced in Israel through your own work is still Israeli-source and taxable under Section 4A, and the Hok Iddud Section 3 relief for it is denied to a substantial shareholder, which a one-person company's owner always is; and it does not settle permanent establishment or the CFC rules. CPA territory.
+
+### בעברית
+
+- **דיבידנדים מ-CFC**: הפטור של ותיק על דיבידנדים מחברה זרה שהחוזר שולט בה יכול להיתקף. אל תצטטו מבחן של 25%. סעיף 75ב נסמך על מבחני שליטה (למעלה מ-50% מאמצעי השליטה בידי תושבי ישראל, או למעלה מ-40% בידי תושבי ישראל שיחד עם קרוב מחזיקים למעלה מ-50%) בתוספת מבחני הכנסה פסיבית ושיעור מס בחו"ל. רואה חשבון צריך לבחון את המבנה. ראו `references/section-14-mechanics.md`.
+- **חברה זרה שאתם מנהלים מישראל לא הופכת אוטומטית לתושבת ישראל.** זו שאלה נפרדת מסוגיית החנ"ז שלמעלה, וזו השאלה שיש בפועל ליזם או ליועץ שחוזר. הגדרת "תושב ישראל" לחבר בני אדם מוציאה במפורש חברה שהשליטה על עסקיה וניהולם מופעלים בישראל בידי יחיד שהיה לתושב ישראל לראשונה או לתושב חוזר ותיק לפי סעיף 14(א), כל עוד לא חלפו עשר שנים, אלא אם כן החברה ביקשה אחרת. כלומר ניהול הישות הזרה מישראל לא מושך כשלעצמו את רווחיה העולמיים למס ישראלי בתוך החלון. שלושה סייגים: ההקלה נגמרת עם אותו שעון של עשר שנים, אז שנה 11 דורשת תוכנית; הרווח של החברה שמופק בישראל מהעבודה שלכם עדיין ממקור ישראלי וחייב לפי סעיף 4א, והפטור של סעיף 3 לחוק עידוד לא חל על בעל מניות מהותי, וזה תמיד המצב בחברת אדם אחד; והיא לא מכריעה לגבי מוסד קבע או כללי החנ"ז. שטח של רואה חשבון.

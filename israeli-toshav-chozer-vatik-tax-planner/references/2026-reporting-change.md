@@ -37,7 +37,7 @@ Per Shibolet & Co. and Arnon, Tadmor-Levy commentary:
 - **No tax owed**, but tax compliance work is now non-trivial. Expect a CPA bill where previously there was no filing at all.
 - **Statute of limitations** clocks now run on properly-filed returns, which gives a closing-of-the-books benefit that the old regime did not provide.
 - **OECD compliance**: the change is widely understood to be a response to OECD pressure on Israel's disclosure standards (BEPS, CRS). The Knesset Research Center analysis (2025) frames it that way.
-- **Year-of-acclimation election** (section 14(b)) becomes more attractive because it can shift the residency start date past 1.1.2026 trigger (only for those who arrived in late 2025 and have flexibility on when residency commenced).
+- **Year-of-acclimation election** (section 14(b)): no source says the election moves the date that counts for Amendment 272, and moving residency past 1.1.2026 would bring the person INTO the reporting duty, not out of it. Treat any interaction as a CPA question.
 
 ## What it is NOT
 
