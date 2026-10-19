@@ -1,7 +1,7 @@
 {
   "skill_slug": "israeli-coupon-code-finder",
   "schemaVersion": "1.0",
-  "generated_at": "2026-07-25",
+  "generated_at": "2026-10-19T20:10:00Z",
   "claims": [
     {
       "id": "legal-cancel-14-days",
@@ -10,7 +10,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-06-08T00:00:00Z",
       "raw_snippet": "בתוך 14 ימים (שבועיים) מיום קבלת המוצר או קבלת מסמך עם פרטי העסקה",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-cancel-fee-cap",
@@ -19,7 +21,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-06-08T00:00:00Z",
       "raw_snippet": "דמי ביטול בגובה של 5% מהמחיר ששולם או 100 ₪, לפי הנמוך מביניהם",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-cancel-extended-4-months",
@@ -28,7 +32,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-06-08T00:00:00Z",
       "raw_snippet": "לקוחות שהם אנשים עם מוגבלות או שמלאו להם 65 שנים או שהם עולים חדשים - יכולים לבטל את העסקה בתוך 4 חודשים",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "src-couponim",
@@ -64,7 +70,9 @@
       "source_url": "https://www.max.co.il/benefits/lobby",
       "source_fetched_at": "2026-06-08T00:00:00Z",
       "raw_snippet": "הטבות ופינוקים למחזיקי כרטיס אשראי מקס - max הטבות",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "src-chaver",
@@ -72,7 +80,7 @@
       "claim_type": "url",
       "source_url": "https://www.hvr.co.il",
       "source_fetched_at": "2026-06-08T00:00:00Z",
-      "raw_snippet": "ברוכים הבאים לאתר הבר",
+      "raw_snippet": "ברוכים הבאים לאתר \"חבר\"",
       "confidence": "medium",
       "verified_via": "browser",
       "verified_at": "2026-07-25T00:00:00Z",
@@ -112,16 +120,20 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-06-08T00:00:00Z",
       "raw_snippet": "אם העסקה בוטלה בגלל אחת מהסיבות הבאות, אסור לבעל העסק לגבות דמי ביטול: פגם במוצר, אי התאמה בין המוצר או השירות למידע שנמסר ללקוח על-ידי בעל העסק",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-4month-precondition",
-      "claim": "The extended (4-month) cancellation period for people with disabilities, seniors 65+, and new immigrants applies when the transaction included a conversation (phone, chat, or email) between the customer and a business representative, and the business may require proof of eligibility.",
+      "claim": "The 4-month extended cancellation window for people with disabilities, shoppers 65+ and new immigrants applies when the transaction included a conversation by phone or chat with a business representative (the page no longer lists email, re-checked 2026-10-19).",
       "claim_type": "law",
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-06-08T00:00:00Z",
-      "raw_snippet": "אם התקיימה שיחה (בטלפון, בצ'אט או במייל וכו') בין הלקוח לנציג של בית העסק במהלך ביצוע העסקה",
-      "confidence": "high"
+      "raw_snippet": "אם התקיימה שיחה (בטלפון או בצ'אט) בין הלקוח לנציג של בית העסק במהלך ביצוע העסקה",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "import-exemption-75usd",
@@ -129,8 +141,10 @@
       "claim_type": "threshold",
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_%28חבילות_מחו%22ל%29",
       "source_fetched_at": "2026-07-25T00:00:00Z",
-      "raw_snippet": "הפטור ממס על קניות בייבוא אישי ניתן עד סכום של 75 דולר...משלוח עם מוצרים שערכם הכולל עד 75 דולר פטור לחלוטין ממסי יבוא...משלוח עם מוצרים שערכם הכולל מעל 75 דולר ולא יותר מ-500 דולר פטור מתשלום מכס בלבד, וחייב בתשלום מע\"מ (18%) ו מס קניה - אם המוצר מחויב בו",
-      "confidence": "high"
+      "raw_snippet": "הפטור ממס על קניות בייבוא אישי ניתן עד סכום של 75 דולר...משלוח עם מוצרים שערכם הכולל עד 75 דולר פטור לחלוטין ממסי יבוא...משלוח עם מוצרים שערכם הכולל מעל 75 דולר ולא יותר מ-500 דולר פטור מתשלום מכס בלבד, וחייב בתשלום מע\"מ (18%) ומס קניה - אם המוצר מחויב בו",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "import-bands-500-1000",
@@ -139,7 +153,9 @@
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_%28חבילות_מחו%22ל%29",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "מוצרים שעלו 1,000-500 דולר חייבים בתשלום מע\"מ וחלקם חייבים גם בתשלום מכס ומס קנייה...מוצרים שערכם מעל 1,000 דולר או משלוח של טבק, סיגריות ומשקאות אלכוהוליים בכל סכום שהוא, חייבים בתשלום מע\"מ וכן במכס ובמס קנייה",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "import-130usd-window",
@@ -148,7 +164,9 @@
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_%28חבילות_מחו%22ל%29",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "בין 25.02.2026 ל-01.06.2026 הפטור ניתן למוצרים עד 130 דולר",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-no-fee-broader",
@@ -157,7 +175,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "המוצר לא סופק במועד שנקבע...הצרכן ביטל את העסקה בגלל הפרה אחרת של תנאי העסקה על-ידי בעל העסק",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-4month-service-notice",
@@ -166,7 +186,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "אפשר לבטל בתוך 4 חודשים, ובתנאי שנותרו לפחות 2 ימי עסקים עד למועד קבלת השירות...אפשר לבטל בתוך 4 חודשים, ובתנאי שנותרו לפחות 7 ימי עסקים עד למועד קבלת השירות",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "src-cal-benefits",
@@ -174,9 +196,11 @@
       "claim_type": "url",
       "source_url": "https://www.cal-online.co.il/benefits/",
       "source_fetched_at": "2026-07-25T00:00:00Z",
-      "raw_snippet": "הטבות ומועדונים",
-      "confidence": "medium",
-      "fetch_note": "WAF-blocked (F5 \"Request Rejected\") to both curl and headless Chromium on 2026-07-25; host is live for real browsers. Existence cross-checked via search, not by reading the page."
+      "raw_snippet": "סידרנו לכם עולם שלם של הטבות - רק תבחרו",
+      "confidence": "high",
+      "fetch_note": "WAF-blocked (F5 \"Request Rejected\") to both curl and headless Chromium on 2026-07-25; host is live for real browsers. Existence cross-checked via search, not by reading the page.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "src-isracard-benefits",
@@ -184,9 +208,11 @@
       "claim_type": "url",
       "source_url": "https://benefits.isracard.co.il",
       "source_fetched_at": "2026-07-25T00:00:00Z",
-      "raw_snippet": "הטבות ישראכרט",
-      "confidence": "medium",
-      "fetch_note": "Cloudflare-blocked (403 interstitial) to both curl and headless Chromium on 2026-07-25; host is live for real browsers. Existence cross-checked via search, not by reading the page."
+      "raw_snippet": "ישראכרט הטבות | 1+1, קופונים ומבצעים מיוחדים",
+      "confidence": "high",
+      "fetch_note": "Cloudflare-blocked (403 interstitial) to both curl and headless Chromium on 2026-07-25; host is live for real browsers. Existence cross-checked via search, not by reading the page.",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "src-isracard",
@@ -204,7 +230,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "מוצר שעשוי לאבד את ערכו במהירות (לדוגמה, פרחים)...מוצר שיוצר עבור הלקוח, בהזמנה מיוחדת...מוצר שניתן להקלטה או שכפול, והצרכן פתח את האריזה המקורית...מידע דיגיטלי",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-return-at-own-expense",
@@ -213,7 +241,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "בדרך כלל על הצרכן להחזיר את המוצר לבית העסק על חשבונו",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-refund-14-days",
@@ -222,7 +252,9 @@
       "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "בעל העסק צריך להחזיר לצרכן את כספו בתוך 14 ימים מיום שקיבל את הודעת הביטול",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "import-tax-base",
@@ -231,7 +263,9 @@
       "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_%28חבילות_מחו%22ל%29",
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "חישוב ערך המוצרים לא כולל הובלה וביטוח, בתנאי שהם מחושבים בנפרד מערך המוצרים...שיעור המס החל מחושב לפי ערך החבילה בתוספת דמי המשלוח והביטוח אם ישנם",
-      "confidence": "high"
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     },
     {
       "id": "legal-foreign-forum",
@@ -241,6 +275,94 @@
       "source_fetched_at": "2026-07-25T00:00:00Z",
       "raw_snippet": "ניתן לתבוע את פייסבוק בישראל, לפי דיני קליפורניה...עצם קיומה של תניית שיפוט זר אינה מפקיעה את סמכות בית המשפט המקומי",
       "confidence": "high"
+    },
+    {
+      "id": "cashback-terms-coupon-voids",
+      "claim": "Cashback.co.il terms: the rebate may not be paid when the purchase was not made in the referred visit (e.g. a cart saved earlier and paid later outside the referral) or when a coupon or discount from another site or service was used on the purchase.",
+      "claim_type": "vendor-terms",
+      "source_url": "https://www.cashback.co.il/terms",
+      "source_fetched_at": "2026-10-19T19:30:00Z",
+      "raw_snippet": "המשתמש לא ביצע את העסקה במעמד ההפנייה לאתר המפרסם מאתר קאשבק (למשל, שמירת סל קניות קודם באתר המפרסם, וביצוע התשלום במועד מאוחר יותר, שלא באמצעות אתר המפרסם)...המשתמש עשה שימוש בעת הרכישה בקופון/הנחה של אתר/שירות אחר",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "import-72h-split",
+      "claim": "Two or more parcels from the same supplier to the same customer within 72 hours are treated as one split shipment, taxed on their combined value.",
+      "claim_type": "regulation",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_%28חבילות_מחו%22ל%29",
+      "source_fetched_at": "2026-10-19T19:30:00Z",
+      "raw_snippet": "שתי חבילות או יותר שיישלחו מאותו ספק לאותו לקוח בהפרש של עד 72 שעות, ייחשבו כמשלוח אחד שפוצל, ומסי היבוא יחושבו לפי ערכם הכולל של כל המוצרים",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "store-ksp",
+      "claim": "KSP is a live Israeli electronics and computers retailer at ksp.co.il.",
+      "claim_type": "entity",
+      "source_url": "https://ksp.co.il/web/",
+      "source_fetched_at": "2026-10-19T19:30:00Z",
+      "raw_snippet": "הכל במקום אחד | KSP",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "credit-installments-stop",
+      "claim": "On a credit transaction where the goods or service were not supplied, the consumer notifies the business of cancellation and tells the payment provider, which stops the remaining installments but does not refund amounts already paid; those are claimed from the business.",
+      "claim_type": "law",
+      "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_בתשלומים_עקב_מוצר_או_שירות_שלא_סופקו",
+      "raw_snippet": "נותן שירותי התשלום יעצור את התשלומים העתידיים אך לא יחזיר סכומים שכבר שולמו במסגרת העסקה...הוא שלח הודעת ביטול עסקה לבית העסק, אם הדבר אפשרי, והודיע על כך לנותן שירותי התשלום",
+      "source_fetched_at": "2026-10-19T20:10:00Z",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "import-sms-notice",
+      "claim": "Most courier companies notify the recipient of the required tax payment by SMS or email; taxes can also be paid in advance through the official app for paying taxes on parcels.",
+      "claim_type": "regulation",
+      "source_url": "https://www.kolzchut.org.il/he/זכותון_בנושא_יבוא_אישי_%28חבילות_מחו%22ל%29",
+      "raw_snippet": "מרבית חברות השליחויות יידעו אתכם מראש על התשלום הנדרש בהודעת SMS או באימייל...יישום לתשלום מסים על חבילות",
+      "source_fetched_at": "2026-10-19T20:10:00Z",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "legal-4month-proof",
+      "claim": "The business may require proof that the customer is a person with a disability, a senior citizen or a new immigrant.",
+      "claim_type": "law",
+      "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
+      "raw_snippet": "בעל העסק יכול לדרוש מהלקוח להציג תעודה שמוכיחה שהוא אדם עם מוגבלות, אזרח ותיק או עולה חדש",
+      "source_fetched_at": "2026-10-19T20:10:00Z",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "legal-business-collects",
+      "claim": "When cancellation follows a breach by the business, the consumer returns the product where it was delivered, so for home delivery the business collects it from the consumer.",
+      "claim_type": "law",
+      "source_url": "https://www.kolzchut.org.il/he/ביטול_עסקה_שנעשתה_באינטרנט_או_בטלפון",
+      "raw_snippet": "על בעל העסק לקחת את המוצר מביתו של הצרכן",
+      "source_fetched_at": "2026-10-19T20:10:00Z",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
+    },
+    {
+      "id": "cashback-terms-technical",
+      "claim": "Cashback.co.il terms: a rebate may not be paid when, for a technical reason (e.g. blocked cookies), the site cannot identify the transaction.",
+      "claim_type": "vendor-terms",
+      "source_url": "https://www.cashback.co.il/terms",
+      "raw_snippet": "או מכל סיבה טכנית אחרת שבגינה לא עלה בידי האתר ו/או כל מי מטעמו לזהות את העסקה שבוצעה על‐ידי המשתמש",
+      "source_fetched_at": "2026-10-19T20:10:00Z",
+      "confidence": "high",
+      "verified_via": "browser",
+      "verified_at": "2026-10-19"
     }
   ]
 }

@@ -12,7 +12,7 @@ Domains are written without a scheme on purpose. The skill is methodology-only: 
 | 4 | Credit-card benefit hubs | A cardholder discount can beat any public code | The shopper's own card issuer's benefits hub | max.co.il/benefits/lobby, benefits.isracard.co.il, cal-online.co.il/benefits |
 | 5 | Gift-card stacking | Effective discount paid at checkout | A discounted gift card for the store | buyme.co.il |
 | 6 | Consumer / employee clubs | Member pricing the shopper may already have | Eligibility (career soldier, retiree, works council) | hvr.co.il |
-| 7 | Telegram coupon channels | Fast-rotating codes | Search live; never assume a specific channel | search-only, do not name a channel |
+| 7 | Telegram channels and Facebook deal groups | Fast-rotating codes | Search live; never assume a specific channel or group | search-only, do not name a channel or group |
 | 8 | Seasonal windows | Timing beats a single code | Is a known sale near? | Black Friday, Cyber Monday, Singles Day, end-of-season, holiday sales |
 
 ## Hebrew search templates (swap in the store name)
@@ -34,14 +34,18 @@ Domains are written without a scheme on purpose. The skill is methodology-only: 
 - Single-use vs reusable; stacks with sale items or not.
 - Posting date present (no date - Low confidence).
 
+## Stacking order
+
+Cashback link first, then store credit or club price, then the code, then a discounted gift card or the card with a benefit. On cashback.co.il a coupon or discount from another site can void the rebate (terms s.19), so compare and pick one.
+
 ## Output (single ranked table)
 
-`Code | Source (link) | Date seen | Discount | Conditions | Confidence`, best first, plus a "try this first" pick, plus a one-line note if a cashback rebate, card benefit, or discounted gift card beats the top code, plus the verify-at-checkout reminder.
+`Code | Source (link) | Date seen | Discount | Conditions | Confidence`, best first, plus a "try this first" pick, plus a one-line note if a cashback rebate, card benefit, or discounted gift card beats the top code, plus the verify-at-checkout reminder, plus the payment line (credit card, not a Bit, PayBox or bank transfer to the seller; on non-delivery the issuer stops the remaining installments after a cancellation notice, it does not refund what was paid).
 
 ## Legal backstop
 
-This applies to a purchase from an Israeli business; against a foreign marketplace seller it is usually unenforceable in practice, so the real routes there are the platform's buyer-protection policy and a credit-card chargeback. A remote (online) purchase can be cancelled within 14 days of receiving the product or the transaction-details document; the cancellation fee is capped at the lower of 5% of the price or 100 NIS. The right does not cover goods that lose value quickly, made-to-order goods, an opened recordable or copyable product, or digital information. The consumer normally returns the goods at their own expense (the business collects when it was the business that breached), and the refund is due within 14 days of the cancellation notice. No fee at all is allowed when the cancellation follows a defect, a mismatch with what the seller described, non-delivery by the agreed date, or another breach by the business. People with disabilities, shoppers 65 or older, and new immigrants get 4 months (with at least 2 business days left before a one-time service, 7 before a tourism service). See the Kol-Zchut remote-sale cancellation page (full URL in SKILL.md).
+This applies to a purchase from an Israeli business; against a foreign marketplace seller it is usually unenforceable in practice, so the real routes there are the platform's buyer-protection policy and asking the card issuer whether the charge can be disputed. A remote (online) purchase can be cancelled within 14 days of receiving the product or the transaction-details document; the cancellation fee is capped at the lower of 5% of the price or 100 NIS. The right does not cover goods that lose value quickly, made-to-order goods, an opened recordable or copyable product, or digital information. The consumer normally returns the goods at their own expense (after a breach by the business, the goods go back from where they were delivered, so after a home delivery the business collects them), and the refund is due within 14 days of the cancellation notice. No fee at all is allowed when the cancellation follows a defect, a mismatch with what the seller described, non-delivery by the agreed date, or another breach by the business. People with disabilities, shoppers 65 or older, and new immigrants get 4 months (with at least 2 business days left before a one-time service, 7 before a tourism service). See the Kol-Zchut remote-sale cancellation page (full URL in SKILL.md).
 
 ## Landed-cost check for global stores
 
-The personal-import exemption threshold is 75 USD as of 2 June 2026 (it was 130 USD from 25 February to 1 June 2026). The value tested against the threshold excludes separately-priced shipping and insurance, but once tax is due it is computed on the parcel value plus shipping and insurance. From 75 to 500 USD a parcel is customs-exempt but owes 18% VAT; from 500 to 1,000 USD it owes VAT and sometimes customs and purchase tax; above 1,000 USD, and for any tobacco or alcohol shipment, full rates apply. See the Kol-Zchut personal-import page (full URL in SKILL.md).
+The personal-import exemption threshold is 75 USD as of 2 June 2026 (it was 130 USD from 25 February to 1 June 2026). The value tested against the threshold excludes separately-priced shipping and insurance, but once tax is due it is computed on the parcel value plus shipping and insurance. From 75 to 500 USD a parcel is customs-exempt but owes 18% VAT; from 500 to 1,000 USD it owes VAT and sometimes customs and purchase tax; above 1,000 USD, and for any tobacco or alcohol shipment, full rates apply. Parcels from the same supplier to the same customer within 72 hours count as one split shipment, so splitting an order does not keep it under 75 USD. See the Kol-Zchut personal-import page (full URL in SKILL.md).

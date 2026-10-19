@@ -17,12 +17,17 @@ Generated: 2026-06-08. Domains below are written without a scheme on purpose; on
 - [x] Gift-card stacking (discounted BuyMe / club reload paid at checkout) - source: buyme.co.il
 - [x] Consumer / employee clubs (Moadon Chaver for career soldiers + retirees; works-council portals) - source: hvr.co.il
 - [x] Cross-border-to-IL stores (weigh customs/VAT threshold + shipping against the code) - note: deep price math is israeli-product-price-comparator
-- [x] Telegram coupon channels as a live-search surface (category only, never name a specific channel)
+- [x] Telegram coupon channels and Facebook deal groups as live-search surfaces (category only, never name a specific channel or group)
+- [x] Stacking order (cashback link, store credit or club price, code, gift card or card benefit) and the cashback-voided-by-another-site's-coupon rule - source: cashback.co.il/terms s.19
+- [x] Global-marketplace branch (platform coupon vs seller coupon layers, judge against recent price)
+- [x] Split-parcel rule: parcels from one supplier within 72 hours are taxed as one shipment - source: kolzchut.org.il personal-import page
+- [x] Payment-method line (credit card, never Bit/PayBox/transfer) required in every summary, not only in the scam rubric
 
 ## Out of scope (explicit, with rationale)
 - Ongoing savings strategy, cashback-account setup, subscription auditing - recurring behavior, not point-of-checkout - related skill: israeli-smart-saver
 - Cross-store price comparison ("who sells this cheapest") - product-matching, not coupon-finding - related skill: israeli-product-price-comparator
-- Grocery / supermarket basket pricing - recurring grocery optimization - related skill: israeli-grocery-price-intelligence
+- Grocery / supermarket basket pricing across chains - recurring grocery optimization - related skill: israeli-grocery-price-intelligence. Re-litigated 2026-10-19: a coupon CODE for an online supermarket order is IN scope (same method as any store checkout) and the body now says so; only cross-chain basket comparison stays out.
+- Re-litigated 2026-10-19: cashback-account setup. The one-off open-an-account-then-re-enter-through-the-link step is point-of-checkout and is now in Step 2; ongoing cashback strategy stays with israeli-smart-saver. Cross-store price comparison: still out, users asking it want a different tool and the description routes them.
 
 ## Verified named entities (the source map the skill may safely name)
 | Entity | Domain | What it is |
@@ -36,6 +41,9 @@ Generated: 2026-06-08. Domains below are written without a scheme on purpose; on
 | Bug | bug.co.il | IL electronics/digital retailer |
 | Terminal X | terminalx.com | IL fashion online store |
 | Kol-Zchut | kolzchut.org.il | Authoritative IL consumer-rights wiki |
+| KSP | ksp.co.il | IL computers/electronics retailer (verified live 2026-10-19) |
+| Isracard benefits | benefits.isracard.co.il | Isracard cardholder benefits hub (browser-verified 2026-10-19; a fake path returns a 200 'httpErrors' page, so check the title) |
+| Cal benefits | cal-online.co.il/benefits | Cal cardholder benefits hub (browser-verified 2026-10-19; plain fetch returns 400) |
 
 ## Authoritative source (verified, cited with full URL in SKILL.md + evidence.json)
 - kolzchut.org.il remote-sale cancellation page - the 14-day window, the 5% / 100 NIS fee cap, the 4-month extension for seniors / people with disabilities / new immigrants
@@ -45,4 +53,4 @@ Generated: 2026-06-08. Domains below are written without a scheme on purpose; on
 - Bidurit employee-perk portal - not confirmed operating in 2026. EXCLUDE.
 - Any specific Telegram coupon-channel handle - category is real, no durable named channel verified. Reference generically only.
 - Rav-Tav as a single branded site - it is a voucher format, not one production URL. Mention as a format only.
-- castro.co.il redirects to a .com host, super-pharm.co.il redirects to a shop subdomain, and the Cal benefits page returned an error at fetch time. Re-verify the live destination before naming any of them.
+- castro.co.il redirects to a .com host and super-pharm.co.il redirects to a shop subdomain. Re-verify the live destination before naming either. (The Cal benefits page, listed here earlier, renders in a real browser and is now verified.)

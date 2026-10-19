@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.3.0 - 2026-10-19
+
+A destination re-check (every named site re-opened in a real browser against a fabricated-path control) found one source that had changed and one rule the skill was missing.
+
+- **Kol-Zchut narrowed the 4-month precondition.** The page now reads "a conversation (by phone or chat)"; it used to include email. Both language files said "phone, chat, or email". Corrected.
+- **A coupon from another site can cancel a cashback rebate.** Cashback.co.il's terms (s.19) say the rebate may not be paid when a coupon or discount from another site or service is used, or when the order is paid later from a cart saved outside the referred visit. The skill told shoppers to stack a code on a cashback visit without warning that the two can cancel each other. Step 4 now carries a stacking order and that check.
+- **Split parcels.** Splitting one order to stay under the 75 USD exemption does not work: parcels from the same supplier within 72 hours are taxed as one shipment. Added to the landed-cost gotcha.
+- **Payment line in every summary.** "Pay by credit card, not Bit, PayBox or bank transfer" lived only inside the scam-site rubric, so a normal coupon run could finish without it. Step 5 now requires it.
+- **Payment line no longer overpromises a chargeback.** Kol-Zchut's credit-transaction page says the issuer stops the REMAINING installments on non-delivery after a cancellation notice and does not refund what was already paid. Both files now say exactly that, and tell the shopper to ask the issuer about disputing the charge rather than promising one.
+- **The parcel-SMS warning contradicted the skill's own source.** It said real carriers never ask for payment by SMS; Kol-Zchut says most couriers do notify a tax payment by SMS or email. Rewritten: the tell is paying through the link, not the message.
+- **Deferred items from 1.1.0 partly closed:** a global-marketplace note, Facebook deal groups as a search surface, grocery coupon codes explicitly in scope, the open-account-then-re-enter cashback step, the Example 3 Israeli-business qualifier, KSP in Example 2, and a warning that coupon auto-apply extensions can take over a cashback referral. Still open and re-logged: marketplace-native levers (coins, welcome deals, free-shipping thresholds) and a price-history source, reservist and student benefit programs, and lever-type ranking in the script.
+- **`rank_codes.py` now reads an optional `expires` (YYYY-MM-DD).** An expired code is dropped and named on stderr; an unreadable expiry is kept, flagged in the table, and capped at medium confidence (including when the input states a higher confidence). `--today` sets the comparison date. Before this the description promised expiry checking and nothing in the script did it.
+- All other destinations confirmed alive and on-topic: couponim.co.il, cashback.co.il, buyme.co.il, max.co.il/benefits/lobby, benefits.isracard.co.il, cal-online.co.il/benefits, hvr.co.il. Customs figures unchanged (75 USD, 130 USD window 25.02 to 01.06.2026, 18% VAT band to 500 USD).
+
 ## 1.2.0 - 2026-08-27
 
 A link-rot sweep that came back clean, and two script defects that did not.
