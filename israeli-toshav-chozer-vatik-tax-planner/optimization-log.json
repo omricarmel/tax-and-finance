@@ -1,7 +1,7 @@
 {
   "cycles": [
     {
-      "version": "1.4.0",
+      "version": "1.4.0 / 1.4.1",
       "date": "2026-10-19",
       "lessons": [
         "Fixed: Hok Iddud described as salary-only; s.1 'הכנסה מזכה' covers s.2(1) business AND s.2(2) employment. Fixed: window described as 'arriving'; the test is the actual center-of-life move (Circular 07/2026), unaffected by an acclimation election (s.2(e)).",
@@ -13,7 +13,8 @@
         "Process: SKILL.md and SKILL_HE.md both sit at ~4,970-4,980 words; every addition now requires moving text to references. The next substantive cycle should move Step 6 detail and Example 1 into references before adding anything.",
         "Description not changed this cycle, so Phase 5.7 was skipped.",
         "Done this cycle after review: script acquired_by_gift field (GIFT-TAX) and LINEAR-EX for post-window capital gains under s.97(b)(3) (the tax-year rewrite had briefly printed them TAXABLE, a fourth defect caught by the arithmetic reviewer); Gotcha 8 now says the 90-day Form 1130 window runs from arrival; frontmatter descriptions now open with the legal clause (lead decision; Phase 5.7 holdout not re-run because only the legal clause moved).",
-        "CARRY (Expert MAJOR, deferred): a fuller pre-arrival 'Step 0' planning block, and foreign pension / 401(k) treatment after year 10 (s.9A, treaty pension article). Both need room: move Step 6 detail or Example 1 to references first."
+        "CARRY (Expert MAJOR, deferred): a fuller pre-arrival 'Step 0' planning block, and foreign pension / 401(k) treatment after year 10 (s.9A, treaty pension article). Both need room: move Step 6 detail or Example 1 to references first.",
+        "1.4.1 post-ship: the word-cap trim of Example 1 turned 'no FTC on the exempt portions' into 'no FTC since Israel taxed nothing', which is wrong for Israeli-source salary above the cap. Trimming is editing; re-read trimmed sentences for scope words."
       ]
     },
     {

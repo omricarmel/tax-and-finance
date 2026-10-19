@@ -391,7 +391,7 @@ def interactive() -> Dict:
         label = input("  Label: ").strip()
         source = input("  Source [foreign/israeli] (active income: where the work is done): ").strip().lower()
         kind = input("  Kind [active/passive/capital-gain]: ").strip().lower()
-        amt = int(input("  Amount per tax year (integer, no commas): ").strip())
+        amt = int(input("  Amount per tax year, Year 1 only from the residency date (integer, no commas): ").strip())
         cur = input("  Currency [e.g. USD, EUR, NIS]: ").strip().upper()
         acquired = input("  Asset acquired before return? [y/n] (for regular track only): ").strip().lower() == "y"
         years_raw = input(f"  Tax years active, 1 = residency year [e.g. 1-{MAX_YEARS} or 1,2,5-8]: ").strip()

@@ -174,7 +174,7 @@ Output (Israeli side, then US-side note):
 - **US RSU vest 2028, granted in 2024 before the move, 4-year vest schedule**: do NOT treat this as a clean foreign capital gain. The Israeli sourcing depends on where the work was performed during the vesting period (see `references/equity-compensation-sourcing.md`). The portion of the vest that vested on work performed in Israel (after 15.3.2026) is **Israeli-source ordinary income, taxable**. The portion that vested on work performed in the US (before 15.3.2026) is **foreign-source ordinary income, exempt 10 years** under section 14. Engage a CPA with a calendar of the vesting period and a workdays-by-location log.
 - **All three exempt streams above must still be reported** annually on Form 1301 + Schedule D-1 (Amendment 272).
 - **Form 1348? No.**
-- **US side**: all of the above stay taxable on Form 1040 under the saving clause, with no FTC since Israel taxed nothing. Engage a US-Israel cross-border CPA before the 2028 RSU vest.
+- **US side**: all of the above stay taxable on Form 1040 under the saving clause, with no FTC on the portions Israel exempts. Engage a US-Israel cross-border CPA before the 2028 RSU vest.
 
 ### Example 2: Doctor returning from Germany after 8 years
 

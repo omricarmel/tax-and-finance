@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.4.1 - 2026-10-19
+
+### Fixed
+
+- Example 1's US-side bullet said there is no foreign tax credit because Israel taxed nothing. Israeli tax paid on Israeli-source salary above the Hok Iddud cap does generate a credit; only the portions Israel exempts produce none.
+- The interactive prompt now repeats that Year 1 counts only income from the residency date.
+
 ## 1.4.0 - 2026-10-19
 
 ### Fixed
