@@ -42,6 +42,27 @@
         "A staged threshold needs the issue-date rule stated next to it, not just the current number. Without it, an agent tests a March 2026 invoice against the June 2026 threshold and reports a defect that does not exist.",
         "Four sibling skills in the same repo carried the correct ladder. Cross-checking the catalogue is cheaper than re-fetching gov.il and it also proves the corrected value is the one the rest of the catalogue already agrees on."
       ]
+    },
+    {
+      "version": "1.7.0",
+      "date": "2026-10-19",
+      "lessons": [
+        "RESOLVED CARRY (1.4.0): monthly vs bi-monthly VAT threshold now stated once: 1,775,000 NIS, gov.il new-dealer guide + VAT Law s.67(א2) note; re-indexed each 1 September (s.126(ד)). No post-1.9.2026 figure found on 2026-10-19; re-check next cycle.",
+        "RESOLVED CARRY (1.4.0): Form 1301 tax-year-2025 dates re-anchored by browser render of gov.il: 29.5.2026 non-online, 30.6.2026 online. The skill had said 31 May. Tax-year-2026 dates not published; add them when the Tax Authority publishes.",
+        "RESOLVED CARRY (1.4.0): osek patur reclassification mechanism = regional VAT office, before the crossing payment (Kol Zchut).",
+        "RESOLVED CARRY (1.4.0): keren hishtalmut for the self-employed added (4.5% of 293,397 = 13,203; 20,566 exempt-gains cap) and a pension/hishtalmut section added to deadline-calendar.md.",
+        "RESOLVED CARRY (1.4.0): esek za'ir reframed as an income-tax status, its 30% downside stated, and moved out of the 'alternative to converting' framing.",
+        "STILL OPEN (3rd cycle, CARRY-STALE next time): whether VAT is owed on turnover above the osek patur ceiling before reclassification. No primary source settles it; the skill now tells the agent not to say there is no exposure and to flag it for the accountant. Next cycle: read VAT Law s.31/s.1 definitions and Tax Authority guidance, or move to Out of scope explicitly.",
+        "REVERSED a 1.4.0 lesson: the osek patur ceiling IS CPI-indexed by statute every 1 January (VAT Law s.126(א)), unless set by order in the preceding six months (s.126(ג)). 1.4.0 removed it as unsourced; the statute was never opened. Open the statute before removing a mechanism.",
+        "REMOVED unsupported attributions: 'Amendment 277' for esek za'ir (Wikisource tags the chapter to the 2023 Economic Efficiency Law) and 'BTL circular 1502'. Both sat in the skill for several cycles because the figures next to them were right.",
+        "Allocation-number 2024 row: no primary source for a 5 May 2024 start date was found; the row now reads '2024 (pilot year)' per the API spec section 1.2. If a primary source for 5 May 2024 turns up, restore it.",
+        "Bituach Leumi self-employed due date: the '15th of each month' claim had no source (Kol Zchut defers to BL's payment schedule). Now 'per the user's BL payment sheet'. Next cycle: anchor the day to a btl.gov.il page.",
+        "Projection rule took three arithmetic rounds: r1 double counted contracts, the r2 fix dropped the run rate for any month with a retainer, the r3 fix discarded one-off projects. The final rule: run rate on recurring income, per month max(contracted, run rate), one-offs added on top, user facts override. Lesson: a projection rule needs adversarial cases for retainers, one-offs (past and future) and mid-year openings before it ships.",
+        "Proration of the osek patur ceiling for a mid-year opening is unverified; the skill says so. Resolve from a primary source next cycle.",
+        "Deferred (expert minor, word cap): Cash Reduction Law limits on accepting cash settlements of a 90+ debt; point to the Tax Authority new-dealer guide chapter without stating a figure.",
+        "Word cap: SKILL.md body is at ~4,970/5,000 words. The next cycle must move content (e.g. Step 6 package or the reg. 13 list) to references/ before adding anything.",
+        "Process: three of the expert's 1.7.0 findings (reg. 13 group instruction, s.49 VAT on unpaid invoices, withholding at source) were core coverage that six earlier cycles never raised, because no cycle ran the aggregator sweep against Kol Zchut's osek patur page in full. The FAQ answers on that page are collapsed; render with textContent, not innerText."
+      ]
     }
   ]
 }

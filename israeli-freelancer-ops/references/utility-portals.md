@@ -48,10 +48,10 @@ Water billing varies by municipality. Common providers:
 
 | City/Region | Provider | Portal |
 |-------------|----------|--------|
-| Tel Aviv | Mei Avivim (מי אביבים) | meiavivim.co.il |
+| Tel Aviv | Mei Avivim (מי אביבים) | mei-avivim.co.il |
 | Jerusalem | Hagihon (גיחון) | hagihon.co.il |
-| Haifa | Mei Carmel (מי כרמל) | meicarmel.co.il |
-| Be'er Sheva | Mei Sheva (מי שבע) | meisheva.co.il |
+| Haifa | Mei Carmel (מי כרמל) | mei-carmel.co.il |
+| Be'er Sheva | Mei Sheva (מי שבע) | find via the municipality site (no verified domain) |
 
 - **Login method:** Varies, typically account number + ID or phone-based OTP
 - **Bill location:** Account/billing section
@@ -63,7 +63,7 @@ Water billing varies by municipality. Common providers:
 - **Portal:** Municipality-specific (each city runs its own portal)
 - **Common portals:**
   - Tel Aviv: https://www.tel-aviv.gov.il (linked to municipal services)
-  - Jerusalem: https://www.jerusalem.muni.il
+  - Jerusalem: jerusalem.muni.il (blocks automated browsers; open it manually)
   - Haifa: https://www.haifa.muni.il
 - **Login method:** ID number + property account number, or via gov.il identity
 - **Bill location:** Arnona payments section
